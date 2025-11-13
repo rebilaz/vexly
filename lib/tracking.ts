@@ -77,6 +77,13 @@ export async function trackEvent(
     return;
   }
 
+    // ⛔️ Blocage si pas de _fbc
+  const fbc = getCookie("_fbc");
+  if (!fbc) {
+    console.warn(`[trackEvent] Annulé: "_fbc" manquant pour "${event_name}"`);
+    return;
+  }
+
   try {
     const url = window.location.href;
     const referrer = document.referrer || null;
@@ -90,7 +97,7 @@ export async function trackEvent(
       referrer,
       scroll_pct: extra.scroll_pct ?? null,
       session_id,
-      fbc: getCookie("_fbc"),
+      fbc,
       fbp: getCookie("_fbp"),
       ...utm,
       source: extra.source ?? undefined,

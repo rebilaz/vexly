@@ -70,7 +70,7 @@ const Approach: React.FC = () => {
         <div className="relative mx-auto max-w-3xl aspect-video overflow-hidden rounded-2xl sm:rounded-3xl bg-slate-900 shadow-2xl shadow-slate-900/30 ring-1 ring-slate-300 mb-10 sm:mb-14">
           <iframe
             className="h-full w-full"
-            src="https://www.youtube.com/embed/tOM3X2kWvG9A" // 🔁 remplace par ton lien
+            src="https://www.youtube.com/embed/tOM3X2WvG9A" // 🔁 remplace par ton lien
             title="Présentation de l'approche"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             referrerPolicy="strict-origin-when-cross-origin"
