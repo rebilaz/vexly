@@ -1,78 +1,45 @@
-import type { NextPage } from "next";
+import { LandingLayout } from "@/components/LandingLayout";
 
-import { PrimaryCTA } from "../../components/PrimaryCTA";
-
-const CreateursPage: NextPage = () => {
+export default function EntrepreneursPage() {
   return (
-    <div className="space-y-12">
-      <section className="rounded-2xl border border-gray-200 bg-white p-10 shadow-sm">
-        <div className="space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-wide text-indigo-600">
-            Outils IA sur-mesure
-          </p>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Je construis tes outils IA sur-mesure pour YouTube et TikTok.
-          </h1>
-          <p className="text-lg text-gray-700">
-            Tu veux ton propre outil de scripts, de repurposing ou d’analytics ?
-            Je le développe pour ton workflow.
-          </p>
-          <PrimaryCTA label="Parler de mon idée d’outil" niche="createurs" />
-        </div>
-      </section>
-
-      <section className="rounded-2xl border border-gray-200 bg-white p-10 shadow-sm space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-900">
-          Tu utilises 10 outils, aucun n’est fait pour toi
-        </h2>
-        <p className="text-gray-700">
-          Tu passes trop de temps à jongler entre des apps qui ne comprennent
-          pas ton contenu, ton style ni ton format. Un outil sur-mesure peut
-          automatiser une grosse partie de ton workflow.
-        </p>
-      </section>
-
-      <section className="rounded-2xl border border-gray-200 bg-white p-10 shadow-sm space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-900">
-          Quelques exemples de ce que je peux construire
-        </h2>
-        <ul className="list-disc space-y-2 pl-5 text-gray-700">
-          <li>Générateur de scripts adapté à ton ton de voix</li>
-          <li>Outil de découpe automatique de vidéos longues en shorts</li>
-          <li>Dashboard d’analytics centré sur ton watchtime</li>
-          <li>Outil pour préparer les descriptions, titres et miniatures</li>
-          <li>Portail d’accès pour ton équipe (monteur, CM, etc.)</li>
-        </ul>
-      </section>
-
-      <section className="rounded-2xl border border-gray-200 bg-white p-10 shadow-sm space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-900">
-          Gagne du temps, garde le contrôle
-        </h2>
-        <p className="text-gray-700">
-          Tu gardes ta créativité, mais tu délègues :
-        </p>
-        <ul className="list-disc space-y-2 pl-5 text-gray-700">
-          <li>les tâches répétitives</li>
-          <li>la préparation des scripts</li>
-          <li>la préparation des formats</li>
-          <li>une partie de l’analyse</li>
-        </ul>
-      </section>
-
-      <section className="rounded-2xl border border-gray-200 bg-white p-10 shadow-sm space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-900">
-          Tu as une idée d’outil pour ton contenu ?
-        </h2>
-        <p className="text-gray-700">
-          On regarde ensemble si on peut en faire un vrai outil SaaS qui te sert
-          au quotidien.
-        </p>
-        <PrimaryCTA label="M’envoyer mon idée" niche="createurs" />
-      </section>
-    </div>
+    <LandingLayout
+      niche="Entrepreneurs"
+      heroTitle="Je construis ton SaaS ou MVP en 2 à 4 semaines — prêt à lancer."
+      heroSubtitle="De l’idée au SaaS fonctionnel : Auth, Stripe, Dashboard, IA, backend, UI… tu délègues tout."
+      primaryCtaLabel="Parler de mon projet"
+      sections={[
+        {
+          title: "Arrête de rester bloqué à l’étape de l’idée",
+          text:
+            "Tu as une idée de SaaS, mais :\n" +
+            "- tu ne sais pas par où commencer techniquement\n" +
+            "- tu n’as pas le temps de tout apprendre\n" +
+            "- tu as peur de choisir la mauvaise stack\n" +
+            "- tu repousses le lancement depuis des mois\n\n" +
+            "Je prends en charge toute la partie technique pour que tu puisses te concentrer sur le marché.",
+        },
+        {
+          title: "Un MVP propre, prêt à être mis devant de vrais utilisateurs",
+          bullets: [
+            "Authentification et base de données",
+            "Paiements et abonnements avec Stripe",
+            "Dashboard moderne pour tes users",
+            "Fonctionnalité principale opérationnelle",
+            "Automatisations back-end",
+            "Intégration IA (OpenAI/Claude) si besoin",
+            "Code propre, prêt à scaler",
+          ],
+        },
+        {
+          title: "Un process simple, de l’idée au SaaS en ligne",
+          bullets: [
+            "Appel de 30 minutes pour cadrer ton SaaS",
+            "Maquette rapide et validation du scope",
+            "Développement (2 à 4 semaines selon le projet)",
+            "Livraison, déploiement et support de démarrage",
+          ],
+        },
+      ]}
+    />
   );
-};
-
-export default CreateursPage;
-
+}
