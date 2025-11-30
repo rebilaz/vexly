@@ -1,4 +1,3 @@
-// lib/articles.ts
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
@@ -10,9 +9,9 @@ const articlesDir = path.join(process.cwd(), "content", "articles");
 export type ArticleFrontmatter = {
   title: string;
   subtitle?: string;
-  slug: string;
+  slug: string;          // slug "de base" (sans date)
   description?: string;
-  date: string;
+  date: string;          // YYYY-MM-DD
   readingTime?: string;
   tags?: string[];
   niche?: string;
@@ -21,7 +20,7 @@ export type ArticleFrontmatter = {
 
 export type Article = {
   frontmatter: ArticleFrontmatter;
-  slug: string; // pour l’URL
+  slug: string;          // slug POUR L’URL (slug + date)
   sections: ArticleSection[];
 };
 
@@ -41,7 +40,7 @@ function slugify(heading: string) {
 
 // Découpe un markdown en sections à chaque "## "
 function splitMarkdownIntoSections(content: string): ArticleSection[] {
-  const blocks = content.split(/\n(?=##\s+)/); // on coupe dès qu'une ligne commence par "## "
+  const blocks = content.split(/\n(?=##\s+)/);
   const sections: ArticleSection[] = [];
 
   blocks.forEach((block, index) => {
@@ -50,12 +49,8 @@ function splitMarkdownIntoSections(content: string): ArticleSection[] {
     let bodyLines: string[] = [];
 
     if (index === 0) {
-      // Premier bloc: il peut contenir un H1 + intro avant le premier "##"
-      // On cherche un H1 (# ) et on garde tout en body
       const h1Index = lines.findIndex((l) => l.trim().startsWith("# "));
       if (h1Index !== -1) {
-        // On pourrait utiliser le H1 comme heading, mais ton layout a déjà "title"
-        // donc on met tout en body
         bodyLines = lines.slice(h1Index + 1);
       } else {
         bodyLines = lines;
@@ -63,11 +58,10 @@ function splitMarkdownIntoSections(content: string): ArticleSection[] {
 
       sections.push({
         id: "intro",
-        heading: heading, // pas de heading explicite
+        heading: heading,
         body: bodyLines.join("\n").trim(),
       });
     } else {
-      // Bloc suivant: on attend un "## Titre"
       const firstLine = lines[0].trim();
       if (firstLine.startsWith("##")) {
         heading = firstLine.replace(/^##\s*/, "").trim();
@@ -84,10 +78,10 @@ function splitMarkdownIntoSections(content: string): ArticleSection[] {
     }
   });
 
-  // On nettoie les sections vides
   return sections.filter((s) => s.body && s.body.length > 0);
 }
 
+// 🔥 slug param d’URL = fm.slug + "-" + fm.date
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const files = getAllArticleFiles();
 
@@ -97,13 +91,16 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
     const { data, content } = matter(fileContents);
 
     const fm = data as ArticleFrontmatter;
+    const baseSlug = fm.slug;
+    const slugWithDate = `${baseSlug}-${fm.date}`;
 
-    if (fm.slug === slug) {
+    // On accepte soit /articles/slug, soit /articles/slug-date
+    if (slug === slugWithDate || slug === baseSlug) {
       const sections = splitMarkdownIntoSections(content);
 
       return {
         frontmatter: fm,
-        slug: fm.slug,
+        slug: slugWithDate, // on garde la version "complète" pour l’URL
         sections,
       };
     }
@@ -124,9 +121,11 @@ export async function getAllArticles(): Promise<Article[]> {
 
     const sections = splitMarkdownIntoSections(content);
 
+    const slugWithDate = `${fm.slug}-${fm.date}`;
+
     articles.push({
       frontmatter: fm,
-      slug: fm.slug,
+      slug: slugWithDate, // c’est celui-là qui servira à l’URL
       sections,
     });
   }
