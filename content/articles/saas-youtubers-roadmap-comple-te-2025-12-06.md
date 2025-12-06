@@ -1,5 +1,5 @@
 ---
-title: "SaaS pour YouTubers : la roadmap complète pour lancer un produit rentable en 30 jours sans coder"
+title: "[[[[SaaS pour YouTubers](/articles/saas-youtubers-l-effet-levier)](/articles/saas-youtubers-comment-transformer-ton-3)](/articles/saas-youtubers-mode-exact-passer)](/articles/saas-youtubers-7-erreurs-tuent-8) : la roadmap complète pour lancer un produit rentable en 30 jours sans coder"
 slug: "saas-youtubers-roadmap-comple-te"
 subtitle: "La méthode étape par étape pour transformer ton audience YouTube en revenu logiciel récurrent sans coder"
 description: "Guide comparatif des SaaS pour créateurs YouTube en 2025"
