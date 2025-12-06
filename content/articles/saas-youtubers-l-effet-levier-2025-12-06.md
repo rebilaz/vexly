@@ -1,5 +1,5 @@
 ---
-title: "[[[[SaaS pour YouTubers](/articles/saas-youtubers-mode-exact-passer)](/articles/saas-youtubers-7-erreurs-tuent-8)](/articles/saas-youtubers-roadmap-comple-te)](/articles/saas-youtubers-comment-transformer-ton-3) : l’effet levier caché pour scaler tes revenus sans coder (en délégant)"
+title: "SaaS pour YouTubers : l’effet levier caché pour scaler tes revenus sans coder (en délégant)"
 slug: "saas-youtubers-l-effet-levier"
 subtitle: "Transforme ton audience YouTube en revenu récurrent grâce à un SaaS délégué"
 description: "Guide comparatif des SaaS pour créateurs YouTube en 2025"
