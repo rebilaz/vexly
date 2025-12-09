@@ -1,5 +1,5 @@
 ---
-title: "[[[[[SaaS pour YouTubers](/articles/saas-youtubers-comment-transformer-ton-3)](/articles/saas-youtubers-playbook-transformer-ton)](/articles/saas-youtubers-7-erreurs-tuent-8)](/articles/saas-youtubers-roadmap-comple-te)](/articles/saas-youtubers-syste-me-transformer) : le modèle exact pour passer de sponsor dépendant à revenu mensuel prévisible"
+title: "SaaS pour YouTubers : le modèle exact pour passer de sponsor dépendant à revenu mensuel prévisible"
 slug: "saas-youtubers-mode-exact-passer"
 subtitle: "Comment transformer ton audience YouTube en clients d’un SaaS rentable et récurrent"
 description: "Guide comparatif des SaaS pour créateurs YouTube en 2025"
