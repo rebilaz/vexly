@@ -1,5 +1,5 @@
 ---
-title: "SaaS pour YouTubers : le plan cashflow pour monétiser tes vidéos sans coder (en délégant tout)"
+title: "[[[[SaaS pour YouTubers](/articles/saas-youtubers-comment-transformer-ton-3)](/articles/saas-youtubers-mode-exact-passer)](/articles/saas-youtubers-l-effet-levier)](/articles/saas-youtubers-playbook-transformer-ton) : le plan cashflow pour monétiser tes vidéos sans coder (en délégant tout)"
 slug: "saas-youtubers-plan-cashflow-mone"
 subtitle: "Comment transformer ton audience YouTube en MRR avec un SaaS sans écrire une ligne de code"
 description: "Guide comparatif des SaaS pour créateurs YouTube en 2025"
