@@ -1,5 +1,5 @@
 ---
-title: "[[[[[SaaS pour YouTubers](/articles/saas-youtubers-l-effet-levier)](/articles/saas-youtubers-plan-cashflow-mone)](/articles/saas-youtubers-syste-me-transformer)](/articles/saas-youtubers-roadmap-comple-te)](/articles/saas-youtubers-comment-transformer-ton-3) : le playbook pour transformer ton meilleur tuto en produit payant (sans coder)"
+title: "SaaS pour YouTubers : le playbook pour transformer ton meilleur tuto en produit payant (sans coder)"
 slug: "saas-youtubers-playbook-transformer-ton"
 subtitle: "Comment transformer ton tuto YouTube le plus vu en abonnement SaaS rentable sans écrire une ligne de code"
 description: "Guide comparatif des SaaS pour créateurs YouTube en 2025"
