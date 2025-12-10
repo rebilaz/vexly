@@ -40,7 +40,7 @@ Il te permet de :
 - **ne plus être limité par ton temps ou le nombre de vidéos que tu peux produire**.
 
 Et la partie la plus importante : **tu n’as pas besoin de coder toi-même**.  
-Tu as besoin de **clarifier le problème à résoudre**, puis de **déléguer à un prestataire sérieux** qui construit un SaaS clé-en-main, prêt à vendre.
+Tu as besoin de **clarifier [le problème](/articles/saas-youtubers-7-erreurs-tuent-8) à résoudre**, puis de **déléguer à un prestataire sérieux** qui construit un SaaS clé-en-main, prêt à vendre.
 
 Dans ce guide, on va voir :
 
@@ -85,7 +85,7 @@ Si tu es créateur YouTube, tu as déjà ce que la plupart des startups n’ont 
 - des feedbacks quotidiens en commentaires,
 - une compréhension fine des problèmes de ton marché.
 
-C’est **un avantage énorme** pour lancer un SaaS.
+C’est **un avantage énorme** pour [lancer un SaaS](/articles/saas-youtubers-syste-me-transformer).
 
 Un SaaS bien conçu te permet de :
 
@@ -116,7 +116,7 @@ Mais ces produits ont des limites :
 
 Un SaaS, lui :
 
-- **automatise une partie du travail** (au lieu de juste expliquer comment faire),
+- **automatise une partie du travail** (au lieu de juste expliquer [comment faire](/articles/saas-youtubers-playbook-transformer-ton)),
 - **s’intègre dans le quotidien de tes clients** (ils l’utilisent tous les jours / toutes les semaines),
 - **crée une dépendance positive** : une fois intégré dans leurs process, ils ont du mal à s’en passer,
 - **légitime un abonnement récurrent** plutôt qu’un paiement unique.
