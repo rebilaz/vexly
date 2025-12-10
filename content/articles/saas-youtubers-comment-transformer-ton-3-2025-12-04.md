@@ -328,7 +328,7 @@ Tout ce qui peut être automatisé **sera** automatisé :
 - distribution multi-plateformes,
 - reporting automatique.
 
-Un bon [[[[[SaaS pour YouTubers](/articles/saas-youtubers-playbook-transformer-ton)](/articles/saas-youtubers-roadmap-comple-te)](/articles/saas-youtubers-syste-me-transformer)](/articles/saas-youtubers-mode-exact-passer)](/articles/saas-youtubers-l-effet-levier) doit intégrer **des automatisations natives**, pas juste un export CSV.
+Un bon [[[[[SaaS pour YouTubers](/articles/saas-youtubers-plan-cashflow-mone)](/articles/saas-youtubers-7-erreurs-tuent-8)](/articles/saas-youtubers-mode-exact-passer)](/articles/saas-youtubers-playbook-transformer-ton)](/articles/saas-youtubers-roadmap-comple-te) doit intégrer **des automatisations natives**, pas juste un export CSV.
 
 ### 6.2. IA intégrée, mais utile
 
