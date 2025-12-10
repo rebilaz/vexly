@@ -38,7 +38,7 @@ Un SaaS bien pensé peut :
 
 Ce guide est là pour éviter ça.
 
-On va voir les **7 erreurs qui tuent les revenus des [SaaS pour YouTubers](/articles/saas-youtubers-l-effet-levier)**, comment les éviter **sans coder**, et comment t’appuyer sur les bons outils ou sur un prestataire *done-for-you* pour aller au bout de ton idée sereinement.
+On va voir les **7 erreurs qui tuent les revenus des [SaaS pour YouTubers](/articles/saas-youtubers-roadmap-comple-te)**, comment les éviter **sans coder**, et comment t’appuyer sur les bons outils ou sur un prestataire *done-for-you* pour aller au bout de ton idée sereinement.
 
 ---
 
@@ -103,7 +103,7 @@ Résultat : tu perds du temps, tu ne l’utilises pas vraiment, et tu repousses 
 
 ### Le problème : confondre “usine à gaz” et “solution complète”
 
-Un bon [SaaS pour YouTubers](/articles/saas-youtubers-plan-cashflow-mone) (qu’il soit existant ou sur mesure) doit être :
+Un bon [SaaS pour YouTubers](/articles/saas-youtubers-syste-me-transformer) (qu’il soit existant ou sur mesure) doit être :
 
 - **Spécifique** à ton usage (YouTube, vidéo, communauté)
 - **Compréhensible** en quelques minutes
