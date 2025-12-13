@@ -2,53 +2,100 @@
 
 import React from "react";
 import { motion } from "motion/react";
-import { Search, TrendingUp } from "lucide-react";
+import { Search, X } from "lucide-react";
+import { Geist } from "next/font/google";
+
+const geist = Geist({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 type Props = {
-  total: number;
+  total: number; // conservé si jamais
   query: string;
   onQueryChange: (v: string) => void;
 };
 
-export default function ArticlesHero({ total, query, onQueryChange }: Props) {
+export default function ArticlesHero({
+  query,
+  onQueryChange,
+}: Props) {
   return (
-    <header className="border-b border-slate-200 bg-gradient-to-b from-slate-50 to-white">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-10 lg:py-12">
+    <header
+      className="
+        relative
+        overflow-hidden
+        border-b border-slate-100
+        bg-white
+        min-h-[75vh]
+        flex
+        items-center
+      "
+    >
+      {/* Background texture */}
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.35]" />
+
+      <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="max-w-4xl"
         >
-          <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
-            Articles
+          {/* Titre */}
+          <h1
+            className={[
+              geist.className,
+              "text-6xl sm:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight text-slate-900 mb-10 leading-[1.02]",
+            ].join(" ")}
+          >
+            Explorez, apprenez,{" "}
+            <span className="text-indigo-600">bâtissez.</span>
           </h1>
 
-          <p className="text-slate-700 text-base sm:text-lg leading-relaxed max-w-3xl mt-3">
-            Stratégies et méthodes concrètes pour construire et monétiser tes projets (SaaS, IA, automatisation…).
+          {/* Description */}
+          <p className="text-xl sm:text-2xl leading-relaxed text-slate-600 max-w-2xl mb-16">
+            Des guides pratiques et des retours d&apos;expérience pour accélérer
+            sur le Design, le Code et le Business.
           </p>
 
-          <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="flex items-center gap-3 px-4 py-2.5 bg-white rounded-xl border border-slate-200 shadow-sm">
-              <TrendingUp className="w-5 h-5 text-indigo-600" />
-              <span className="text-slate-900 text-sm sm:text-base">
-                {total} article{total > 1 ? "s" : ""}
-              </span>
+          {/* Search */}
+          <div className="relative max-w-xl group">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
             </div>
 
-            <div className="relative flex-1 w-full sm:max-w-md group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => onQueryChange(e.target.value)}
-                placeholder="Rechercher (titre, tag, sujet...)"
-                className="w-full pl-12 pr-5 py-3 rounded-xl border border-slate-200 bg-white
-                           text-slate-900 placeholder:text-slate-400 text-sm sm:text-base
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400
-                           shadow-sm hover:border-slate-300 transition-all"
-              />
-            </div>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => onQueryChange(e.target.value)}
+              placeholder="Rechercher un sujet..."
+              className="
+                block
+                w-full
+                rounded-2xl
+                py-5
+                pl-12
+                pr-12
+                text-base
+                text-slate-900
+                ring-1 ring-inset ring-slate-200
+                placeholder:text-slate-400
+                focus:ring-2 focus:ring-indigo-600
+                bg-white/90
+                backdrop-blur
+              "
+            />
+
+            {query && (
+              <button
+                onClick={() => onQueryChange("")}
+                className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600"
+                aria-label="Effacer la recherche"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
           </div>
         </motion.div>
       </div>

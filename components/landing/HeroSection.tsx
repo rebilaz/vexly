@@ -1,7 +1,5 @@
-"use client";
-
+// components/landing/HeroSection.tsx
 import React from "react";
-import { motion } from "motion/react";
 import { ArrowRight, Rocket, Zap, Check } from "lucide-react";
 
 type HeroSectionProps = {
@@ -9,61 +7,44 @@ type HeroSectionProps = {
   heroTitle: string;
   heroSubtitle: string;
   primaryCtaLabel: string;
-  onPrimaryCtaClick?: () => void;
 };
 
-const HeroSection: React.FC<HeroSectionProps> = ({
+const Badge = ({ label }: { label: string }) => (
+  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-700">
+    <Zap className="size-4" />
+    {label}
+  </div>
+);
+
+const TrustIndicator = ({ label }: { label: string }) => (
+  <div className="flex items-center gap-2">
+    <div className="flex size-5 items-center justify-center rounded-full bg-green-500">
+      <Check className="size-3 text-white" />
+    </div>
+    <span className="text-sm font-medium text-slate-700">{label}</span>
+  </div>
+);
+
+const StepItem = ({ step, text, time }: { step: string; text: string; time: string }) => (
+  <div className="flex items-start gap-4">
+    <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-sm font-bold text-slate-800">
+      {step}
+    </div>
+    <div>
+      <p className="text-sm font-medium text-slate-800">{text}</p>
+      <span className="mt-1 inline-block rounded bg-indigo-50 px-2 py-0.5 text-[11px] font-medium text-indigo-600">
+        {time}
+      </span>
+    </div>
+  </div>
+);
+
+export default function HeroSection({
   niche,
   heroTitle,
   heroSubtitle,
   primaryCtaLabel,
-  onPrimaryCtaClick,
-}) => {
-  const Button: React.FC<{ label: string }> = ({ label }) => (
-    <motion.button
-      onClick={onPrimaryCtaClick}
-      className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/40 transition hover:scale-[1.03] active:scale-[0.97]"
-      whileTap={{ scale: 0.97 }}
-    >
-      {label}
-      <ArrowRight className="size-4" />
-    </motion.button>
-  );
-
-  const Badge: React.FC<{ label: string }> = ({ label }) => (
-    <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-700">
-      <Zap className="size-4" />
-      {label}
-    </div>
-  );
-
-  const TrustIndicator: React.FC<{ label: string }> = ({ label }) => (
-    <div className="flex items-center gap-2">
-      <div className="flex size-5 items-center justify-center rounded-full bg-green-500">
-        <Check className="size-3 text-white" />
-      </div>
-      <span className="text-sm font-medium text-slate-700">{label}</span>
-    </div>
-  );
-
-  const StepItem: React.FC<{ step: string; text: string; time: string }> = ({
-    step,
-    text,
-    time,
-  }) => (
-    <div className="flex items-start gap-4">
-      <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-sm font-bold text-slate-800">
-        {step}
-      </div>
-      <div>
-        <p className="text-sm font-medium text-slate-800">{text}</p>
-        <span className="mt-1 inline-block rounded bg-indigo-50 px-2 py-0.5 text-[11px] font-medium text-indigo-600">
-          {time}
-        </span>
-      </div>
-    </div>
-  );
-
+}: HeroSectionProps) {
   return (
     <section className="grid gap-10 lg:grid-cols-[1.3fr,1fr] lg:gap-16">
       {/* Colonne gauche */}
@@ -79,7 +60,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         </p>
 
         <div className="flex flex-wrap items-center gap-4">
-          <Button label={primaryCtaLabel} />
+          {/* CTA sans JS : ancre + smooth scroll via CSS */}
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/40 transition hover:scale-[1.03] active:scale-[0.97]"
+          >
+            {primaryCtaLabel}
+            <ArrowRight className="size-4" />
+          </a>
+
           <a
             href="#process"
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 transition hover:text-indigo-600"
@@ -119,6 +108,4 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       </div>
     </section>
   );
-};
-
-export default HeroSection;
+}

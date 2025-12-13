@@ -1,19 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AuthSection } from "@/components/AuthSection";
 
-const Header = () => {
+type MenuId = "solutions" | "ressources" | null;
+
+const CLOSE_DELAY_MS = 220;
+
+export default function Header() {
   const [authOpen, setAuthOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<MenuId>(null);
+
+  const closeTimer = useRef<number | null>(null);
+
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const open = (id: Exclude<MenuId, null>) => {
+    clearCloseTimer();
+    setOpenMenu(id);
+  };
+
+  const scheduleClose = (id: Exclude<MenuId, null>) => {
+    clearCloseTimer();
+    closeTimer.current = window.setTimeout(() => {
+      setOpenMenu((cur) => (cur === id ? null : cur));
+      closeTimer.current = null;
+    }, CLOSE_DELAY_MS);
+  };
+
+  const forceClose = () => {
+    clearCloseTimer();
+    setOpenMenu(null);
+  };
 
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 lg:px-6">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex items-center" onClick={forceClose}>
             <Image
               src="/vexly-logo-2-full-gradient.svg"
               alt="Vexly logo"
@@ -26,19 +58,35 @@ const Header = () => {
 
           {/* Navigation (desktop) */}
           <nav className="hidden items-center gap-6 text-xs font-medium text-slate-600 md:flex">
-            {/* Solutions - dropdown (hover bridge fix) */}
-            <div className="relative group">
+            {/* SOLUTIONS */}
+            <div className="relative inline-flex">
+              {/* IMPORTANT: ouverture seulement sur le bouton */}
               <button
-                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 transition-colors hover:text-slate-900"
                 type="button"
+                onMouseEnter={() => open("solutions")}
+                onMouseLeave={() => scheduleClose("solutions")}
+                aria-expanded={openMenu === "solutions"}
+                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
-                Solutions
-                <span className="text-[9px]">▾</span>
+                Solutions <span className="text-[9px]">▾</span>
               </button>
 
-              {/* Hover bridge container */}
-              <div className="absolute left-0 top-full pt-3">
-                <div className="invisible w-[320px] translate-y-1 rounded-xl border border-slate-200/80 bg-white/95 p-4 text-xs opacity-0 shadow-lg transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+              {/* Panneau: garde ouvert tant que la souris est dedans */}
+              <div className="absolute left-0 top-full z-50 mt-2">
+                <div
+                  onMouseEnter={clearCloseTimer}
+                  onMouseLeave={() => scheduleClose("solutions")}
+                  className={[
+                    "relative w-[320px] rounded-xl border border-slate-200/80 bg-white/95 p-4 text-xs shadow-lg",
+                    "transition-all duration-150",
+                    openMenu === "solutions"
+                      ? "opacity-100 translate-y-0 pointer-events-auto"
+                      : "opacity-0 translate-y-1 pointer-events-none",
+                  ].join(" ")}
+                >
+                  {/* bridge invisible anti-trou */}
+                  <div className="absolute -top-2 left-0 h-2 w-full" />
+
                   <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
                     Types de SaaS
                   </div>
@@ -46,36 +94,42 @@ const Header = () => {
                   <div className="mb-3 flex flex-col gap-1">
                     <Link
                       href="/solutions/saas-ia"
+                      onClick={forceClose}
                       className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                     >
                       SaaS IA
                     </Link>
                     <Link
                       href="/solutions/automation"
+                      onClick={forceClose}
                       className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                     >
                       SaaS d&apos;automation
                     </Link>
                     <Link
                       href="/solutions/seo"
+                      onClick={forceClose}
                       className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                     >
                       SaaS SEO
                     </Link>
                     <Link
                       href="/solutions/marketing"
+                      onClick={forceClose}
                       className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                     >
                       SaaS marketing
                     </Link>
                     <Link
                       href="/solutions/marketplaces"
+                      onClick={forceClose}
                       className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                     >
                       Plateformes &amp; marketplaces
                     </Link>
                     <Link
                       href="/solutions"
+                      onClick={forceClose}
                       className="mt-1 rounded-md px-2 py-1.5 text-[11px] font-semibold text-indigo-600 hover:bg-indigo-50"
                     >
                       Voir toutes les solutions
@@ -89,18 +143,21 @@ const Header = () => {
                     <div className="flex flex-col gap-1">
                       <Link
                         href="/personas/createurs"
+                        onClick={forceClose}
                         className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                       >
                         Pour créateurs
                       </Link>
                       <Link
                         href="/personas/freelances"
+                        onClick={forceClose}
                         className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                       >
                         Pour freelances
                       </Link>
                       <Link
                         href="/personas/entreprises"
+                        onClick={forceClose}
                         className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                       >
                         Pour entreprises
@@ -111,29 +168,52 @@ const Header = () => {
               </div>
             </div>
 
-            <Link href="/templates" className="transition-colors hover:text-slate-900">
+            <Link
+              href="/templates"
+              onClick={forceClose}
+              className="transition-colors hover:text-slate-900"
+            >
               Templates SaaS
             </Link>
 
-            <Link href="/tarifs" className="transition-colors hover:text-slate-900">
+            <Link
+              href="/tarifs"
+              onClick={forceClose}
+              className="transition-colors hover:text-slate-900"
+            >
               Tarifs
             </Link>
 
-            {/* Ressources - dropdown (hover bridge fix) */}
-            <div className="relative group">
+            {/* RESSOURCES */}
+            <div className="relative inline-flex">
+              {/* IMPORTANT: ouverture seulement sur le bouton */}
               <button
-                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 transition-colors hover:text-slate-900"
                 type="button"
+                onMouseEnter={() => open("ressources")}
+                onMouseLeave={() => scheduleClose("ressources")}
+                aria-expanded={openMenu === "ressources"}
+                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
-                Ressources
-                <span className="text-[9px]">▾</span>
+                Ressources <span className="text-[9px]">▾</span>
               </button>
 
-              {/* Hover bridge container */}
-              <div className="absolute left-0 top-full pt-3">
-                <div className="invisible w-[260px] translate-y-1 rounded-xl border border-slate-200/80 bg-white/95 p-2 text-xs opacity-0 shadow-lg transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+              <div className="absolute left-0 top-full z-50 mt-2">
+                <div
+                  onMouseEnter={clearCloseTimer}
+                  onMouseLeave={() => scheduleClose("ressources")}
+                  className={[
+                    "relative w-[260px] rounded-xl border border-slate-200/80 bg-white/95 p-2 text-xs shadow-lg",
+                    "transition-all duration-150",
+                    openMenu === "ressources"
+                      ? "opacity-100 translate-y-0 pointer-events-auto"
+                      : "opacity-0 translate-y-1 pointer-events-none",
+                  ].join(" ")}
+                >
+                  <div className="absolute -top-2 left-0 h-2 w-full" />
+
                   <Link
                     href="/ressources"
+                    onClick={forceClose}
                     className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                   >
                     <div className="font-semibold">Ressources</div>
@@ -142,6 +222,7 @@ const Header = () => {
 
                   <Link
                     href="/articles"
+                    onClick={forceClose}
                     className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                   >
                     <div className="font-semibold">Articles</div>
@@ -150,6 +231,7 @@ const Header = () => {
 
                   <Link
                     href="/parcours"
+                    onClick={forceClose}
                     className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                   >
                     <div className="font-semibold">Parcours</div>
@@ -159,7 +241,7 @@ const Header = () => {
               </div>
             </div>
 
-            <Link href="/faq" className="transition-colors hover:text-slate-900">
+            <Link href="/faq" onClick={forceClose} className="transition-colors hover:text-slate-900">
               FAQ
             </Link>
           </nav>
@@ -168,6 +250,7 @@ const Header = () => {
           <div className="flex items-center gap-3">
             <Link
               href="/connexion"
+              onClick={forceClose}
               className="hidden text-xs font-medium text-slate-600 transition-colors hover:text-slate-900 md:inline-block"
             >
               Connexion
@@ -178,8 +261,7 @@ const Header = () => {
               className="rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-2.5 text-xs font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.55)] transition hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.65)] active:scale-[0.97]"
             >
               <span className="flex items-center gap-2">
-                Créer mon SaaS
-                <span className="text-sm">→</span>
+                Créer mon SaaS <span className="text-sm">→</span>
               </span>
             </button>
           </div>
@@ -202,6 +284,4 @@ const Header = () => {
       )}
     </>
   );
-};
-
-export default Header;
+}

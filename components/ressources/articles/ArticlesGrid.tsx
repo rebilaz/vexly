@@ -1,253 +1,241 @@
 "use client";
 
-import React from "react";
+import React, { useMemo, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { Clock, Search, ArrowRight } from "lucide-react";
-import type { EnrichedArticle, UiCluster } from "./ArticlesIndexClient";
+import { ArrowLeft, ArrowRight, Clock, Search } from "lucide-react";
+import { Geist } from "next/font/google";
+import type { Article } from "@/lib/articles";
+
+const geist = Geist({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+});
+
+export type EnrichedArticle = Article & {
+  _clusterId: string;
+  _clusterLabel: string;
+};
 
 function formatDateFr(value: string) {
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
-  try {
-    return new Intl.DateTimeFormat("fr-FR", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }).format(d);
-  } catch {
-    return value;
-  }
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(d);
 }
 
+/* ----------------------------------------
+   FEATURED (Latest) — fine, no badge, Geist title, CTA right
+---------------------------------------- */
+function FeaturedArticle({ article }: { article: EnrichedArticle }) {
+  const fm = article.frontmatter as any;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mb-10"
+    >
+      <Link
+        href={`/articles/${article.slug}`}
+        className="group block relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-xl transition-transform hover:scale-[1.005] duration-500"
+      >
+        <div className="absolute top-0 right-0 -mt-28 -mr-28 h-80 w-80 rounded-full bg-indigo-500 blur-3xl opacity-15 group-hover:opacity-25 transition-opacity" />
+        <div className="absolute bottom-0 left-0 -mb-28 -ml-28 h-80 w-80 rounded-full bg-purple-500 blur-3xl opacity-15 group-hover:opacity-25 transition-opacity" />
+
+        <div className="relative z-10 px-8 py-10 md:px-10 md:py-12 lg:px-12 lg:py-14">
+          <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="min-w-0">
+              <h2
+                className={[
+                  geist.className,
+                  "text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]",
+                ].join(" ")}
+              >
+                {fm.title}
+              </h2>
+
+              {fm.description && (
+                <p className="mt-5 text-base md:text-lg text-slate-300 max-w-2xl leading-relaxed">
+                  {fm.description}
+                </p>
+              )}
+
+              <div className="mt-8 flex items-center gap-4 text-sm font-medium text-slate-400">
+                {fm.date && (
+                  <span className="text-white/90">{formatDateFr(fm.date)}</span>
+                )}
+                {fm.readingTime && <span>• {fm.readingTime}</span>}
+              </div>
+            </div>
+
+            <div className="flex lg:justify-end">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white text-slate-900 px-5 py-2.5 text-sm font-semibold transition group-hover:bg-indigo-50">
+                Lire l&apos;article <ArrowRight className="w-4 h-4" />
+              </span>
+            </div>
+          </div>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+/* ----------------------------------------
+   CARD — clean + scan-friendly (1 line desc)
+---------------------------------------- */
 function ArticleCard({ article }: { article: EnrichedArticle }) {
   const fm = article.frontmatter as any;
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
+    <Link
+      href={`/articles/${article.slug}`}
+      className="block h-full rounded-2xl bg-white ring-1 ring-slate-200/70 transition-all hover:shadow-lg hover:shadow-slate-200/50 hover:ring-slate-300"
     >
-      <Link href={`/articles/${article.slug}`} className="group block h-full">
-        <div className="h-full bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col">
-          <div className="mb-3">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-100 text-slate-700 rounded-full text-[11px] uppercase tracking-wide border border-slate-200">
-              {article._clusterLabel}
+      <div className="p-6">
+        <div className="mb-3 flex items-center justify-between gap-3">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+            {article._clusterLabel}
+          </span>
+          {fm.date && (
+            <span className="text-xs text-slate-400">{formatDateFr(fm.date)}</span>
+          )}
+        </div>
+
+        <h3
+          className={[
+            geist.className,
+            "text-xl font-extrabold leading-tight text-slate-900 line-clamp-2 hover:text-indigo-600 transition-colors",
+          ].join(" ")}
+        >
+          {fm.title}
+        </h3>
+
+        {fm.description && (
+          <p className="mt-3 text-sm leading-relaxed text-slate-600 line-clamp-1">
+            {fm.description}
+          </p>
+        )}
+
+        <div className="mt-6 flex items-center gap-2 border-t border-slate-200/60 pt-4 text-xs font-medium text-slate-500">
+          {fm.readingTime ? (
+            <span className="flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5" />
+              {fm.readingTime}
             </span>
-          </div>
-
-          <h3 className="text-slate-900 text-base sm:text-lg font-semibold leading-snug group-hover:text-indigo-600 transition-colors">
-            {fm.title}
-          </h3>
-
-          {fm.description && (
-            <p className="mt-2 text-slate-600 text-sm leading-relaxed line-clamp-3 flex-1">
-              {fm.description}
-            </p>
+          ) : (
+            <span>Lire</span>
           )}
 
-          <div className="mt-5 pt-4 border-t border-slate-100 text-slate-500 text-xs sm:text-sm flex items-center gap-3">
-            {fm.date && (
-              <span className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4" />
-                {formatDateFr(fm.date)}
-              </span>
-            )}
-            {fm.readingTime && <span>{fm.readingTime}</span>}
-          </div>
+          <ArrowRight className="ml-auto h-4 w-4 text-slate-300" />
         </div>
-      </Link>
-    </motion.article>
+      </div>
+    </Link>
   );
 }
 
-function LatestArticle({ article }: { article: EnrichedArticle }) {
-  const fm = article.frontmatter as any;
-
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35 }}
-      className="mb-10 lg:mb-12"
-    >
-      <Link
-        href={`/articles/${article.slug}`}
-        className="group block relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-7 sm:p-8 lg:p-10 shadow-2xl shadow-slate-900/20 hover:shadow-3xl transition-all duration-500"
-      >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_35%,rgba(99,102,241,0.16),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(168,85,247,0.12),transparent_60%)]" />
-
-        <div className="relative z-10 max-w-4xl">
-          <div className="flex flex-wrap items-center gap-2.5 mb-5">
-            <span className="px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-full text-xs sm:text-sm uppercase tracking-wide border border-white/15">
-              Dernier article
-            </span>
-
-            <span className="px-3.5 py-1.5 bg-white/10 backdrop-blur-sm text-white/90 rounded-full text-xs sm:text-sm border border-white/15">
-              {article._clusterLabel}
-            </span>
-
-            {Array.isArray(fm.tags) &&
-              fm.tags.slice(0, 2).map((tag: string) => (
-                <span
-                  key={tag}
-                  className="px-3.5 py-1.5 bg-white/10 backdrop-blur-sm text-white/80 rounded-full text-xs sm:text-sm border border-white/10"
-                >
-                  {tag}
-                </span>
-              ))}
-          </div>
-
-          <h2 className="text-white text-2xl sm:text-3xl font-semibold mb-4 leading-tight group-hover:text-indigo-200 transition-colors duration-300">
-            {fm.title}
-          </h2>
-
-          {fm.description && (
-            <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-6 max-w-3xl">
-              {fm.description}
-            </p>
-          )}
-
-          <div className="flex flex-wrap items-center gap-4 text-slate-300 text-sm sm:text-base">
-            {fm.date && (
-              <span className="flex items-center gap-2">
-                <Clock className="w-4.5 h-4.5" />
-                <span>{formatDateFr(fm.date)}</span>
-              </span>
-            )}
-            {fm.readingTime && <span>{fm.readingTime} de lecture</span>}
-
-            <span className="ml-auto inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-lg text-white text-sm group-hover:bg-white/20 transition-colors duration-300">
-              Lire <ArrowRight className="w-4 h-4" />
-            </span>
-          </div>
-        </div>
-      </Link>
-    </motion.article>
-  );
-}
-
+/* ----------------------------------------
+   MAIN — Featured + simple carousel (3 visible desktop)
+---------------------------------------- */
 type Props = {
-  selectedCluster: string;
-  clusters: UiCluster[];
   articles: EnrichedArticle[];
-  onSelectCluster: (id: string) => void;
+  showLatest?: boolean;
+  query?: string;
+  onClearQuery?: () => void;
 };
 
 export default function ArticlesGrid({
-  selectedCluster,
-  clusters,
   articles,
-  onSelectCluster,
+  showLatest = false,
+  query = "",
+  onClearQuery,
 }: Props) {
-  // bloc “dernier article” = le plus récent (articles est déjà trié desc)
-  const latest = articles[0];
+  const carouselRef = useRef<HTMLDivElement>(null);
 
-  // group by cluster si on est sur "all"
-  const grouped = React.useMemo(() => {
-    const map = new Map<string, { label: string; items: EnrichedArticle[] }>();
-    for (const a of articles) {
-      const key = a._clusterId;
-      if (!map.has(key)) map.set(key, { label: a._clusterLabel, items: [] });
-      map.get(key)!.items.push(a);
-    }
-    return Array.from(map.entries())
-      .map(([id, v]) => ({ id, label: v.label, items: v.items }))
-      .sort((a, b) => b.items.length - a.items.length);
-  }, [articles]);
+  const { featured, rest } = useMemo(() => {
+    const featured = showLatest ? articles[0] : null;
+    const rest = showLatest ? articles.slice(1) : articles;
+    return { featured, rest };
+  }, [articles, showLatest]);
+
+  const scroll = (dir: "left" | "right") => {
+    if (!carouselRef.current) return;
+    const amount = carouselRef.current.offsetWidth * 0.92;
+    carouselRef.current.scrollBy({
+      left: dir === "left" ? -amount : amount,
+      behavior: "smooth",
+    });
+  };
 
   return (
-    <main className="mx-auto max-w-7xl px-6 lg:px-8 py-10 lg:py-12 flex-1">
-      <AnimatePresence mode="wait">
-        {articles.length === 0 ? (
-          <motion.div
-            key="empty"
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            className="flex flex-col items-center justify-center py-20 px-6"
-          >
-            <div className="p-6 bg-slate-100 rounded-full mb-5">
-              <Search className="w-10 h-10 text-slate-400" />
-            </div>
-            <h3 className="text-slate-900 text-xl mb-2">Aucun résultat</h3>
-            <p className="text-slate-600 text-center max-w-md">
-              Change les mots-clés ou sélectionne une autre catégorie.
-            </p>
-          </motion.div>
-        ) : (
-          <motion.div
-            key={selectedCluster}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {/* ✅ Dernier article (seulement quand on a au moins 1 article) */}
-            {latest && <LatestArticle article={latest} />}
+    <AnimatePresence mode="popLayout">
+      {articles.length === 0 ? (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center justify-center py-24 text-center"
+        >
+          <div className="rounded-full bg-slate-50 p-4 mb-4">
+            <Search className="h-8 w-8 text-slate-300" />
+          </div>
+          <h3 className="text-lg font-semibold text-slate-900">Aucun résultat</h3>
+          <p className="text-slate-500">Essayez de reformuler votre recherche.</p>
+          {!!query && onClearQuery && (
+            <button
+              onClick={onClearQuery}
+              className="mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              Effacer la recherche
+            </button>
+          )}
+        </motion.div>
+      ) : (
+        <>
+          {featured && <FeaturedArticle article={featured} />}
 
-            {/* MODE "all" => sections */}
-            {selectedCluster === "all" ? (
-              <div className="space-y-14">
-                {grouped.map((section) => {
-                  // évite de re-afficher le latest dans la première section
-                  const withoutLatest = section.items.filter((a) => a.slug !== latest.slug);
+         {/* CAROUSEL */}
+<section className="relative mt-6">
+  {/* LEFT ARROW */}
+  <button
+    onClick={() => scroll("left")}
+    aria-label="Articles précédents"
+    className="group absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-1/2 hidden lg:flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-slate-200 transition-all hover:scale-105 active:scale-95"
+  >
+    <ArrowLeft className="h-6 w-6 text-slate-400 transition-colors group-hover:text-indigo-600 group-active:text-indigo-700" />
+    <span className="absolute inset-0 rounded-full ring-0 group-active:ring-4 ring-indigo-500/20 transition" />
+  </button>
 
-                  return (
-                    <section key={section.id}>
-                      <div className="flex items-center justify-between gap-4 mb-5">
-                        <div>
-                          <h2 className="text-xl sm:text-2xl font-semibold text-slate-900">
-                            {section.label}
-                          </h2>
-                          <p className="text-slate-600 text-sm mt-1">
-                            {section.items.length} article{section.items.length > 1 ? "s" : ""}
-                          </p>
-                        </div>
+  {/* RIGHT ARROW */}
+  <button
+    onClick={() => scroll("right")}
+    aria-label="Articles suivants"
+    className="group absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-1/2 hidden lg:flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-slate-200 transition-all hover:scale-105 active:scale-95"
+  >
+    <ArrowRight className="h-6 w-6 text-slate-400 transition-colors group-hover:text-indigo-600 group-active:text-indigo-700" />
+    <span className="absolute inset-0 rounded-full ring-0 group-active:ring-4 ring-indigo-500/20 transition" />
+  </button>
 
-                        <button
-                          onClick={() => onSelectCluster(section.id)}
-                          className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
-                        >
-                          Voir tout →
-                        </button>
-                      </div>
+  {/* TRACK */}
+  <div
+    ref={carouselRef}
+    className="flex gap-6 overflow-x-hidden scroll-smooth px-2"
+  >
+    {rest.map((a) => (
+      <div
+        key={a.slug}
+        className="min-w-[85%] sm:min-w-[48%] lg:min-w-[32%]"
+      >
+        <ArticleCard article={a} />
+      </div>
+    ))}
+  </div>
+</section>
 
-                      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {withoutLatest.slice(0, 6).map((a) => (
-                          <ArticleCard key={a.slug} article={a} />
-                        ))}
-                      </div>
-                    </section>
-                  );
-                })}
-              </div>
-            ) : (
-              // MODE catégorie
-              <div>
-                <div className="mb-8">
-                  <h2 className="text-2xl sm:text-3xl font-semibold text-slate-900">
-                    {clusters.find((c) => c.id === selectedCluster)?.label ?? "Catégorie"}
-                  </h2>
-                  <p className="text-slate-600 mt-2">
-                    {articles.length} article{articles.length > 1 ? "s" : ""}
-                  </p>
-                </div>
-
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {articles
-                    .filter((a) => a.slug !== latest.slug)
-                    .map((a) => (
-                      <ArticleCard key={a.slug} article={a} />
-                    ))}
-                </div>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </main>
+        </>
+      )}
+    </AnimatePresence>
   );
 }
