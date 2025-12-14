@@ -17,7 +17,6 @@ function normalizeId(raw: string) {
 function toDisplayLabel(raw: string) {
   const s = (raw || "").trim();
   if (!s) return "Autres";
-
   const map: Record<string, string> = {
     ai: "IA & Tech",
     ia: "IA & Tech",
@@ -26,7 +25,6 @@ function toDisplayLabel(raw: string) {
     business: "Business",
     growth: "Growth",
   };
-
   const key = s.toLowerCase();
   return map[key] ?? s.charAt(0).toUpperCase() + s.slice(1);
 }
@@ -70,7 +68,7 @@ export default function ArticlesIndex({
   }
   const clusters = Array.from(map.values()).sort((a, b) => b.count - a.count);
 
-  // filter
+  // ✅ FILTERS (c’est ça qui fait changer la liste)
   let filtered = enriched;
 
   if (q) {
@@ -84,7 +82,9 @@ export default function ArticlesIndex({
     });
   }
 
-  if (c !== "all") filtered = filtered.filter((a) => a._clusterId === c);
+  if (c !== "all") {
+    filtered = filtered.filter((a) => a._clusterId === c);
+  }
 
   const showClusterBar = !q;
   const showLatest = !q && c === "all";
@@ -93,7 +93,9 @@ export default function ArticlesIndex({
     <div className="min-h-screen bg-white">
       <ArticlesHero query={q} selectedCluster={c} />
 
-      {showClusterBar && <ClusterBar clusters={clusters} selected={c} query={q} />}
+      {showClusterBar && (
+        <ClusterBar clusters={clusters} selected={c} query={q} />
+      )}
 
       <main className="mx-auto max-w-7xl px-6 lg:px-8 py-12">
         <ArticlesGrid
