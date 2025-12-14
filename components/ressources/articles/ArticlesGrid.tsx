@@ -2,15 +2,8 @@
 
 import React, { useMemo, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "motion/react";
 import { ArrowLeft, ArrowRight, Clock, Search } from "lucide-react";
-import { Geist } from "next/font/google";
 import type { Article } from "@/lib/articles";
-
-const geist = Geist({
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-});
 
 export type EnrichedArticle = Article & {
   _clusterId: string;
@@ -27,18 +20,11 @@ function formatDateFr(value: string) {
   }).format(d);
 }
 
-/* ----------------------------------------
-   FEATURED (Latest) — fine, no badge, Geist title, CTA right
----------------------------------------- */
 function FeaturedArticle({ article }: { article: EnrichedArticle }) {
   const fm = article.frontmatter as any;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="mb-10"
-    >
+    <div className="mb-10">
       <Link
         href={`/articles/${article.slug}`}
         className="group block relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-xl transition-transform hover:scale-[1.005] duration-500"
@@ -49,12 +35,7 @@ function FeaturedArticle({ article }: { article: EnrichedArticle }) {
         <div className="relative z-10 px-8 py-10 md:px-10 md:py-12 lg:px-12 lg:py-14">
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
             <div className="min-w-0">
-              <h2
-                className={[
-                  geist.className,
-                  "text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]",
-                ].join(" ")}
-              >
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]">
                 {fm.title}
               </h2>
 
@@ -65,9 +46,7 @@ function FeaturedArticle({ article }: { article: EnrichedArticle }) {
               )}
 
               <div className="mt-8 flex items-center gap-4 text-sm font-medium text-slate-400">
-                {fm.date && (
-                  <span className="text-white/90">{formatDateFr(fm.date)}</span>
-                )}
+                {fm.date && <span className="text-white/90">{formatDateFr(fm.date)}</span>}
                 {fm.readingTime && <span>• {fm.readingTime}</span>}
               </div>
             </div>
@@ -80,13 +59,10 @@ function FeaturedArticle({ article }: { article: EnrichedArticle }) {
           </div>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
-/* ----------------------------------------
-   CARD — clean + scan-friendly (1 line desc)
----------------------------------------- */
 function ArticleCard({ article }: { article: EnrichedArticle }) {
   const fm = article.frontmatter as any;
 
@@ -100,17 +76,10 @@ function ArticleCard({ article }: { article: EnrichedArticle }) {
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
             {article._clusterLabel}
           </span>
-          {fm.date && (
-            <span className="text-xs text-slate-400">{formatDateFr(fm.date)}</span>
-          )}
+          {fm.date && <span className="text-xs text-slate-400">{formatDateFr(fm.date)}</span>}
         </div>
 
-        <h3
-          className={[
-            geist.className,
-            "text-xl font-extrabold leading-tight text-slate-900 line-clamp-2 hover:text-indigo-600 transition-colors",
-          ].join(" ")}
-        >
+        <h3 className="text-xl font-extrabold leading-tight text-slate-900 line-clamp-2 hover:text-indigo-600 transition-colors">
           {fm.title}
         </h3>
 
@@ -130,29 +99,23 @@ function ArticleCard({ article }: { article: EnrichedArticle }) {
             <span>Lire</span>
           )}
 
-          <ArrowRight className="ml-auto h-4 w-4 text-slate-300" />
+          <ArrowRight className="ml-auto h-4 h-4 text-slate-300" />
         </div>
       </div>
     </Link>
   );
 }
 
-/* ----------------------------------------
-   MAIN — Featured + simple carousel (3 visible desktop)
----------------------------------------- */
-type Props = {
-  articles: EnrichedArticle[];
-  showLatest?: boolean;
-  query?: string;
-  onClearQuery?: () => void;
-};
-
 export default function ArticlesGrid({
   articles,
   showLatest = false,
-  query = "",
-  onClearQuery,
-}: Props) {
+  query,
+}: {
+  articles: EnrichedArticle[];
+  showLatest?: boolean;
+  query: string;
+  selectedCluster: string; // gardé pour compat (pas utilisé)
+}) {
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const { featured, rest } = useMemo(() => {
@@ -170,72 +133,54 @@ export default function ArticlesGrid({
     });
   };
 
-  return (
-    <AnimatePresence mode="popLayout">
-      {articles.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex flex-col items-center justify-center py-24 text-center"
-        >
-          <div className="rounded-full bg-slate-50 p-4 mb-4">
-            <Search className="h-8 w-8 text-slate-300" />
-          </div>
-          <h3 className="text-lg font-semibold text-slate-900">Aucun résultat</h3>
-          <p className="text-slate-500">Essayez de reformuler votre recherche.</p>
-          {!!query && onClearQuery && (
-            <button
-              onClick={onClearQuery}
-              className="mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Effacer la recherche
-            </button>
-          )}
-        </motion.div>
-      ) : (
-        <>
-          {featured && <FeaturedArticle article={featured} />}
-
-         {/* CAROUSEL */}
-<section className="relative mt-6">
-  {/* LEFT ARROW */}
-  <button
-    onClick={() => scroll("left")}
-    aria-label="Articles précédents"
-    className="group absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-1/2 hidden lg:flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-slate-200 transition-all hover:scale-105 active:scale-95"
-  >
-    <ArrowLeft className="h-6 w-6 text-slate-400 transition-colors group-hover:text-indigo-600 group-active:text-indigo-700" />
-    <span className="absolute inset-0 rounded-full ring-0 group-active:ring-4 ring-indigo-500/20 transition" />
-  </button>
-
-  {/* RIGHT ARROW */}
-  <button
-    onClick={() => scroll("right")}
-    aria-label="Articles suivants"
-    className="group absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-1/2 hidden lg:flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-slate-200 transition-all hover:scale-105 active:scale-95"
-  >
-    <ArrowRight className="h-6 w-6 text-slate-400 transition-colors group-hover:text-indigo-600 group-active:text-indigo-700" />
-    <span className="absolute inset-0 rounded-full ring-0 group-active:ring-4 ring-indigo-500/20 transition" />
-  </button>
-
-  {/* TRACK */}
-  <div
-    ref={carouselRef}
-    className="flex gap-6 overflow-x-hidden scroll-smooth px-2"
-  >
-    {rest.map((a) => (
-      <div
-        key={a.slug}
-        className="min-w-[85%] sm:min-w-[48%] lg:min-w-[32%]"
-      >
-        <ArticleCard article={a} />
+  if (articles.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 text-center">
+        <div className="rounded-full bg-slate-50 p-4 mb-4">
+          <Search className="h-8 w-8 text-slate-300" />
+        </div>
+        <h3 className="text-lg font-semibold text-slate-900">Aucun résultat</h3>
+        <p className="text-slate-500">Essayez de reformuler votre recherche.</p>
+        {!!query && (
+          <a href="/articles" className="mt-4 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+            Revenir à la liste
+          </a>
+        )}
       </div>
-    ))}
-  </div>
-</section>
+    );
+  }
 
-        </>
-      )}
-    </AnimatePresence>
+  return (
+    <>
+      {featured && <FeaturedArticle article={featured} />}
+
+      <section className="relative mt-6">
+        <button
+          onClick={() => scroll("left")}
+          aria-label="Articles précédents"
+          className="group absolute left-0 top-1/2 z-10 -translate-y-1/2 -translate-x-1/2 hidden lg:flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-slate-200 transition-all hover:scale-105 active:scale-95"
+        >
+          <ArrowLeft className="h-6 w-6 text-slate-400 transition-colors group-hover:text-indigo-600 group-active:text-indigo-700" />
+          <span className="absolute inset-0 rounded-full ring-0 group-active:ring-4 ring-indigo-500/20 transition" />
+        </button>
+
+        <button
+          onClick={() => scroll("right")}
+          aria-label="Articles suivants"
+          className="group absolute right-0 top-1/2 z-10 -translate-y-1/2 translate-x-1/2 hidden lg:flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-slate-200 transition-all hover:scale-105 active:scale-95"
+        >
+          <ArrowRight className="h-6 w-6 text-slate-400 transition-colors group-hover:text-indigo-600 group-active:text-indigo-700" />
+          <span className="absolute inset-0 rounded-full ring-0 group-active:ring-4 ring-indigo-500/20 transition" />
+        </button>
+
+        <div ref={carouselRef} className="flex gap-6 overflow-x-hidden scroll-smooth px-2">
+          {rest.map((a) => (
+            <div key={a.slug} className="min-w-[85%] sm:min-w-[48%] lg:min-w-[32%]">
+              <ArticleCard article={a} />
+            </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
