@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { AuthSection } from "@/components/AuthSection";
 
-type MenuId = "solutions" | "ressources" | null;
+// "solutions" a été retiré du type
+type MenuId = "ressources" | null;
 
 const CLOSE_DELAY_MS = 220;
 
@@ -58,122 +59,15 @@ export default function Header() {
 
           {/* Navigation (desktop) */}
           <nav className="hidden items-center gap-6 text-xs font-medium text-slate-600 md:flex">
-            {/* SOLUTIONS */}
-            <div className="relative inline-flex">
-              {/* IMPORTANT: ouverture seulement sur le bouton */}
-              <button
-                type="button"
-                onMouseEnter={() => open("solutions")}
-                onMouseLeave={() => scheduleClose("solutions")}
-                aria-expanded={openMenu === "solutions"}
-                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 transition-colors hover:text-slate-900"
-              >
-                Solutions <span className="text-[9px]">▾</span>
-              </button>
-
-              {/* Panneau: garde ouvert tant que la souris est dedans */}
-              <div className="absolute left-0 top-full z-50 mt-2">
-                <div
-                  onMouseEnter={clearCloseTimer}
-                  onMouseLeave={() => scheduleClose("solutions")}
-                  className={[
-                    "relative w-[320px] rounded-xl border border-slate-200/80 bg-white/95 p-4 text-xs shadow-lg",
-                    "transition-all duration-150",
-                    openMenu === "solutions"
-                      ? "opacity-100 translate-y-0 pointer-events-auto"
-                      : "opacity-0 translate-y-1 pointer-events-none",
-                  ].join(" ")}
-                >
-                  {/* bridge invisible anti-trou */}
-                  <div className="absolute -top-2 left-0 h-2 w-full" />
-
-                  <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                    Types de SaaS
-                  </div>
-
-                  <div className="mb-3 flex flex-col gap-1">
-                    <Link
-                      href="/solutions/saas-ia"
-                      onClick={forceClose}
-                      className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                    >
-                      SaaS IA
-                    </Link>
-                    <Link
-                      href="/solutions/automation"
-                      onClick={forceClose}
-                      className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                    >
-                      SaaS d&apos;automation
-                    </Link>
-                    <Link
-                      href="/solutions/seo"
-                      onClick={forceClose}
-                      className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                    >
-                      SaaS SEO
-                    </Link>
-                    <Link
-                      href="/solutions/marketing"
-                      onClick={forceClose}
-                      className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                    >
-                      SaaS marketing
-                    </Link>
-                    <Link
-                      href="/solutions/marketplaces"
-                      onClick={forceClose}
-                      className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                    >
-                      Plateformes &amp; marketplaces
-                    </Link>
-                    <Link
-                      href="/solutions"
-                      onClick={forceClose}
-                      className="mt-1 rounded-md px-2 py-1.5 text-[11px] font-semibold text-indigo-600 hover:bg-indigo-50"
-                    >
-                      Voir toutes les solutions
-                    </Link>
-                  </div>
-
-                  <div className="mt-2 border-t border-slate-100 pt-3">
-                    <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-400">
-                      Pour qui ?
-                    </div>
-                    <div className="flex flex-col gap-1">
-                      <Link
-                        href="/personas/createurs"
-                        onClick={forceClose}
-                        className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        Pour créateurs
-                      </Link>
-                      <Link
-                        href="/personas/freelances"
-                        onClick={forceClose}
-                        className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        Pour freelances
-                      </Link>
-                      <Link
-                        href="/personas/entreprises"
-                        onClick={forceClose}
-                        className="rounded-md px-2 py-1.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                      >
-                        Pour entreprises
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
+            {/* --- SOLUTIONS SUPPRIMÉ --- */}
 
             <Link
-              href="/templates"
+              href="/marketplace"
               onClick={forceClose}
               className="transition-colors hover:text-slate-900"
             >
-              Templates SaaS
+              Marketplace
             </Link>
 
             <Link
