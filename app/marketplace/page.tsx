@@ -18,8 +18,6 @@ type ClientListing = {
 
 function pickCategory(niche: string): Category {
   const lower = (niche || "").toLowerCase();
-
-  // Tu peux affiner ces règles quand tu veux
   if (lower.includes("template") || lower.includes("boilerplate") || lower.includes("starter")) {
     return "Templates";
   }
@@ -38,7 +36,7 @@ function toClientListing(l: Listing): ClientListing {
 
   const image = l.image || "";
   const stack = Array.isArray(l.stack_guess) ? l.stack_guess : [];
-  const tags = Array.isArray(l.mvp_features) ? l.mvp_features.slice(0, 6) : [];
+  const tags = Array.isArray(l.mvp_features) ? l.mvp_features.slice(0, 8) : [];
   const niche = l.niche_category || "Unknown";
 
   return {
@@ -72,5 +70,18 @@ export default function MarketplacePage() {
 
   if (sorted.length > 0) sorted[0].featured = true;
 
-  return <MarketplaceClient listings={sorted} />;
+  // (optionnel) metrics pour le header
+  const niches = new Set(sorted.map((x) => (x.niche_category || "").trim()).filter(Boolean));
+  const stacks = new Set(sorted.flatMap((x) => x.stack).map((s) => s.trim()).filter(Boolean));
+
+  return (
+    <MarketplaceClient
+      listings={sorted}
+      metrics={{
+        total: sorted.length,
+        niches: niches.size,
+        stacks: stacks.size,
+      }}
+    />
+  );
 }

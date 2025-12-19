@@ -7,40 +7,31 @@ export function PricingReassurance() {
         Comment ça se passe concrètement ?
       </h2>
 
-      <div className="mt-5 grid gap-5 md:grid-cols-3">
+      <div className="mt-6 grid gap-5 md:grid-cols-3">
         <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-          <p className="text-sm font-semibold text-white">
-            1. On choisit le bon template
-          </p>
+          <p className="text-sm font-semibold text-white">1. Cadrage rapide</p>
           <p className="mt-2 text-sm leading-relaxed text-white/65">
-            Tu expliques ton idée, on te propose le type de SaaS le plus adapté
-            (automation, IA, SEO, etc.).
+            Tu expliques ton idée. On valide le scope du MVP (ce qui compte vraiment).
           </p>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-          <p className="text-sm font-semibold text-white">
-            2. On personnalise ton produit
-          </p>
+          <p className="text-sm font-semibold text-white">2. Build propre</p>
           <p className="mt-2 text-sm leading-relaxed text-white/65">
-            Branding, wording, pages marketing, intégrations : on ajuste pour
-            que ce soit vraiment ton SaaS.
+            Code clean, UI pro, auth/paiement si besoin. Tu gardes le contrôle.
           </p>
         </div>
 
         <div className="rounded-2xl border border-white/10 bg-black/20 p-5">
-          <p className="text-sm font-semibold text-white">3. Tu peux vendre</p>
+          <p className="text-sm font-semibold text-white">3. Mise en ligne</p>
           <p className="mt-2 text-sm leading-relaxed text-white/65">
-            Livraison + docs + support de mise en ligne. Tu gardes le code, tu
-            gardes le contrôle.
+            Livraison + docs. Si maintenance : sécurité & support léger dans la durée.
           </p>
         </div>
       </div>
 
-      <div className="mt-6 flex flex-col items-center justify-between gap-3 sm:flex-row">
-        <p className="text-sm text-white/60">
-          Pas d’engagement caché. Tu repars avec le code source.
-        </p>
+      <div className="mt-7 flex flex-col items-center justify-between gap-3 sm:flex-row">
+        <p className="text-sm text-white/60">Pas d’engagement caché. Tu repars avec le code source.</p>
 
         <Link
           href="/contact"
