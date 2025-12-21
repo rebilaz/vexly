@@ -22,7 +22,7 @@ keywords: ["tester idée saas", "valider idée saas", "tester saas sans coder", 
 ---
 # Tester ton idée de SaaS sans coder : méthode landing + fake door + prototype qui évite les faux positifs
 
-Tu as une idée de SaaS… mais tu refuses d’apprendre à coder, tu ne veux pas brûler 10 000 € en dev, et tu veux savoir **s’il y a une vraie demande payante** avant de te lancer.
+Tu [as une idée de SaaS… mais tu refuses](/articles/7-erreurs-validation-d-ide-2025-12-13){:data-il="auto"} d’apprendre à coder, tu ne veux pas brûler 10 000 € en dev, et tu veux savoir **s’il y a une vraie demande payante** avant de te lancer.
 
 Bonne nouvelle : tu peux **tester ton idée de SaaS sans coder**, en moins de 7 jours, avec trois tests complémentaires :
 
