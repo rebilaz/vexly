@@ -267,7 +267,7 @@ Un bon prestataire va challenger ces points avec vous, pas juste exécuter aveug
 
 ## Conclusion : Checklist express + prochaine étape
 
-Pour savoir si votre idée de SaaS no-code peut devenir un business rentable, vérifiez :
+Pour savoir si votre idée de SaaS [no-code peut devenir un business rentable, vérifiez :](/articles/comment-lancer-mvp-saas-rentable-2025-12-18)<!--il:auto-->
 
 1. **Marché** : niche claire, demande réelle, cible solvable.
 2. **Économie** : potentiel d’ARPU > 200 €/mois, churn potentiel faible.
