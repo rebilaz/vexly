@@ -25,7 +25,7 @@ keywords: ["exemple mvp saas", "mvp saas sans coder", "mvp figma", "prototype fi
 Lancer un SaaS sans écrire une ligne de code, en partant d’une simple maquette Figma… et obtenir une **première vente** avant même le développement.
 
 C’est exactement ce que j’ai fait avec un de mes premiers projets de SaaS “prêt-à-vendre”.  
-Dans cet article, je te montre **l’exemple concret d’un MVP réussi** : du scope minimal à la première vente, en passant par le prototype et les itérations.
+Dans cet article, je te montre **[l’exemple concr](/articles/exemple-concret-valider-ide-e-2025-12-20)<!--il:auto-->et d’un MVP réussi** : du scope minimal à la première vente, en passant par le prototype et les itérations.
 
 Pas de jargon inutile. Juste un processus que tu peux adapter à ton idée.
 

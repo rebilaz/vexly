@@ -121,7 +121,7 @@ Un freelance en gestion de projet a lancé un SaaS simple :
 - 3/ factures + PDF.
 
 Pas de mobile app, pas de reporting avancé, pas de 10 intégrations.  
-Résultat : **MVP prêt en 3 semaines**, premiers abonnements vendus à son audience existante.
+Résultat : **MVP prêt en 3 semaines**, premi[ers abonnements vendus à son audience exista](/articles/6-crite-res-savoir-si-2025-12-12)<!--il:auto-->nte.
 
 Ton objectif :  
 > “Quelle est la plus petite combinaison de fonctionnalités qui rend ma promesse vraie… et vendable ?”

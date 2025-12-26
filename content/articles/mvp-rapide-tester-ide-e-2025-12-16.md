@@ -164,7 +164,7 @@ Vous testez le **désir** de l’utilisateur pour votre solution, pas sa décisi
 ### Mise en place rapide
 
 En 1–2 jours, un prestataire peut :
-- créer une **landing page claire** (no-code),
+- [créer une **landing page clai](/articles/pre-vente-saas-coder-valider-2025-12-23)<!--il:auto-->re** (no-code),
 - intégrer **un bouton d’action**,
 - connecter un **outil d’analytics** (type Google Analytics, Plausible…) pour suivre :
   - visites,

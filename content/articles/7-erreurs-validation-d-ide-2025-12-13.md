@@ -29,7 +29,7 @@ Et c’est précisément là que :
 - les budgets explosent,
 - et les bons développeurs… **disparaissent** (ou refusent le projet).
 
-Dans cet article, on va voir **7 erreurs de validation** qui font fuir les devs pros (et ruinent ton futur SaaS) — avec, pour chaque erreur, **comment faire mieux** pour arriver devant ton prestataire avec un projet solide, crédible et prêt à être construit.
+Dans cet article, on va [voir **7 erreurs de validation** qui font ](/articles/tester-ton-ide-e-saas-2025-12-19)<!--il:auto-->fuir les devs pros (et ruinent ton futur SaaS) — avec, pour chaque erreur, **comment faire mieux** pour arriver devant ton prestataire avec un projet solide, crédible et prêt à être construit.
 
 ---
 

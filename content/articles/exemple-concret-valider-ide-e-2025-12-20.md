@@ -237,7 +237,7 @@ Dans l’exemple PropTech, le **pivot** a été net :
 
 ## Conclusion – Valider votre SaaS par interviews avant de le faire développer
 
-Valider votre idée de SaaS **par interviews utilisateurs** n’a rien de théorique.  
+[Valider votre idée de SaaS **par interviews utilisateu](/articles/exemple-mvp-re-ussi-comment-2025-12-13)<!--il:auto-->rs** n’a rien de théorique.  
 En **10 à 12 interviews bien ciblées**, vous pouvez :
 
 - transformer vos **hypothèses** en **preuves de demande**,

@@ -22,7 +22,7 @@ keywords: ["prévente SaaS", "lancer une prévente", "valider idée SaaS", "outi
 ---
 # Outils pour lancer une prévente sans coder : landing, Stripe, Tally, Carrd ou Notion ?
 
-Vous avez une idée de SaaS, mais pas envie de passer 3 mois à développer un prototype qui ne se vendra peut-être jamais.
+Vous [avez une idée de SaaS, mais pas envie](/articles/cas-d-e-tude-saas-2025-12-22)<!--il:auto--> de passer 3 mois à développer un prototype qui ne se vendra peut-être jamais.
 
 Ce qu’il vous faut maintenant, ce n’est pas du code.  
 C’est une **prévente propre** : une page claire, un formulaire, un paiement Stripe, et un suivi minimal des leads.
