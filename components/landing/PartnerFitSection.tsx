@@ -1,57 +1,48 @@
 // components/landing/PartnerFitSection.tsx
+"use client";
+
 import React from "react";
 import { Check, X } from "lucide-react";
 
 type Props = {
   title?: string;
-  subtitle?: string;
-
-  leftLabel?: string;
   leftItems: string[];
-
-  rightLabel?: string;
   rightItems: string[];
 };
 
 export default function PartnerFitSection({
   title = "Alignment mutuel.",
-  subtitle = "Nous ne sommes pas une agence pour tous. Vérifiez si notre modèle correspond à votre phase.",
-  leftLabel = "PROFIL PARTENAIRE",
   leftItems,
-  rightLabel = "INCOMPATIBLE",
   rightItems,
 }: Props) {
   return (
     <section className="mx-auto max-w-5xl">
-      {/* Header */}
-      <div className="space-y-3">
-        <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+      {/* Title */}
+      <div className="flex justify-center">
+        <h2 className="text-center text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
           {title}
         </h2>
-        <p className="max-w-2xl text-sm leading-relaxed text-slate-600 sm:text-base">
-          {subtitle}
-        </p>
       </div>
 
       {/* Divider */}
-      <div className="mt-8 h-px w-full bg-slate-200" />
+      <div className="mt-12 h-px w-full bg-slate-200" />
 
-      {/* Two columns */}
-      <div className="mt-10 grid gap-10 sm:grid-cols-2">
-        {/* Left */}
-        <div className="space-y-5">
-          <div className="flex items-center gap-2 text-[12px] font-semibold tracking-[0.14em] text-slate-900">
-            <span className="inline-block size-1.5 rounded-full bg-emerald-500" />
-            {leftLabel}
+      {/* Columns */}
+      <div className="mt-16 grid gap-20 sm:grid-cols-2">
+        {/* Compatible */}
+        <div className="space-y-8">
+          <div className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+            Profil adapté
           </div>
 
-          <ul className="space-y-4">
+          <ul className="space-y-6">
             {leftItems.map((txt) => (
-              <li key={txt} className="flex items-start gap-3">
-                <span className="mt-0.5 inline-flex size-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                  <Check className="size-4" />
+              <li key={txt} className="flex items-start gap-4">
+                <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-emerald-200 text-emerald-600">
+                  <Check className="h-3.5 w-3.5" />
                 </span>
-                <p className="text-sm font-medium leading-relaxed text-slate-900 sm:text-[15px]">
+
+                <p className="text-[15px] leading-relaxed text-slate-900">
                   {txt}
                 </p>
               </li>
@@ -59,20 +50,20 @@ export default function PartnerFitSection({
           </ul>
         </div>
 
-        {/* Right */}
-        <div className="space-y-5">
-          <div className="flex items-center gap-2 text-[12px] font-semibold tracking-[0.14em] text-slate-400">
-            <span className="inline-block size-1.5 rounded-full bg-slate-200" />
-            {rightLabel}
+        {/* Incompatible */}
+        <div className="space-y-8">
+          <div className="text-xs font-semibold tracking-[0.2em] text-slate-300 uppercase">
+            Non adapté
           </div>
 
-          <ul className="space-y-4">
+          <ul className="space-y-6">
             {rightItems.map((txt) => (
-              <li key={txt} className="flex items-start gap-3 opacity-85">
-                <span className="mt-0.5 inline-flex size-6 items-center justify-center rounded-full bg-slate-100 text-slate-400">
-                  <X className="size-4" />
+              <li key={txt} className="flex items-start gap-4">
+                <span className="mt-1 inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 text-slate-400">
+                  <X className="h-3.5 w-3.5" />
                 </span>
-                <p className="text-sm font-medium leading-relaxed text-slate-400 sm:text-[15px]">
+
+                <p className="text-[15px] leading-relaxed text-slate-400">
                   {txt}
                 </p>
               </li>
