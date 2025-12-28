@@ -1,109 +1,101 @@
-// components/landing/HeroSection.tsx
+"use client";
+
 import React from "react";
-import { ArrowRight, Rocket, Zap, Check } from "lucide-react";
+import SaasPreview from "./SaasPreview";
 
 type HeroSectionProps = {
-  niche: string;
-  heroTitle: string;
-  heroSubtitle: string;
+  eyebrow: string;
+  titleLine1: string;
+  titleHighlight: string;
   primaryCtaLabel: string;
+  secondaryCtaLabel?: string;
 };
 
-const Badge = ({ label }: { label: string }) => (
-  <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-700">
-    <Zap className="size-4" />
-    {label}
-  </div>
-);
-
-const TrustIndicator = ({ label }: { label: string }) => (
-  <div className="flex items-center gap-2">
-    <div className="flex size-5 items-center justify-center rounded-full bg-green-500">
-      <Check className="size-3 text-white" />
-    </div>
-    <span className="text-sm font-medium text-slate-700">{label}</span>
-  </div>
-);
-
-const StepItem = ({ step, text, time }: { step: string; text: string; time: string }) => (
-  <div className="flex items-start gap-4">
-    <div className="flex size-8 flex-shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-sm font-bold text-slate-800">
-      {step}
-    </div>
-    <div>
-      <p className="text-sm font-medium text-slate-800">{text}</p>
-      <span className="mt-1 inline-block rounded bg-indigo-50 px-2 py-0.5 text-[11px] font-medium text-indigo-600">
-        {time}
-      </span>
-    </div>
-  </div>
-);
-
 export default function HeroSection({
-  niche,
-  heroTitle,
-  heroSubtitle,
+  eyebrow,
+  titleLine1,
+  titleHighlight,
   primaryCtaLabel,
+  secondaryCtaLabel,
 }: HeroSectionProps) {
   return (
-    <section className="grid gap-10 lg:grid-cols-[1.3fr,1fr] lg:gap-16">
-      {/* Colonne gauche */}
-      <div className="space-y-8">
-        <Badge label="Développement rapide" />
+    <section className="w-full">
 
-        <h1 className="text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-          {heroTitle}
-        </h1>
+      <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-20">
+        <div className="grid items-center gap-12 lg:gap-16 lg:grid-cols-2">
+          {/* LEFT */}
+          <div className="relative z-10">
+            {/* Eyebrow */}
+            <p className="mb-6 text-sm font-medium text-slate-500">{eyebrow}</p>
 
-        <p className="max-w-xl text-lg leading-relaxed text-slate-600 sm:text-xl">
-          {heroSubtitle}
-        </p>
+            {/* Title */}
+            <h1 className="leading-[1.05] tracking-tight font-bold">
+              <span className="block text-5xl sm:text-6xl lg:text-7xl text-slate-900">
+                {titleLine1}
+              </span>
 
-        <div className="flex flex-wrap items-center gap-4">
-          {/* CTA sans JS : ancre + smooth scroll via CSS */}
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/40 transition hover:scale-[1.03] active:scale-[0.97]"
-          >
-            {primaryCtaLabel}
-            <ArrowRight className="size-4" />
-          </a>
+              <span className="block text-6xl sm:text-7xl lg:text-8xl bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
+                {titleHighlight}
+              </span>
+            </h1>
 
-          <a
-            href="#process"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-700 transition hover:text-indigo-600"
-          >
-            Voir le process
-            <ArrowRight className="size-4" />
-          </a>
-        </div>
+            {/* CTA */}
+            <div className="mt-10 flex flex-wrap items-center gap-6">
+              <a
+                href="#contact"
+                className="inline-flex items-center rounded-xl bg-slate-900 px-7 py-4 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.03] active:scale-[0.98]"
+              >
+                {primaryCtaLabel}
+              </a>
 
-        <div className="flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-slate-200 pt-6 text-sm">
-          <TrustIndicator label="Code livré" />
-          <TrustIndicator label="Livraison garantie" />
-          <TrustIndicator label="Support inclus" />
-        </div>
-      </div>
-
-      {/* Colonne droite : carte process */}
-      <div
-        id="process"
-        className="sticky top-24 rounded-3xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5"
-      >
-        <div className="mb-6 flex items-center gap-3">
-          <div className="flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/40">
-            <Rocket className="size-6" />
+              {secondaryCtaLabel && (
+                <a
+                  href="#model"
+                  className="text-sm font-medium text-slate-600 hover:text-slate-900 transition"
+                >
+                  {secondaryCtaLabel}
+                </a>
+              )}
+            </div>
           </div>
-          <h3 className="text-base font-semibold text-slate-900">
-            Comment ça se passe ?
-          </h3>
-        </div>
 
-        <div className="space-y-6 text-sm">
-          <StepItem step="1" text="Appel rapide pour comprendre ton idée" time="30 min" />
-          <StepItem step="2" text="Maquette + scope clair" time="2–3 jours" />
-          <StepItem step="3" text="Développement avec retours réguliers" time="2–4 semaines" />
-          <StepItem step="4" text="Livraison, déploiement et support" time="Inclus" />
+          {/* RIGHT (SaaS preview — overflow 1/4 + cropped height, NO SCALE) */}
+          <div className="relative z-0 lg:justify-self-end">
+            <div className="relative mx-auto w-full max-w-[620px] lg:max-w-[720px]">
+              {/* Glow */}
+              <div className="pointer-events-none absolute -inset-12 rounded-[40px] bg-gradient-to-tr from-indigo-300/25 via-sky-200/15 to-violet-300/20 blur-2xl" />
+
+              {/* Tilt wrapper */}
+              <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
+               <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
+  <div
+    className="
+      relative
+      w-[820px] max-w-none
+      h-[440px] lg:h-[480px]
+      -mr-[220px] lg:-mr-[260px]
+      rounded-[28px]
+      overflow-hidden
+      border border-slate-200
+      bg-white
+      shadow-2xl
+    "
+  >
+    <div className="relative -translate-y-[46px] lg:-translate-y-[60px]">
+      <SaasPreview />
+    </div>
+  </div>
+</div>
+
+
+                {/* Ombre douce côté débordement (optionnel) */}
+                <div className="pointer-events-none absolute right-[-220px] top-[60px] h-[420px] w-[220px] rounded-[28px] bg-slate-900/5 blur-2xl" />
+              </div>
+
+              {/* Shine subtil */}
+              <div className="pointer-events-none absolute left-10 top-8 h-20 w-56 rotate-[-12deg] rounded-full bg-white/45 blur-xl" />
+            </div>
+          </div>
         </div>
       </div>
     </section>

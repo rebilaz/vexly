@@ -3,56 +3,57 @@ import type { Metadata } from "next";
 import LandingLayout, { LandingSection } from "@/components/landing/LandingLayout";
 
 export const metadata: Metadata = {
-  title: "Vexly – Systèmes, automatisations et dashboards pour ton business",
+  title: "Vexly – Création de SaaS sur mesure (pensés pour être rentables)",
   description:
-    "Je connecte tes outils, j’automatise tes process et je crée des dashboards pour que tu pilotes ton activité sans te perdre dans la technique.",
-  alternates: {
-    canonical: "/", // ✅ au lieu de "https://www.vexly.fr/"
-  },
+    "Je transforme ton idée en SaaS sur mesure avec une logique business claire dès le départ. Tu repars avec un MVP crédible, déployé, et prêt à acquérir tes premiers clients.",
+  alternates: { canonical: "/" },
 };
 
-// 👉 Contenu des blocs de texte du LandingLayout
 const sections: LandingSection[] = [
   {
-    id: "systems",
-    title: "Des systèmes qui travaillent pour toi",
-    text: `Je connecte tes outils (CRM, facturation, email, formulaires…) pour que l’info circule automatiquement, sans copier-coller ni perte de données.`,
+    id: "for-who",
+    title: "Pour qui c’est fait (et pour qui ça ne l’est pas)",
+    text: `✅ Si tu as déjà un problème clair + une cible claire (freelances, PME, créateurs, ecom…)
+✅ Si tu veux un produit simple, vendable, et itératif
+
+❌ Si tu veux “un SaaS comme X” sans angle / distribution
+❌ Si tu cherches une promesse de revenus rapides`,
     bullets: [
-      "Intégrations entre tes outils existants (Notion, HubSpot, Airtable, etc.)",
-      "Automatisations pour les tâches répétitives (onboarding, relances, reporting…)",
-      "Moins d’ops manuels, plus de temps sur le cœur de ton activité",
+      "On part d’un cas d’usage concret, pas d’un pitch vague",
+      "On vise un MVP vendable (pas une démo)",
+      "On priorise ce qui déclenche l’achat",
     ],
   },
   {
-    id: "dashboards",
-    title: "Des dashboards clairs pour piloter ton business",
-    text: `Fini les fichiers Excel impossibles à maintenir : tu as une vue simple et à jour de ce qui compte vraiment pour ton activité.`,
+    id: "systems",
+    title: "Un SaaS = un actif (pas juste du code)",
+    text: `L’objectif : construire une machine simple qui peut générer du revenu. Pas un projet “tech” qui reste dans un tiroir.`,
     bullets: [
-      "Vue consolidée de tes chiffres clés (CA, MRR, leads, conversions…)",
-      "Dashboards pensés pour toi, pas pour les développeurs",
-      "Mise à jour automatique à partir de tes outils existants",
+      "Positionnement + proposition de valeur (simple et claire)",
+      "Fonctionnalités minimales qui déclenchent le paiement",
+      "Base solide pour itérer ensuite (sans repartir de zéro)",
     ],
   },
   {
     id: "process",
-    title: "Un process simple, sans jargon technique",
-    text: `On travaille ensemble de façon concrète : tu m’expliques ton fonctionnement, je traduis ça en systèmes, automatisations et dashboards utiles.`,
+    title: "Un process simple, orienté business",
+    text: `Tu gardes le contrôle. Je t’aide à cadrer, construire et livrer un produit crédible — avec une logique de revenus cohérente.`,
     bullets: [
-      "On part de ton workflow réel, pas d’un template générique",
-      "Tu valides chaque étape avant la mise en production",
-      "Une fois livré, tu gardes le contrôle et la propriété du système",
+      "On valide la logique business AVANT de développer",
+      "Tu valides chaque étape (maquette → scope → build)",
+      "Livré + déployé + prêt à être vendu",
     ],
   },
 ];
 
 export default function LandingPage() {
   return (
-    <LandingLayout
-      niche="SaaS Builder"
-      heroTitle="Systèmes & dashboards pour piloter ton business simplement"
-      heroSubtitle="Je connecte tes outils, j’automatise tes process et je crée des dashboards pour que tu saches exactement ce qui se passe dans ton entreprise."
-      primaryCtaLabel="Parler de ton projet"
-      sections={sections}
-    />
+<LandingLayout
+  sections={sections}
+  finalTitle="Tu veux savoir si ton idée est rentable sur le papier ?"
+  finalSubtitle="On échange 30 minutes. Tu repars avec un plan clair."
+  primaryCtaLabel="Parler de ton projet"
+/>
+
   );
 }

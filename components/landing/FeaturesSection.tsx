@@ -3,86 +3,100 @@
 import React from "react";
 import { motion } from "motion/react";
 import {
-  Zap,
-  Palette,
-  Code2,
-  Globe,
-  HeadphonesIcon,
-  Award,
+  Rocket,
+  Target,
+  CreditCard,
+  Settings,
+  MonitorSmartphone,
+  Server,
+  type LucideIcon,
 } from "lucide-react";
 
-const FeaturesSection: React.FC = () => {
-  const FeatureCard: React.FC<{
-    icon: React.ComponentType<any>;
-    title: string;
-    description: string;
-  }> = ({ icon: Icon, title, description }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-      className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-    >
-      <div className="mb-4 flex size-12 items-center justify-center rounded-xl bg-slate-900 text-white shadow-md">
-        <Icon className="size-6" />
-      </div>
-      <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
-      <p className="mt-2 text-sm text-slate-600">{description}</p>
-    </motion.div>
-  );
+const ICONS = {
+  Rocket,
+  Target,
+  CreditCard,
+  Settings,
+  MonitorSmartphone,
+  Server,
+} satisfies Record<string, LucideIcon>;
 
-  const features = [
-    {
-      icon: Zap,
-      title: "Développement rapide",
-      description: "MVP fonctionnel en 2 à 4 semaines.",
-    },
-    {
-      icon: Palette,
-      title: "Design moderne",
-      description: "Interface propre, responsive et crédible.",
-    },
-    {
-      icon: Code2,
-      title: "Code propre",
-      description: "Stack moderne (Next.js, TypeScript).",
-    },
-    {
-      icon: Globe,
-      title: "Déploiement inclus",
-      description: "Mise en ligne + domaine configuré.",
-    },
-    {
-      icon: HeadphonesIcon,
-      title: "Support de démarrage",
-      description: "Je reste dispo après la mise en ligne.",
-    },
-    {
-      icon: Award,
-      title: "Tu gardes le contrôle",
-      description: "Produit livré, tu peux le faire évoluer.",
-    },
+type Item = {
+  icon: keyof typeof ICONS;
+  label: string;
+};
+
+export default function FeaturesSection() {
+  const items: Item[] = [
+    { icon: "Rocket", label: "MVP vendable" },
+    { icon: "Target", label: "Positionnement clair" },
+    { icon: "CreditCard", label: "Paiements intégrés" },
+    { icon: "Settings", label: "Back-office administrateur" },
+    { icon: "MonitorSmartphone", label: "Interface Web & Mobile" },
+    { icon: "Server", label: "Déploiement scalable" },
   ];
 
   return (
-    <section className="space-y-10">
-      <div className="mx-auto max-w-2xl text-center space-y-3">
-        <h2 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-          Tout ce qu&apos;il faut pour lancer
-        </h2>
-        <p className="text-sm sm:text-base text-slate-600">
-          Stack solide, design pro et accompagnement pour ne pas rester bloqué.
-        </p>
-      </div>
+    <section className="mx-auto max-w-6xl">
+      {/* TITRE CENTRÉ DÉGRADÉ */}
+      <h2
+        className="
+          text-center
+          font-geist
+          text-5xl
+          sm:text-6xl
+          lg:text-7xl
+          font-bold
+          tracking-tight
+          bg-gradient-to-r
+          from-indigo-600
+          via-violet-600
+          to-indigo-600
+          bg-clip-text
+          text-transparent
+        "
+      >
+        INCLUS
+      </h2>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((feature) => (
-          <FeatureCard key={feature.title} {...feature} />
-        ))}
+      {/* GRID */}
+      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => {
+          const Icon = ICONS[item.icon];
+          return (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="
+                flex
+                items-center
+                gap-5
+                rounded-3xl
+                border-2
+                border-slate-200
+                bg-white
+                px-7
+                py-8
+                shadow-sm
+                transition
+                hover:-translate-y-1
+                hover:shadow-lg
+              "
+            >
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-900">
+                <Icon className="size-6" />
+              </div>
+
+              <p className="font-geist text-lg font-semibold text-slate-900">
+                {item.label}
+              </p>
+            </motion.div>
+          );
+        })}
       </div>
     </section>
   );
-};
-
-export default FeaturesSection;
+}
