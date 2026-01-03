@@ -32,10 +32,18 @@ export default function Step01Qualification({
 
   return (
     <StepShell
-  title="Let's start with the basics."
-  progress={20}
-  next={{ ... }}
->
+      title="Let's start with the basics."
+      progress={20}
+      next={{
+        label: blocked ? "Not a fit" : "Continue",
+        disabled: blocked || !canContinue,
+        onClick: () => {
+          if (blocked || !canContinue) return;
+          onNext();
+        },
+      }}
+    >
+
 
       <div className="grid gap-8">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

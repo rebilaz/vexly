@@ -1,7 +1,4 @@
-"use client";
-
 import React from "react";
-import { motion } from "motion/react";
 import {
   Rocket,
   Target,
@@ -11,6 +8,7 @@ import {
   Server,
   type LucideIcon,
 } from "lucide-react";
+import Reveal from "./Reveal.client";
 
 const ICONS = {
   Rocket,
@@ -64,36 +62,33 @@ export default function FeaturesSection() {
         {items.map((item) => {
           const Icon = ICONS[item.icon];
           return (
-            <motion.div
-              key={item.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="
-                flex
-                items-center
-                gap-5
-                rounded-3xl
-                border-2
-                border-slate-200
-                bg-white
-                px-7
-                py-8
-                shadow-sm
-                transition
-                hover:-translate-y-1
-                hover:shadow-lg
-              "
-            >
-              <div className="flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-900">
-                <Icon className="size-6" />
-              </div>
+            <Reveal key={item.label}>
+              <div
+                className="
+                  flex
+                  items-center
+                  gap-5
+                  rounded-3xl
+                  border-2
+                  border-slate-200
+                  bg-white
+                  px-7
+                  py-8
+                  shadow-sm
+                  transition
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
+              >
+                <div className="flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-900">
+                  <Icon className="size-6" />
+                </div>
 
-              <p className="font-geist text-lg font-semibold text-slate-900">
-                {item.label}
-              </p>
-            </motion.div>
+                <p className="font-geist text-lg font-semibold text-slate-900">
+                  {item.label}
+                </p>
+              </div>
+            </Reveal>
           );
         })}
       </div>

@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import SaasPreview from "./SaasPreview";
 
@@ -67,9 +65,9 @@ export default function HeroSection({
 
               {/* Tilt wrapper */}
               <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
-               <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
-  <div
-    className="
+                <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
+                  <div
+                    className="
       relative
       w-[820px] max-w-none
       h-[440px] lg:h-[480px]
@@ -80,12 +78,12 @@ export default function HeroSection({
       bg-white
       shadow-2xl
     "
-  >
-    <div className="relative -translate-y-[46px] lg:-translate-y-[60px]">
-      <SaasPreview />
-    </div>
-  </div>
-</div>
+                  >
+                    <div className="relative -translate-y-[46px] lg:-translate-y-[60px]">
+                      <SaasPreview />
+                    </div>
+                  </div>
+                </div>
 
 
                 {/* Ombre douce côté débordement (optionnel) */}

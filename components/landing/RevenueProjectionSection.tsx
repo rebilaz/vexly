@@ -1,7 +1,5 @@
-"use client";
-
 import React from "react";
-import { motion } from "motion/react";
+import Reveal from "./Reveal.client";
 
 type Props = {
   clients: number;
@@ -17,25 +15,20 @@ export default function RevenueProjectionSection({
   ctaLabel,
 }: Props) {
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-120px" }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
-      className="mx-auto max-w-5xl text-center"
-    >
-      {/* TITRE GROS / IMPACT */}
-<h2 className="font-geist text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 text-center">
+    <Reveal className="mx-auto max-w-5xl text-center">
+      <section>
+        {/* TITRE GROS / IMPACT */}
+        <h2 className="font-geist text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 text-center">
 
-        À quoi ça peut{" "}
-        <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-          ressembler financièrement
-        </span>
-      </h2>
+          À quoi ça peut{" "}
+          <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
+            ressembler financièrement
+          </span>
+        </h2>
 
-      {/* BLOC CHIFFRES */}
-      <div
-        className="
+        {/* BLOC CHIFFRES */}
+        <div
+          className="
           mt-14 
           rounded-3xl 
           border 
@@ -45,9 +38,9 @@ export default function RevenueProjectionSection({
           py-12 
           shadow-sm
         "
-      >
-        <div
-          className="
+        >
+          <div
+            className="
             flex 
             flex-wrap 
             items-center 
@@ -61,37 +54,37 @@ export default function RevenueProjectionSection({
             font-semibold 
             text-slate-900
           "
-        >
-          <span className="text-indigo-600">{clients} clients</span>
-          <span className="text-slate-300">×</span>
-          <span className="text-indigo-600">
-            {pricePerMonth}€
-            <span className="ml-2 text-xl sm:text-2xl font-medium text-slate-400">
-              / mois
+          >
+            <span className="text-indigo-600">{clients} clients</span>
+            <span className="text-slate-300">×</span>
+            <span className="text-indigo-600">
+              {pricePerMonth}€
+              <span className="ml-2 text-xl sm:text-2xl font-medium text-slate-400">
+                / mois
+              </span>
             </span>
-          </span>
-          <span className="text-slate-300">=</span>
-          <span
-            className="
+            <span className="text-slate-300">=</span>
+            <span
+              className="
               rounded-2xl 
               bg-slate-50 
               px-6 
               py-3 
               text-slate-900
             "
-          >
-            {mrr.toLocaleString("fr-FR")}€
-            <span className="ml-2 text-lg sm:text-xl font-medium text-slate-400">
-              MRR
+            >
+              {mrr.toLocaleString("fr-FR")}€
+              <span className="ml-2 text-lg sm:text-xl font-medium text-slate-400">
+                MRR
+              </span>
             </span>
-          </span>
-        </div>
+          </div>
 
-        {/* CTA */}
-        <div className="mt-10 flex justify-center">
-          <a
-            href="#contact"
-            className="
+          {/* CTA */}
+          <div className="mt-10 flex justify-center">
+            <a
+              href="#contact"
+              className="
               inline-flex 
               items-center 
               gap-2 
@@ -108,12 +101,13 @@ export default function RevenueProjectionSection({
               hover:scale-[1.04] 
               active:scale-[0.97]
             "
-          >
-            {ctaLabel}
-            <span aria-hidden>→</span>
-          </a>
+            >
+              {ctaLabel}
+              <span aria-hidden>→</span>
+            </a>
+          </div>
         </div>
-      </div>
-    </motion.section>
+      </section>
+    </Reveal>
   );
 }

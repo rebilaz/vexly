@@ -1,19 +1,15 @@
-"use client";
-
 import React from "react";
 
 type FinalCTASectionProps = {
   title: string;
   subtitle: string;
   primaryCtaLabel: string;
-  onPrimaryCtaClick?: () => void;
 };
 
 const FinalCTASection: React.FC<FinalCTASectionProps> = ({
   title,
   subtitle,
   primaryCtaLabel,
-  onPrimaryCtaClick,
 }) => {
   return (
     <section
@@ -32,12 +28,12 @@ const FinalCTASection: React.FC<FinalCTASectionProps> = ({
         </div>
 
         <div className="flex-shrink-0">
-          <button
-            onClick={onPrimaryCtaClick}
+          <a
+            href="mailto:contact@vexly.fr"
             className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/40 transition hover:scale-[1.03] active:scale-[0.97]"
           >
             {primaryCtaLabel}
-          </button>
+          </a>
         </div>
       </div>
     </section>
