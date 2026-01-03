@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Linkedin, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -17,7 +17,6 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
       {/* ----- Contenu principal ----- */}
       <div className="mx-auto max-w-6xl px-6 pt-16 pb-12">
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
-
           {/* ----- Bloc gauche : logo + contact ----- */}
           <div className="flex flex-1 flex-col gap-5">
             <div className="flex items-center gap-2">
@@ -39,16 +38,6 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
                   <Mail size={16} /> contact@vexly.fr
                 </a>
               </li>
-              <li>
-                <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 transition hover:text-indigo-400"
-                >
-                  <Linkedin size={16} /> LinkedIn
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -60,17 +49,15 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
               </h3>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/solutions" className="hover:text-indigo-400 transition">
-                    Solutions
+                  <Link
+                    href="/marketplace"
+                    className="transition hover:text-indigo-400"
+                  >
+                    Marketplace
                   </Link>
                 </li>
                 <li>
-                  <Link href="/templates" className="hover:text-indigo-400 transition">
-                    Templates SaaS
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/tarifs" className="hover:text-indigo-400 transition">
+                  <Link href="/tarifs" className="transition hover:text-indigo-400">
                     Tarifs
                   </Link>
                 </li>
@@ -83,17 +70,18 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
               </h3>
               <ul className="space-y-3">
                 <li>
-                  <Link href="/articles" className="hover:text-indigo-400 transition">
+                  <Link
+                    href="/articles"
+                    className="transition hover:text-indigo-400"
+                  >
                     Articles
                   </Link>
                 </li>
                 <li>
-                  <Link href="/faq" className="hover:text-indigo-400 transition">
-                    FAQ
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-indigo-400 transition">
+                  <Link
+                    href="/contact"
+                    className="transition hover:text-indigo-400"
+                  >
                     Contact
                   </Link>
                 </li>
@@ -103,12 +91,10 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
 
           {/* ----- Bloc droit : newsletter ----- */}
           <div className="flex-1 max-w-sm">
-            <h3 className="mb-3 text-lg font-semibold text-white">
-              Reste informé
-            </h3>
+            <h3 className="mb-3 text-lg font-semibold text-white">Reste informé</h3>
             <p className="mb-5 text-sm text-slate-400">
-              Une fois par semaine, un email sur les SaaS clés en main, l’IA
-              & l’automatisation.
+              Une fois par semaine, un email sur les SaaS clés en main, l’IA &
+              l’automatisation.
             </p>
 
             <form
@@ -118,7 +104,7 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
               <input
                 type="email"
                 placeholder="Votre email"
-                className="flex-1 rounded-lg bg-slate-900 border border-slate-700 px-4 py-2 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 rounded-lg border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
                 type="submit"
@@ -148,10 +134,16 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
           <span>© {currentYear} VEXLY — Tous droits réservés.</span>
 
           <div className="flex gap-4">
-            <Link href="/mentions-legales" className="hover:text-indigo-400 transition">
+            <Link
+              href="/mentions-legales"
+              className="transition hover:text-indigo-400"
+            >
               Mentions légales
             </Link>
-            <Link href="/conditions-generales" className="hover:text-indigo-400 transition">
+            <Link
+              href="/conditions-generales"
+              className="transition hover:text-indigo-400"
+            >
               CGU / CGV
             </Link>
           </div>

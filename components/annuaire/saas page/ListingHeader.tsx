@@ -1,14 +1,14 @@
 import { Globe, Calendar, BadgeCheck, Star } from "lucide-react";
-import { Listing } from "@/lib/marketplace";
+import { Listing } from "@/lib/annuaire";
 
 export function ListingHeader({ listing }: { listing: Listing }) {
   const domain = listing.url?.replace(/https?:\/\//, "") || "site";
   const dateLabel =
     listing.discovered_at
       ? new Date(listing.discovered_at).toLocaleDateString("fr-FR", {
-          month: "long",
-          year: "numeric",
-        })
+        month: "long",
+        year: "numeric",
+      })
       : "récemment";
 
   return (

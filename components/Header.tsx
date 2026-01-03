@@ -59,7 +59,7 @@ export default function Header() {
 
           {/* Navigation (desktop) */}
           <nav className="hidden items-center gap-6 text-xs font-medium text-slate-600 md:flex">
-            
+
             {/* --- SOLUTIONS SUPPRIMÉ --- */}
 
             <Link
@@ -134,10 +134,6 @@ export default function Header() {
                 </div>
               </div>
             </div>
-
-            <Link href="/faq" onClick={forceClose} className="transition-colors hover:text-slate-900">
-              FAQ
-            </Link>
           </nav>
 
           {/* Connexion + CTA */}
