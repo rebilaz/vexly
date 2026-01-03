@@ -4,13 +4,17 @@ import React from "react";
 
 /** ===== Step Shell (même UX partout) ===== */
 export function StepShell({
+  stepLabel,
   title,
+  subtitle,
   children,
   progress, // 0..100
   back,
   next,
 }: {
+  stepLabel?: string;
   title: string;
+  subtitle?: string;
   children: React.ReactNode;
   progress?: number; // ex: 20, 40, 60...
   back?: { label?: string; onClick: () => void };
@@ -28,6 +32,13 @@ export function StepShell({
         </div>
       ) : null}
 
+      {/* Step label (small, above title) */}
+      {stepLabel ? (
+        <div className="mb-3 text-center text-[11px] font-medium uppercase tracking-[0.14em] text-neutral-400">
+          {stepLabel}
+        </div>
+      ) : null}
+
       {/* Big centered title (Geist) */}
       <h1
         className="text-center text-5xl font-semibold tracking-tight text-neutral-900"
@@ -35,6 +46,13 @@ export function StepShell({
       >
         {title}
       </h1>
+
+      {/* Subtitle (below title) */}
+      {subtitle ? (
+        <p className="mt-4 text-center text-base text-neutral-600">
+          {subtitle}
+        </p>
+      ) : null}
 
       {/* Content */}
       <div className="mt-14 space-y-8">{children}</div>
