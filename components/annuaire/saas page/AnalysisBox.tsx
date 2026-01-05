@@ -1,34 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import { Banknote, Layers3, ShieldCheck, Globe2 } from "lucide-react";
+import type { Listing } from "@/lib/marketplace";
 
 /* =======================
-   Types
+   Types (UI)
 ======================= */
 
 type Pillar = {
   title: string;
   description: string;
   icon?: "bank" | "suite" | "security" | "global";
-};
-
-type Facts = {
-  pricing?: string;
-  coverage?: string;
-  status?: string;
-  note?: string;
-};
-
-type ListingLike = {
-  name: string;
-  url?: string;
-
-  summary?: string | null;
-  pillars?: Pillar[] | null;
-  facts?: Facts | null;
-
-  content?: string | null;
-  mvp_features?: string[] | null;
 };
 
 /* =======================
@@ -68,35 +50,49 @@ function stripMarkdownTitleLine(text: string, name?: string) {
   return text.replace(regex, "").trim();
 }
 
-function derive(listing: ListingLike) {
+function derive(listing: Listing) {
   const cleanedContent = listing.content
     ? stripMarkdownTitleLine(listing.content, listing.name)
     : "";
 
-  const summary =
-    (listing.summary && listing.summary.trim()) ||
-    (cleanedContent ? truncate(cleanedContent, 230) : "");
+  // ✅ Si pas de summary dédié, on prend le body markdown
+  const summary = cleanedContent ? truncate(cleanedContent, 230) : "";
 
   const pillars: Pillar[] =
-    listing.pillars && listing.pillars.length
-      ? listing.pillars.slice(0, 3)
-      : (listing.mvp_features || []).slice(0, 2).map((f, i) => ({
-        title: i === 0 ? "Point fort" : "Ce que ça apporte",
-        description: truncate(f, 90),
-        icon: i === 0 ? "suite" : "bank",
-      }));
+    listing.mvp_features && listing.mvp_features.length
+      ? listing.mvp_features.slice(0, 3).map((f, i) => ({
+        title: i === 0 ? "Point fort" : i === 1 ? "Cas d’usage" : "Bénéfice",
+        description: truncate(String(f), 90),
+        icon: i === 0 ? "suite" : i === 1 ? "bank" : "global",
+      }))
+      : [];
 
-  return { summary, pillars, facts: listing.facts || {} };
+  // ✅ facts viennent du YAML: facts:
+  const facts = listing.facts ?? {};
+
+  return { summary, pillars, facts };
 }
 
 /* =======================
    Component
 ======================= */
 
-export function ConceptOverview({ listing }: { listing: ListingLike }) {
+export function ConceptOverview({ listing }: { listing: Listing }) {
   const { summary, pillars, facts } = derive(listing);
 
-  if (!summary && pillars.length === 0 && !facts) return null;
+  const hasFacts =
+    !!facts.pricing || !!facts.coverage || !!facts.status || !!facts.note;
+
+  const hasAnyTech =
+    hasFacts ||
+    !!listing.pricing_url ||
+    !!listing.login_url ||
+    !!listing.proof_of_saas ||
+    !!listing.niche_category ||
+    !!listing.discovered_at ||
+    (listing.stack_guess?.length ?? 0) > 0;
+
+  if (!summary && pillars.length === 0 && !hasAnyTech) return null;
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
@@ -122,9 +118,7 @@ export function ConceptOverview({ listing }: { listing: ListingLike }) {
         {/* Gauche */}
         <div className="lg:col-span-7">
           {summary && (
-            <p className="text-base leading-relaxed text-slate-700">
-              {summary}
-            </p>
+            <p className="text-base leading-relaxed text-slate-700">{summary}</p>
           )}
 
           {pillars.length > 0 && (
@@ -159,33 +153,64 @@ export function ConceptOverview({ listing }: { listing: ListingLike }) {
             </div>
 
             <div className="space-y-3 text-sm">
+              {/* ✅ Facts (Perplexity) */}
               {facts.pricing && (
                 <div className="flex justify-between font-medium">
                   <span className="text-slate-600">Pricing</span>
                   <span className="text-slate-900">{facts.pricing}</span>
                 </div>
               )}
-
               {facts.coverage && (
                 <div className="flex justify-between font-medium">
                   <span className="text-slate-600">Couverture</span>
                   <span className="text-slate-900">{facts.coverage}</span>
                 </div>
               )}
-
               {facts.status && (
                 <div className="flex justify-between font-medium">
                   <span className="text-slate-600">Statut</span>
                   <span className="text-slate-900">{facts.status}</span>
                 </div>
               )}
+
+              {/* ✅ Fallbacks (toujours dispo) */}
+              {listing.login_url && (
+                <div className="flex justify-between font-medium">
+                  <span className="text-slate-600">Login</span>
+                  <span className="text-slate-900">Oui</span>
+                </div>
+              )}
+              {listing.pricing_url && (
+                <div className="flex justify-between font-medium">
+                  <span className="text-slate-600">Pricing page</span>
+                  <span className="text-slate-900">Oui</span>
+                </div>
+              )}
+              {listing.stack_guess?.length ? (
+                <div className="flex justify-between font-medium">
+                  <span className="text-slate-600">Stack</span>
+                  <span className="text-slate-900">
+                    {listing.stack_guess.slice(0, 4).join(", ")}
+                  </span>
+                </div>
+              ) : null}
             </div>
 
-            {facts.note && (
+            {facts.note ? (
               <div className="mt-4 border-t border-slate-200 pt-3 text-xs text-slate-500">
                 {facts.note}
               </div>
-            )}
+            ) : null}
+
+            {/* ✅ Si vraiment rien */}
+            {!hasFacts &&
+              !listing.login_url &&
+              !listing.pricing_url &&
+              !(listing.stack_guess?.length ?? 0) ? (
+              <div className="mt-3 text-xs text-slate-500">
+                Aucune donnée technique disponible pour ce produit.
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

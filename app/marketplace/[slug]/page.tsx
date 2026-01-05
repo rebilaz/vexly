@@ -146,15 +146,8 @@ export default async function ListingPage({
             <ListingHeader listing={listing} />
             <TrafficChart data={chartPoints} />
 
-            <ConceptOverview
-              listing={{
-                name: listing.name,
-                url: listing.url,
-                content: listing.content,
-                mvp_features: listing.mvp_features,
-                facts: {},
-              }}
-            />
+            <ConceptOverview listing={listing} />
+
 
             {similar.length > 0 && <SimilarCarousel similar={similar} />}
           </div>

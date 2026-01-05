@@ -10,18 +10,11 @@ type Props = {
     similar: Listing[];
 };
 
-/**
- * ✅ IMPORTANT
- * On évite les URLs ScreenshotOne (api.screenshotone.com) dans le carousel :
- * - ça provoque des 400 / rate limit / erreurs upstream en masse
- * - donc on affiche des previews statiques (ou placeholder) ici.
- *
- * Convention :
- * - public/marketplace/previews/{slug}.jpg
- * - public/placeholders/saas.jpg
- */
-function getSafeImage(p: Listing) {
-    if (p?.slug) return `/marketplace/previews/${p.slug}.jpg`;
+function getImage(p: Listing) {
+    // ✅ priorité: URL du MD (supabase storage public)
+    if (p?.image && typeof p.image === "string" && p.image.trim()) return p.image.trim();
+
+    // fallback si jamais y’a pas d’image dans le md
     return "/placeholders/saas.jpg";
 }
 
@@ -33,7 +26,6 @@ export function SimilarCarousel({ similar }: Props) {
     const checkScroll = () => {
         if (!containerRef.current) return;
         const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-
         setCanScrollLeft(scrollLeft > 0);
         setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
     };
@@ -43,10 +35,8 @@ export function SimilarCarousel({ similar }: Props) {
         containerRef.current.scrollBy({ left: offset, behavior: "smooth" });
     };
 
-    // ✅ init state (au mount + quand similar change)
     useEffect(() => {
         checkScroll();
-        // petit timeout pour laisser le layout se stabiliser
         const t = setTimeout(checkScroll, 50);
         return () => clearTimeout(t);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,8 +91,8 @@ export function SimilarCarousel({ similar }: Props) {
                             className="group block h-full rounded-2xl bg-white transition hover:opacity-100"
                         >
                             <div className="mb-4">
-                                {/* ✅ image safe locale / placeholder (pas ScreenshotOne) */}
-                                <SaaSImage image={getSafeImage(p)} name={p.name} />
+                                {/* ✅ on affiche l’URL MD, pas une URL reconstruite */}
+                                <SaaSImage image={getImage(p)} name={p.name} />
                             </div>
 
                             <div className="px-1">
