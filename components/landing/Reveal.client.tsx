@@ -10,43 +10,63 @@ type RevealProps = {
 
 /**
  * Progressive enhancement wrapper for scroll animations.
- * Content is visible by default (SSR-friendly), animation enhances when JS loads.
+ * SSR + first client render are identical (no inline style).
+ * Animation is applied only after hydration to avoid hydration mismatch.
  */
 export default function Reveal({ children, className = "", delay = 0 }: RevealProps) {
     const ref = useRef<HTMLDivElement>(null);
-    const [isVisible, setIsVisible] = useState(false);
+
+    // IMPORTANT: false on first client render => matches SSR
+    const [hydrated, setHydrated] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
 
     useEffect(() => {
-        const element = ref.current;
-        if (!element || hasAnimated) return;
+        setHydrated(true);
+    }, []);
+
+    useEffect(() => {
+        if (!hydrated) return;
+        const el = ref.current;
+        if (!el || hasAnimated) return;
+
+        const prefersReduced =
+            window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
+
+        if (prefersReduced) return;
+
+        // Set initial hidden state AFTER hydration only
+        el.style.opacity = "0";
+        el.style.transform = "translateY(16px)";
+        el.style.transition = "opacity 0.35s ease-out, transform 0.35s ease-out";
+        el.style.willChange = "opacity, transform";
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        setIsVisible(true);
-                        setHasAnimated(true);
-                    }, delay);
+                if (!entry.isIntersecting) return;
+
+                const run = () => {
+                    el.style.opacity = "1";
+                    el.style.transform = "translateY(0)";
+                    setHasAnimated(true);
+                    observer.disconnect();
+                };
+
+                if (delay > 0) {
+                    window.setTimeout(run, delay);
+                } else {
+                    run();
                 }
             },
-            { threshold: 0.1, rootMargin: "-60px" }
+            { threshold: 0.1, rootMargin: "-60px 0px" }
         );
 
-        observer.observe(element);
+        observer.observe(el);
         return () => observer.disconnect();
-    }, [delay, hasAnimated]);
+    }, [hydrated, hasAnimated, delay]);
 
+    // SSR + first client render => NO inline styles at all
     return (
-        <div
-            ref={ref}
-            className={className}
-            style={{
-                opacity: isVisible ? 1 : 0.01,
-                transform: isVisible ? "translateY(0)" : "translateY(16px)",
-                transition: "opacity 0.35s ease-out, transform 0.35s ease-out",
-            }}
-        >
+        <div ref={ref} className={className}>
             {children}
         </div>
     );

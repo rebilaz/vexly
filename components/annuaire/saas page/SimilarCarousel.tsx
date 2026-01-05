@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Listing } from "@/lib/annuaire";
+import { Listing } from "@/lib/marketplace";
 import { Image as SaaSImage } from "./Images";
 
 type Props = {

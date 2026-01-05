@@ -2,6 +2,10 @@ import React from "react";
 import Link from "next/link";
 import { Banknote, Layers3, ShieldCheck, Globe2 } from "lucide-react";
 
+/* =======================
+   Types
+======================= */
+
 type Pillar = {
   title: string;
   description: string;
@@ -19,16 +23,17 @@ type ListingLike = {
   name: string;
   url?: string;
 
-  // champs premium (optionnels)
   summary?: string | null;
   pillars?: Pillar[] | null;
   facts?: Facts | null;
-  trust_label?: string | null;
 
-  // fallback anciens champs
   content?: string | null;
   mvp_features?: string[] | null;
 };
+
+/* =======================
+   Utils
+======================= */
 
 function pickIcon(key?: Pillar["icon"]) {
   switch (key) {
@@ -50,10 +55,27 @@ function truncate(text: string, max = 220) {
   return text.length > max ? text.slice(0, max).trimEnd() + "…" : text;
 }
 
+/**
+ * Supprime UNIQUEMENT une ligne markdown de type :
+ * "# qonto.com"
+ */
+function stripMarkdownTitleLine(text: string, name?: string) {
+  if (!text || !name) return text;
+
+  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`^\\s*#\\s*${escaped}\\s*$`, "im");
+
+  return text.replace(regex, "").trim();
+}
+
 function derive(listing: ListingLike) {
+  const cleanedContent = listing.content
+    ? stripMarkdownTitleLine(listing.content, listing.name)
+    : "";
+
   const summary =
     (listing.summary && listing.summary.trim()) ||
-    (listing.content ? truncate(listing.content, 230) : "");
+    (cleanedContent ? truncate(cleanedContent, 230) : "");
 
   const pillars: Pillar[] =
     listing.pillars && listing.pillars.length
@@ -64,14 +86,15 @@ function derive(listing: ListingLike) {
         icon: i === 0 ? "suite" : "bank",
       }));
 
-  const facts: Facts = listing.facts || {};
-  const trust = listing.trust_label || "";
-
-  return { summary, pillars, facts, trust };
+  return { summary, pillars, facts: listing.facts || {} };
 }
 
+/* =======================
+   Component
+======================= */
+
 export function ConceptOverview({ listing }: { listing: ListingLike }) {
-  const { summary, pillars, facts, trust } = derive(listing);
+  const { summary, pillars, facts } = derive(listing);
 
   if (!summary && pillars.length === 0 && !facts) return null;
 
@@ -79,33 +102,19 @@ export function ConceptOverview({ listing }: { listing: ListingLike }) {
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-            Le Concept en détail
-          </h2>
+        <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+          Technique
+        </h2>
 
-          {listing.url && (
-            <div className="mt-2">
-              <Link
-                href={listing.url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-700"
-              >
-                <span className="inline-flex h-6 items-center rounded-full bg-indigo-50 px-2 text-xs font-bold">
-                  #
-                </span>
-                {new URL(listing.url).hostname.replace("www.", "")}
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {trust && (
-          <div className="hidden items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-bold text-slate-700 sm:flex">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            {trust}
-          </div>
+        {listing.url && (
+          <Link
+            href={listing.url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+          >
+            Fiche technique
+          </Link>
         )}
       </div>
 
@@ -142,7 +151,7 @@ export function ConceptOverview({ listing }: { listing: ListingLike }) {
           )}
         </div>
 
-        {/* Droite : fiche technique */}
+        {/* Droite */}
         <div className="lg:col-span-5">
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
             <div className="mb-3 text-xs font-bold uppercase tracking-widest text-slate-500">

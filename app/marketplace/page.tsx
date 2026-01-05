@@ -1,5 +1,5 @@
 import MarketplaceClient from "@/components/annuaire/MarketplaceClient";
-import { getAllListingSlugs, getListing, type Listing } from "@/lib/annuaire";
+import { getAllListingSlugs, getListing, type Listing } from "@/lib/marketplace";
 
 type Category = "Templates" | "MVP" | "Modules";
 

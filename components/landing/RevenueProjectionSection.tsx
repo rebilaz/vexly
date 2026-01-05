@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import Reveal from "./Reveal.client";
 
 type Props = {
@@ -82,8 +83,8 @@ export default function RevenueProjectionSection({
 
           {/* CTA */}
           <div className="mt-10 flex justify-center">
-            <a
-              href="#contact"
+            <Link
+              href="/form"
               className="
               inline-flex 
               items-center 
@@ -104,7 +105,7 @@ export default function RevenueProjectionSection({
             >
               {ctaLabel}
               <span aria-hidden>→</span>
-            </a>
+            </Link>
           </div>
         </div>
       </section>

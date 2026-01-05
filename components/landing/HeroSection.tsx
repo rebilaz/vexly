@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import SaasPreview from "./SaasPreview";
 
 type HeroSectionProps = {
@@ -39,21 +40,12 @@ export default function HeroSection({
 
             {/* CTA */}
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              <a
-                href="#contact"
+              <Link
+                href="/form"
                 className="inline-flex items-center rounded-xl bg-slate-900 px-7 py-4 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.03] active:scale-[0.98]"
               >
                 {primaryCtaLabel}
-              </a>
-
-              {secondaryCtaLabel && (
-                <a
-                  href="#model"
-                  className="text-sm font-medium text-slate-600 hover:text-slate-900 transition"
-                >
-                  {secondaryCtaLabel}
-                </a>
-              )}
+              </Link>
             </div>
           </div>
 

@@ -8,24 +8,16 @@ import {
   getAllListingSlugs,
   getAllListings,
   getMarketplaceTraffic,
-} from "@/lib/annuaire";
+} from "@/lib/marketplace";
 
 import { Image as SaaSImage } from "@/components/annuaire/saas page/Images";
 import { ListingHeader } from "@/components/annuaire/saas page/ListingHeader";
 import { TrafficChart } from "@/components/annuaire/saas page/TrafficChart";
-import { OfferCTA } from "@/components/annuaire/saas page/CheckoutCard";
 import { ConceptOverview } from "@/components/annuaire/saas page/AnalysisBox";
 import { SimilarCarousel } from "@/components/annuaire/saas page/SimilarCarousel";
-import EstimatedMRRCard from "@/components/annuaire/saas page/EstimatedMRRCard";
 
-function normalizeSlugKey(input: string) {
-  return String(input || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
-}
+// ⚠️ ton fichier export default function SaasLaunchCard
+import SaasLaunchCard from "@/components/annuaire/saas page/SaaSLaunchCard";
 
 export async function generateStaticParams() {
   const listings = getAllListingSlugs();
@@ -38,9 +30,9 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const slugKey = normalizeSlugKey(slug);
 
-  const listing = getListing(slugKey);
+  // ✅ slug = filename, ne pas renormaliser
+  const listing = getListing(slug);
   if (!listing) return;
 
   const siteName = "Vexly Marketplace";
@@ -77,9 +69,7 @@ function pickSimilar(listingSlug: string, niche?: string) {
   const others = all.filter((x) => x.slug !== listingSlug);
 
   const sameNiche = niche
-    ? others.filter(
-      (x) => (x.niche_category || "").toLowerCase() === niche.toLowerCase()
-    )
+    ? others.filter((x) => (x.niche_category || "").toLowerCase() === niche.toLowerCase())
     : [];
 
   const sortedByDate = [...others].sort((a, b) => {
@@ -98,18 +88,14 @@ export default async function ListingPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const slugKey = normalizeSlugKey(slug);
 
-  const listing = getListing(slugKey);
+  // ✅ slug = filename, ne pas renormaliser
+  const listing = getListing(slug);
   if (!listing) return notFound();
 
-  const traffic = await getMarketplaceTraffic(slugKey);
+  const traffic = await getMarketplaceTraffic(slug);
 
   const chartPoints = traffic.points.length ? traffic.points : listing.monthly_visits ?? [];
-
-  const chartGrowth =
-    typeof traffic.growthRate === "number" ? traffic.growthRate : listing.growth_rate;
-
   const canonical = `https://www.vexly.fr/marketplace/${listing.slug}`;
 
   const jsonLdProduct = {
@@ -127,18 +113,8 @@ export default async function ListingPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Marketplace",
-        item: "https://www.vexly.fr/marketplace",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: listing.name,
-        item: canonical,
-      },
+      { "@type": "ListItem", position: 1, name: "Marketplace", item: "https://www.vexly.fr/marketplace" },
+      { "@type": "ListItem", position: 2, name: listing.name, item: canonical },
     ],
   };
 
@@ -146,14 +122,8 @@ export default async function ListingPage({
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] pb-24 font-sans text-slate-900">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdProduct) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdProduct) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumbs) }} />
 
       <div className="sticky top-0 z-20 border-b border-slate-200 bg-white/80 px-6 py-4 backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
@@ -166,16 +136,6 @@ export default async function ListingPage({
             </div>
             <span>Retour au catalogue</span>
           </Link>
-
-          <div className="flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-            </span>
-            <span className="text-xs font-bold text-emerald-700">
-              Disponible au développement
-            </span>
-          </div>
         </div>
       </div>
 
@@ -184,7 +144,7 @@ export default async function ListingPage({
           <div className="space-y-8 lg:col-span-8">
             <SaaSImage image={listing.image} name={listing.name} />
             <ListingHeader listing={listing} />
-            <TrafficChart data={chartPoints} growth={chartGrowth} />
+            <TrafficChart data={chartPoints} />
 
             <ConceptOverview
               listing={{
@@ -192,7 +152,6 @@ export default async function ListingPage({
                 url: listing.url,
                 content: listing.content,
                 mvp_features: listing.mvp_features,
-                trust_label: "600k+ clients",
                 facts: {},
               }}
             />
@@ -200,16 +159,9 @@ export default async function ListingPage({
             {similar.length > 0 && <SimilarCarousel similar={similar} />}
           </div>
 
-          {/* ✅ Sidebar clean */}
           <div className="lg:col-span-4">
-            <aside className="lg:sticky lg:top-28 z-20">
-              <div className="space-y-4">
-                {/* CTA compact */}
-                <OfferCTA listing={listing} compact />
-
-                {/* Estimator compact */}
-                <EstimatedMRRCard compact />
-              </div>
+            <aside className="z-20 lg:sticky lg:top-28">
+              <SaasLaunchCard listing={listing} />
             </aside>
           </div>
         </div>

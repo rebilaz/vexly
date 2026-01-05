@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 type FinalCTASectionProps = {
   title: string;
@@ -28,12 +29,12 @@ const FinalCTASection: React.FC<FinalCTASectionProps> = ({
         </div>
 
         <div className="flex-shrink-0">
-          <a
-            href="mailto:contact@vexly.fr"
+          <Link
+            href="/form"
             className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/40 transition hover:scale-[1.03] active:scale-[0.97]"
           >
             {primaryCtaLabel}
-          </a>
+          </Link>
         </div>
       </div>
     </section>
