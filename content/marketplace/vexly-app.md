@@ -5,33 +5,36 @@ tagline: "Suivez vos abonnements sans connexion bancaire."
 url: "https://vexly.app/"
 login_url: "https://vexly.app/login"
 proof_of_saas: "seed_queue"
-image: ""
+image: "https://api-prod-eks.snapshot-site.com/screenshots/vexly.app/13977966-91fd-4f81-abe9-94cc2778805b/1767611303511.png"
 niche_category: "Subscription tracking"
-discovered_at: "2026-01-05T11:01:35.292Z"
+discovered_at: "2026-01-05T11:08:34.208Z"
 facts:
-  pricing: "Achat unique (essai gratuit, 1 an, lifetime)"
+  pricing: "Achat unique (1 an ou lifetime) + essai gratuit 3 abos"
   coverage: "Global"
   status: "Early access"
   note: "Pas de connexion bancaire requise."
 mvp_features:
-  - "Ajouter abonnements manuellement en 10s avec IA"
-  - "Visualiser dépenses totales et par catégories"
-  - "Recevoir alertes renouvellement (email/push/Discord)"
-  - "Analyser tendances et projections mensuelles"
-  - "Installer app PWA sur iOS/Android"
+  - "Ajouter abonnements manuellement en 10 secondes avec IA"
+  - "Recevoir alertes renouvellement par email/push/Discord"
+  - "Visualiser totaux mensuels et graphiques par catégorie"
+  - "Projeter dépenses mensuelles et annuelles"
+  - "Identifier doublons et abonnements inutiles"
+  - "Installer PWA sur mobile iOS/Android"
   - "Partager avec famille"
-  - "Importer abonnements existants (optionnel)"
+  - "Suivre devises multiples"
 stack_guess:
-  - "React"
-  - "Next.js"
-  - "Supabase"
+  - "React.js"
+  - "Node.js"
   - "Google OAuth"
+  - "Magic Link Auth"
   - "PWA"
   - "Discord API"
+  - "Stripe"
+  - "Supabase"
 monthly_visits:
   - { label: "2025-10", value: 3279 }
   - { label: "2025-11", value: 9333 }
 ---
 # vexly.app
 
-Vexly est une plateforme de gestion manuelle des abonnements qui permet d'ajouter vos services récurrents (noms, coûts, dates de renouvellement) sans lier de compte bancaire. L'IA aide à l'entrée rapide des données. Visualisez vos dépenses totales, breakdowns par catégories, tendances mensuelles/annuelles et projections. Recevez des alertes de renouvellement par email, push ou Discord pour annuler les inutiles. Dashboard minimaliste avec analytics avancés, notifications intelligentes et support PWA mobile. Comptes via Google OAuth ou magic link. Plans à achat unique : essai gratuit (3 abos), licence 1 an ou lifetime avec accès illimité.
+Vexly est une plateforme de gestion manuelle d'abonnements qui permet d'ajouter, suivre et catégoriser les dépenses récurrentes sans lier de compte bancaire. L'utilisateur saisit les noms, coûts, dates de renouvellement et catégories. L'IA aide à l'entrée rapide des données. Des alertes intelligentes (email, push, Discord) préviennent avant chaque renouvellement. Le tableau de bord affiche les totaux mensuels, graphiques par catégorie, projections et tendances pour identifier doublons et économies. Application web progressive installable sur iOS/Android. Comptes via Google OAuth ou magic link. Partage familial disponible. Garantie 30 jours remboursement.
