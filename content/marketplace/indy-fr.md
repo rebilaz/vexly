@@ -1,31 +1,34 @@
 ---
 name: "indy.fr"
 slug: "indy-fr"
-tagline: "Comptabilité, facturation et compte pro pour indépendants"
+tagline: "Comptabilité automatisée pour indépendants français"
 url: "https://indy.fr"
 proof_of_saas: "seed_queue"
-image: "https://jnkbqwqzatlrcpqwdlim.supabase.co/storage/v1/object/public/marketplace-screens/indy-fr/1767736116608.webp"
-niche_category: "Comptabilité, facturation, fintech indépendants"
-discovered_at: "2026-01-06T21:48:37.369Z"
+image: "https://jnkbqwqzatlrcpqwdlim.supabase.co/storage/v1/object/public/marketplace-screens/indy-fr/1767736464225.webp"
+niche_category: "Comptabilité indépendants France"
+discovered_at: "2026-01-06T21:54:24.546Z"
 facts:
-  pricing: "Freemium (compte pro gratuit + abonnements premium)"
+  pricing: "Freemium"
   coverage: "France"
   status: "Mature"
-  note: "Plateforme Agréée officielle pour la facturation électronique depuis 2026, certifiée ISO 27001."
+  note: "Plateforme Agréée facturation électronique."
 mvp_features:
-  - "Synchroniser automatiquement les transactions bancaires"
-  - "Catégoriser intelligemment les dépenses et détecter la TVA"
-  - "Générer factures et devis personnalisés"
-  - "Créer et transmettre les déclarations fiscales et sociales"
-  - "Ouvrir un compte professionnel gratuit avec IBAN"
-  - "Numériser et gérer les reçus"
-  - "Suivre en temps réel l'activité et la trésorerie"
+  - "Synchroniser compte bancaire automatiquement"
+  - "Catégoriser transactions avec IA"
+  - "Détecter TVA et classer reçus"
+  - "Créer factures et devis conformes"
+  - "Générer déclarations fiscales/sociales"
+  - "Ouvrir compte pro gratuit IBAN FR"
+  - "Suivre cash flow en temps réel"
+  - "Transmettre dossier fiscal expert-comptable"
 stack_guess:
-  - "React ou Vue.js"
-  - "Node.js ou Python"
+  - "React Native"
+  - "Node.js"
   - "PostgreSQL"
-  - "API bancaires (Plaid, Yapstone)"
-  - "AWS ou Google Cloud"
+  - "AWS"
+  - "Plaid API"
+  - "ISO 27001"
+  - "IA classification"
 monthly_visits:
   - { label: "2025-09", value: 1015109 }
   - { label: "2025-10", value: 1095003 }
@@ -33,4 +36,4 @@ monthly_visits:
 ---
 # indy.fr
 
-Indy est une plateforme de comptabilité en ligne française créée en 2016, destinée aux indépendants, micro-entreprises et petites sociétés. Elle automatise la comptabilité via synchronisation bancaire, génère les déclarations fiscales et sociales, propose un module de facturation électronique conforme à la loi 2026, et offre un compte professionnel gratuit avec IBAN français et carte Mastercard. Indy accompagne 100 000 clients dans la gestion quotidienne et administrative de leur activité.
+Indy est une solution tout-en-un pour freelances et indépendants en France. Elle automatise la comptabilité via synchronisation bancaire, catégorise transactions intelligemment, détecte la TVA et suit résultats en temps réel. Créez entreprise, ouvrez compte pro gratuit avec IBAN français, Mastercard, virements SEPA. Gérez facturation électronique conforme 2026, déclarations fiscales/sociales (TVA, Urssaf, bilan). Plateforme agréée certifiée ISO 27001. 100 000 clients, 200 employés à Lyon depuis 2016. Simplifie gestion quotidienne, gagnez temps sur activité pro.
