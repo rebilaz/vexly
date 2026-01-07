@@ -153,7 +153,7 @@ export default async function ListingPage({
           </div>
 
           <div className="lg:col-span-4">
-            <aside className="z-20 lg:sticky lg:top-28">
+            <aside className="z-20 lg:sticky lg:top-16">
               <SaasLaunchCard listing={listing} />
             </aside>
           </div>

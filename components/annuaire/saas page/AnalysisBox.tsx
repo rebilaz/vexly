@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Banknote, Layers3, ShieldCheck, Globe2 } from "lucide-react";
+import { Banknote, Layers3, ShieldCheck, Globe2, ArrowUpRight } from "lucide-react";
 import type { Listing } from "@/lib/marketplace";
 
 /* =======================
@@ -55,7 +55,6 @@ function derive(listing: Listing) {
     ? stripMarkdownTitleLine(listing.content, listing.name)
     : "";
 
-  // ✅ Si pas de summary dédié, on prend le body markdown
   const summary = cleanedContent ? truncate(cleanedContent, 230) : "";
 
   const pillars: Pillar[] =
@@ -67,10 +66,29 @@ function derive(listing: Listing) {
       }))
       : [];
 
-  // ✅ facts viennent du YAML: facts:
   const facts = listing.facts ?? {};
-
   return { summary, pillars, facts };
+}
+
+/* =======================
+   Small UI primitives
+======================= */
+
+function Row({
+  label,
+  value,
+}: {
+  label: React.ReactNode;
+  value: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4 py-2">
+      <div className="text-sm text-slate-600">{label}</div>
+      <div className="text-sm font-semibold text-slate-900 text-right break-words max-w-[60%]">
+        {value}
+      </div>
+    </div>
+  );
 }
 
 /* =======================
@@ -80,17 +98,16 @@ function derive(listing: Listing) {
 export function ConceptOverview({ listing }: { listing: Listing }) {
   const { summary, pillars, facts } = derive(listing);
 
-  const hasFacts =
-    !!facts.pricing || !!facts.coverage || !!facts.status || !!facts.note;
+  const hasFacts = !!facts.pricing || !!facts.coverage || !!facts.status || !!facts.note;
 
+  // ✅ On enlève volontairement stack_guess de la “tech card”
   const hasAnyTech =
     hasFacts ||
     !!listing.pricing_url ||
     !!listing.login_url ||
     !!listing.proof_of_saas ||
     !!listing.niche_category ||
-    !!listing.discovered_at ||
-    (listing.stack_guess?.length ?? 0) > 0;
+    !!listing.discovered_at;
 
   if (!summary && pillars.length === 0 && !hasAnyTech) return null;
 
@@ -98,18 +115,24 @@ export function ConceptOverview({ listing }: { listing: Listing }) {
     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
-        <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-          Technique
-        </h2>
+        <div>
+          <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+            Technique
+          </h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Les infos essentielles, sans bruit.
+          </p>
+        </div>
 
         {listing.url && (
           <Link
             href={listing.url}
             target="_blank"
             rel="noreferrer"
-            className="text-sm font-semibold text-indigo-600 hover:text-indigo-700"
+            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
           >
-            Fiche technique
+            Fiche
+            <ArrowUpRight className="h-4 w-4 text-slate-500" />
           </Link>
         )}
       </div>
@@ -122,20 +145,25 @@ export function ConceptOverview({ listing }: { listing: Listing }) {
           )}
 
           {pillars.length > 0 && (
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 grid gap-4">
               {pillars.map((p, i) => {
                 const Icon = pickIcon(p.icon);
                 return (
-                  <div key={i} className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-50 ring-1 ring-slate-200">
-                      <Icon className="h-5 w-5 text-indigo-600" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-extrabold text-slate-900">
-                        {p.title}
+                  <div
+                    key={i}
+                    className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-50 ring-1 ring-slate-200">
+                        <Icon className="h-5 w-5 text-indigo-600" />
                       </div>
-                      <div className="mt-1 text-sm text-slate-600">
-                        {p.description}
+                      <div className="min-w-0">
+                        <div className="text-sm font-extrabold text-slate-900">
+                          {p.title}
+                        </div>
+                        <div className="mt-1 text-sm text-slate-600">
+                          {p.description}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -147,67 +175,45 @@ export function ConceptOverview({ listing }: { listing: Listing }) {
 
         {/* Droite */}
         <div className="lg:col-span-5">
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-            <div className="mb-3 text-xs font-bold uppercase tracking-widest text-slate-500">
-              Fiche technique
+          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <div className="flex items-center justify-between">
+              <div className="text-xs font-extrabold uppercase tracking-widest text-slate-500">
+                Fiche technique
+              </div>
+              {/* ❌ Mature supprimé */}
             </div>
 
-            <div className="space-y-3 text-sm">
-              {/* ✅ Facts (Perplexity) */}
-              {facts.pricing && (
-                <div className="flex justify-between font-medium">
-                  <span className="text-slate-600">Pricing</span>
-                  <span className="text-slate-900">{facts.pricing}</span>
-                </div>
-              )}
-              {facts.coverage && (
-                <div className="flex justify-between font-medium">
-                  <span className="text-slate-600">Couverture</span>
-                  <span className="text-slate-900">{facts.coverage}</span>
-                </div>
-              )}
-              {facts.status && (
-                <div className="flex justify-between font-medium">
-                  <span className="text-slate-600">Statut</span>
-                  <span className="text-slate-900">{facts.status}</span>
-                </div>
-              )}
-
-              {/* ✅ Fallbacks (toujours dispo) */}
-              {listing.login_url && (
-                <div className="flex justify-between font-medium">
-                  <span className="text-slate-600">Login</span>
-                  <span className="text-slate-900">Oui</span>
-                </div>
-              )}
-              {listing.pricing_url && (
-                <div className="flex justify-between font-medium">
-                  <span className="text-slate-600">Pricing page</span>
-                  <span className="text-slate-900">Oui</span>
-                </div>
-              )}
-              {listing.stack_guess?.length ? (
-                <div className="flex justify-between font-medium">
-                  <span className="text-slate-600">Stack</span>
-                  <span className="text-slate-900">
-                    {listing.stack_guess.slice(0, 4).join(", ")}
-                  </span>
-                </div>
+            <div className="mt-4 divide-y divide-slate-200">
+              {/* ✅ Prix (info clé) */}
+              {facts.pricing ? (
+                <Row
+                  label={<span className="font-medium text-slate-700">Prix</span>}
+                  value={
+                    <span className="rounded-md bg-indigo-50 px-2 py-1 text-sm font-bold text-indigo-700">
+                      {facts.pricing}
+                    </span>
+                  }
+                />
               ) : null}
+
+              {facts.coverage ? <Row label="Couverture" value={facts.coverage} /> : null}
+
+              {/* ✅ Fallbacks propres */}
+              {listing.login_url ? <Row label="Login" value="Oui" /> : null}
+              {listing.pricing_url ? <Row label="Page pricing" value="Oui" /> : null}
             </div>
 
+            {/* Note en footer soft */}
             {facts.note ? (
-              <div className="mt-4 border-t border-slate-200 pt-3 text-xs text-slate-500">
-                {facts.note}
+              <div className="mt-4 flex gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
+                <span className="font-semibold text-slate-700">Note</span>
+                <span>{facts.note}</span>
               </div>
             ) : null}
 
-            {/* ✅ Si vraiment rien */}
-            {!hasFacts &&
-              !listing.login_url &&
-              !listing.pricing_url &&
-              !(listing.stack_guess?.length ?? 0) ? (
-              <div className="mt-3 text-xs text-slate-500">
+            {/* Si vraiment rien */}
+            {!hasFacts && !listing.login_url && !listing.pricing_url ? (
+              <div className="mt-4 text-sm text-slate-500">
                 Aucune donnée technique disponible pour ce produit.
               </div>
             ) : null}
