@@ -34,7 +34,7 @@ Vendre l’accès à ton futur SaaS **avant de le développer** te permet de :
 - encaisser tes **premiers euros récurrents**,
 - décider objectivement : *on lance le dev ou on arrête là*.
 
-Ce guide t’explique, étape par étape, **comment faire des préventes pour valider ton idée** de SaaS, sans produit, sans code, avec une offre simple, des scripts concrets et un seuil clair go/no‑go.
+Ce guide t’explique, étape par étape, **comment faire des [préventes pour valider ton idée** de SaaS, sans](/articles/cas-d-e-tude-saas-2025-12-22)<!--il:auto--> produit, sans code, avec une offre simple, des scripts concrets et un seuil clair go/no‑go.
 
 ---
 
@@ -214,7 +214,7 @@ Corps :
 ### 4.3. Page de paiement / dépôt : structure simple
 
 Tu n’as pas besoin d’un site complet.  
-Une page de checkout Stripe, Thrivecart, Gumroad… suffit.
+[Une page de checkout Stripe, Thrivecart, Gumroad… suffit.](/articles/outils-lancer-pre-vente-coder-2025-12-15)<!--il:auto-->
 
 Contenu minimum sur la page :
 
