@@ -111,7 +111,7 @@ L’objectif de cette page : **amener les gens à lever la main** (waitlist) et,
 
 ## Étape 2 : lancer waitlist et précommandes avec seuils de validation clairs
 
-Vous avez votre page ? Vous [pouvez maintenant structurer votre test en 7 jours.](/articles/mvp-rapide-tester-ide-e-2025-12-16)<!--il:auto-->
+Vous avez votre page ? Vous pouvez maintenant structurer votre test en 7 jours.
 
 ### 2.1. Deux niveaux d’engagement
 
