@@ -164,7 +164,7 @@ Vous testez le **désir** de l’utilisateur pour votre solution, pas sa décisi
 ### Mise en place rapide
 
 En 1–2 jours, un prestataire peut :
-- [créer une **landing page clai](/articles/pre-vente-saas-coder-valider-2025-12-23)<!--il:auto-->re** (no-code),
+- [créer une **landing page](/articles/pre-vente-saas-coder-valider-2025-12-23)<!--il:auto--> claire** (no-code),
 - intégrer **un bouton d’action**,
 - connecter un **outil d’analytics** (type Google Analytics, Plausible…) pour suivre :
   - visites,
@@ -261,7 +261,7 @@ L’essentiel : vous n’avez **pas sur-développé**. Vous avez appris vite.
 **Comment faire un test de marché rapide avec un MVP ?**  
 En combinant :
 - une **maquette + onboarding** (pour visualiser le produit),
-- un **fake door test** via une landing page,
+- [un **fake door test** via une landing page,](/articles/test-marche-rapide-7-jours-2025-12-30)<!--il:auto-->
 - des **analytics simples** pour mesurer l’intérêt.  
 Le tout en 7 jours, avant de construire le moindre module complexe.
 
