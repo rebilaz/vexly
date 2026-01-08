@@ -40,7 +40,7 @@ L’erreur classique :
 - plusieurs milliers d’euros plus tard…  
   vous découvrez que personne ne veut vraiment payer.
 
-Valider une **idée business rentable** avant le développement vous permet de :
+[Valider une **idée business rentable** avant le développe](/articles/comment-lancer-mvp-saas-rentable-2025-12-18)<!--il:auto-->ment vous permet de :
 
 - **éviter de cramer votre budget** sur un SaaS que personne n’utilise
 - **prioriser** vos idées (surtout si vous en avez 3, 4, 10…)
@@ -272,7 +272,7 @@ Gardez ça en tête quand vous évaluez la **douleur** et la **monétisation**.
 
 ### 4. Négliger les intégrations
 
-Beaucoup d’idées de SaaS échouent car elles **oublient l’écosystème** :
+[Beaucoup d’idées de SaaS échouent car elles **oublie](/articles/6-crite-res-savoir-si-2025-12-12)<!--il:auto-->nt l’écosystème** :
 
 - vos futurs clients veulent connecter : Stripe, Notion, Google Sheets, CRM, etc.
 - s’ils doivent tout faire à la main, ils abandonnent
