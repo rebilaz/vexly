@@ -23,7 +23,7 @@ keywords: ["validation idée saas", "valider idée business", "valider idée saa
 # Exemple complet de validation d’idée SaaS no-code : le cas pratique de l’idée au go/no-go
 
 Vous avez une idée de SaaS, vous ne voulez pas coder, mais vous refusez de lancer “un truc dans le vide”.  
-Voici un **exemple complet de validation d’idée** : une étude de cas fictive, mais réaliste, d’un freelance qui productise son expertise via un SaaS custom… et qui prend une vraie décision **go/no-go**, chiffres à l’appui.
+Voici un **exemple complet de validation d’idée** : une étude de cas fictive, mais réaliste, d’un [freelance qui productise son expertise via un SaaS](/articles/exemple-mvp-re-ussi-comment-2025-12-13)<!--il:auto--> custom… et qui prend une vraie décision **go/no-go**, chiffres à l’appui.
 
 ---
 
@@ -237,7 +237,7 @@ Avec ces données, Thomas doit répondre à la vraie question :
    Le MVP technique servira à affiner le produit, pas à découvrir si le problème existe.
 
 2. **“Et si 12 interviews, c’était trop peu ?”**  
-   → Entre 10 et 15 interviews **qualifiées** suffisent souvent pour dégager des signaux forts.  
+   → Entre 10 et 15 interviews **qualifiées** suffisent [souvent pour dégager des signaux forts.](/articles/exemple-concret-valider-ide-e-2025-12-20)<!--il:auto-->  
    Ici, les patterns sont clairs et répétitifs.
 
 3. **“Je n’ai pas encore de traction massive.”**  
