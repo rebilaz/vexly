@@ -22,7 +22,7 @@ keywords: ["valider idée SaaS", "landing page SaaS", "KPI landing page", "taux 
 ---
 # KPI d’une landing de validation SaaS : quels seuils prouvent vraiment que ton idée tient la route ?
 
-Valider ton idée de SaaS avec une landing page, c’est bien.  
+Valider ton idée [de SaaS avec une landing page, c’est bien.](/articles/landing-page-validation-saas-plan-2025-12-17)<!--il:auto-->  
 Savoir *lire* les chiffres pour décider “go / no-go” sans t’auto-mentir, c’est ça qui change tout.
 
 Dans cet article, on se concentre sur **les KPI et les seuils**.  
@@ -301,7 +301,7 @@ Tu as tes stats. Que faire maintenant ?
 
 ---
 
-En résumé : une landing de validation SaaS commence à vraiment valider ton idée quand tu as :
+En résumé : une landing de [validation SaaS commence à vraiment valider ton idée](/articles/comment-e-crire-promesse-ta-2025-12-31)<!--il:auto--> quand tu as :
 
 - **500 visites qualifiées** ou plus,
 - un **taux de conversion de 10–20 %** sur un objectif clair (préinscription, liste d’attente, CTA fort),
