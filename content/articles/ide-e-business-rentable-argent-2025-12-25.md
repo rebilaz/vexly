@@ -26,7 +26,7 @@ Tu as une idée de SaaS.
 Tu ne veux pas coder.  
 Tu ne veux pas claquer 5 000€ avant de savoir si quelqu’un veut vraiment payer.
 
-Ce guide te montre comment **tester la demande marché en 7 jours, sans budget, sans MVP**, juste avec :
+Ce guide te [montre comment **tester la demande marché en](/articles/6-crite-res-savoir-si-2025-12-12)<!--il:auto--> 7 jours, sans budget, sans MVP**, juste avec :
 - des messages,
 - une landing simple,
 - des formulaires gratuits,
@@ -337,6 +337,6 @@ Et relance une boucle de tests simple sur 3–7 jours.
 ---
 
 En appliquant ces 5 tests en 7 jours, tu peux :
-- valider si ton idée de SaaS a un vrai potentiel,
+- [valider si ton idée de SaaS a un](/articles/comment-valider-ide-e-business-2026-01-08)<!--il:auto--> vrai potentiel,
 - constituer une première liste d’attente,
 - et décider en confiance si ça vaut le coup d’investir dans un **SaaS sur mesure, prêt à vendre**, développé pour toi.
