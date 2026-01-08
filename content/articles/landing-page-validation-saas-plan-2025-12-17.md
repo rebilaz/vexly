@@ -24,7 +24,7 @@ keywords: ["landing page SaaS", "validation idée SaaS", "tester idée SaaS sans
 
 Vous avez une idée de SaaS… mais vous ne voulez pas passer 3 mois à développer un produit qui ne se vendra peut-être jamais.
 
-La solution : une **landing page de validation**.  
+[La solution : une **landing page de validation**.](/articles/kpi-d-landing-validation-saas-2025-12-24)<!--il:auto-->  
 Objectif : **mesurer l’intérêt réel** (clics, préinscriptions, fake door) avant d’investir dans le développement.
 
 Dans ce guide, vous allez voir comment :
@@ -191,7 +191,7 @@ Voici un template que vous pouvez copier-coller et adapter.
 ## 4. Outils no-code simples : choix, setup et publication rapide
 
 Vous n’avez pas besoin d’un site complet.  
-Un outil no-code suffit largement pour cette landing page de validation.
+Un outil no-code suffit largement pour cette [landing page de validation.](/articles/comment-e-crire-promesse-ta-2025-12-31)<!--il:auto-->
 
 ### Outil 1 : Carrd (recommandé pour aller vite)
 
