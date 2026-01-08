@@ -26,7 +26,7 @@ Tu [as une idée de SaaS… mais tu refuses](/articles/7-erreurs-validation-d-id
 
 Bonne nouvelle : tu peux **tester ton idée de SaaS sans coder**, en moins de 7 jours, avec trois tests complémentaires :
 
-- une **landing page** qui mesure l’intérêt réel,
+- [une **landing page** qui mesure l’intérêt réel,](/articles/signes-qu-ide-e-saas-2025-12-26)<!--il:auto-->
 - une **fake door** qui teste la volonté de payer,
 - un **prototype Figma** qui valide l’usage et l’UX.
 
