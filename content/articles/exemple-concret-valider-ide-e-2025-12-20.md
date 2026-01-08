@@ -78,7 +78,7 @@ Si vous visez un SaaS B2B, c’est ce type de précision que vous devez atteindr
 
 L’objectif des interviews n’est pas de “vendre l’idée” mais de **découvrir la réalité** du terrain.
 
-Voici un script simple de **découverte client** que vous pouvez adapter à votre propre idée de SaaS.
+Voici un script simple de **découverte client** que vous [pouvez adapter à votre propre idée de SaaS.](/articles/exemple-complet-validation-d-ide-2025-12-27)<!--il:auto-->
 
 ### Bloc 1 – Contexte et workflow actuel
 
@@ -237,7 +237,7 @@ Dans l’exemple PropTech, le **pivot** a été net :
 
 ## Conclusion – Valider votre SaaS par interviews avant de le faire développer
 
-[Valider votre idée de SaaS **par interviews utilisateu](/articles/exemple-mvp-re-ussi-comment-2025-12-13)<!--il:auto-->rs** n’a rien de théorique.  
+Valider votre idée de SaaS **par interviews utilisateurs** n’a rien de théorique.  
 En **10 à 12 interviews bien ciblées**, vous pouvez :
 
 - transformer vos **hypothèses** en **preuves de demande**,
