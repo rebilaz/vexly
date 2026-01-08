@@ -40,7 +40,7 @@ Dans cet article, vous allez découvrir un **framework simple en 5 étapes** pou
 Un SaaS rentable ne commence pas avec une idée “cool”.  
 Il commence avec une **douleur client claire, fréquente et coûteuse**.
 
-Pour un créateur de contenu, un freelance ou un entrepreneur, un bon problème à transformer en SaaS coche généralement ces cases :
+Pour un créateur de contenu, un freelance ou un entrepreneur, un bon [problème à transformer en SaaS coche généralement ces](/articles/7-outils-gratuits-comprendre-besoins-2025-12-14)<!--il:auto--> cases :
 
 - il touche une **cible précise** (ex : consultants B2B, coachs business, YouTubers, agences…),
 - il est **récurrent** (revient chaque semaine ou chaque mois),
