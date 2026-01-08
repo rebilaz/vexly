@@ -275,7 +275,7 @@ Ce cas d’étude montre une chose simple :
 
 Dans mon cas :
 - **Contexte + cible** : freelances et créateurs déjà monétisés, frustrés par leurs limites actuelles.
-- **Message envoyé** : “Je construis ton SaaS clé-en-main pour que tu puisses le pré-vendre à ton audience.”
+- **Message envoyé** : “[Je construis ton SaaS clé-en-main pour que tu](/articles/comment-faire-pre-ventes-valider-2025-12-29)<!--il:auto--> puisses le pré-vendre à ton audience.”
 - **Conversations** : 37 échanges sérieux, centrés sur leur business.
 - **Objections** : “pas de produit”, “trop risqué”, “et après ?” → levées par un périmètre clair et une approche no-code.
 - **Résultat + décision** : 27 préventes, traction prouvée, et choix assumé de développer ce positionnement premium “SaaS sur mesure done-for-you”.
