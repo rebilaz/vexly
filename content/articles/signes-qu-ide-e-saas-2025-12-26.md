@@ -22,7 +22,7 @@ keywords: ["valider idée saas", "validation marché saas", "tester idée saas",
 ---
 # Signes qu'une idée de SaaS est VRAIMENT validée : 7 preuves de traction avant de payer un dev
 
-Tu as une idée de SaaS, tu vois déjà l’interface, les screens, le logo…  
+Tu [as une idée de SaaS, tu vois déjà](/articles/7-erreurs-validation-d-ide-2025-12-13)<!--il:auto--> l’interface, les screens, le logo…  
 Mais tu hésites à mettre plusieurs milliers d’euros dans un dev / prestataire.
 
 Question clé : **comment savoir si ton idée est vraiment validée, pas juste “sympa” ?**
