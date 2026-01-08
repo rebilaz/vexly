@@ -24,7 +24,7 @@ keywords: ["landing page SaaS", "valider idée SaaS", "MVP sans coder", "promess
 
 Tu peux avoir la meilleure idée de SaaS du monde, si ta promesse en haut de ta landing est floue, personne ne s’inscrit.
 
-Pour une landing de **validation d’idée** (MVP, sans coder), tout se joue sur une chose :  
+[Pour une landing de **validation d’idée](/articles/kpi-d-landing-validation-saas-2025-12-24)<!--il:auto-->** (MVP, sans coder), tout se joue sur une chose :  
 **ta promesse principale = headline + angle clair**.
 
 Dans cet article, tu vas voir comment :
@@ -124,7 +124,7 @@ Idéal si ton SaaS :
 **Exemples :**
 
 - “Lancez votre SaaS sans recruter un seul développeur”
-- “Validez votre idée SaaS sans investir 10 000 € en dev”
+- “[Validez votre idée SaaS sans investir 10 000](/articles/landing-page-validation-saas-plan-2025-12-17)<!--il:auto--> € en dev”
 
 ### 4. Angle “Statut / image”
 
