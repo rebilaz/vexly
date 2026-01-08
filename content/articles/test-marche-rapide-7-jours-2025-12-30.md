@@ -30,7 +30,7 @@ On va suivre un plan concret :
 
 1. Formuler ton hypothèse
 2. Cibler précisément qui tu veux toucher
-3. Créer une landing page « test » (fake door)
+3. [Créer une landing page « test »](/articles/pre-vente-saas-coder-valider-2025-12-23)<!--il:auto--> (fake door)
 4. Envoyer du trafic
 5. Mesurer des métriques simples
 6. Conclure : on continue, on ajuste, ou on arrête
