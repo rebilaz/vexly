@@ -25,7 +25,7 @@ keywords: ["valider une idée de SaaS", "validation idée SaaS sans coder", "ét
 
 Vous n’avez pas besoin de maquettes complexes ni d’un prototype pour valider une idée de SaaS.
 
-Dans cette étude de cas, je vous montre **exactement comment j’ai validé une idée de SaaS clé-en-main** à partir d’un vrai problème client, *sans écrire une seule ligne de code* :
+Dans cette étude de cas, je vous montre **exactement comment j’ai [validé une idée de SaaS clé-en-main** à partir](/articles/comment-identifier-proble-me-rentable-2025-12-28)<!--il:auto--> d’un vrai problème client, *sans écrire une seule ligne de code* :
 
 - contexte réel,
 - hypothèse de problème,
