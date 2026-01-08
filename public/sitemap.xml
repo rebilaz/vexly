@@ -29,6 +29,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/articles/comment-valider-ide-e-business-2026-01-08</loc>
+    <lastmod>2026-01-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/articles/comment-e-crire-promesse-ta-2025-12-31</loc>
     <lastmod>2025-12-31</lastmod>
     <changefreq>weekly</changefreq>
@@ -191,19 +197,24 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/deleguer-saas-rentable-2025-11-30</loc>
-    <lastmod>2025-11-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/articles/micro-saas-no-code-ia-2025-11-30</loc>
     <lastmod>2025-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/articles/deleguer-saas-rentable-2025-11-30</loc>
+    <lastmod>2025-11-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/marketplace/agent-x-recruiter</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/axonaut-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
