@@ -24,7 +24,7 @@ Vous voyez le potentiel : revenu récurrent, vente automatique, moins de temps �
 
 Mais vous bloquez sur deux choses :
 
-- “Est-ce que mon idée [peut vraiment devenir un business rentable ?](/articles/ide-e-business-rentable-argent-2025-12-25)<!--il:auto-->”
+- “Est-ce que mon idée peut vraiment [devenir un business rentable](/articles/ide-e-business-rentable-argent-2025-12-25)<!--il:auto--> ?”
 - “Est-ce que ça vaut le coup d’investir plusieurs milliers d’euros dedans… sans coder moi-même ?”
 
 C’est exactement là que la plupart des projets meurent : entre l’intuition et la décision d’investir.
@@ -56,7 +56,7 @@ Résultat : des fondateurs qui ont une “bonne idée”, un outil sympa… mais
 - des intégrations intelligentes avec d’autres outils,
 - un modèle économique qui tient la route dès les premiers mois.
 
-Les 6 critères ci-dessous sont [là pour **filtrer votre idée** comme le fe](/articles/comment-valider-ide-e-business-2026-01-08)<!--il:auto-->rait un investisseur.  
+Les 6 critères ci-dessous [sont là pour **filtrer votre idée** comme le](/articles/comment-valider-ide-e-business-2026-01-08)<!--il:auto--> ferait un investisseur.  
 On ne cherche pas à savoir si c’est “cool”, mais si c’est **rentable**.
 
 ---
@@ -267,7 +267,7 @@ Un bon prestataire va challenger ces points avec vous, pas juste exécuter aveug
 
 ## Conclusion : Checklist express + prochaine étape
 
-Pour savoir si votre idée de SaaS no-code [peut devenir un business rentable, vérifiez](/articles/comment-lancer-mvp-saas-rentable-2025-12-18)<!--il:auto--> :
+Pour savoir si votre idée de SaaS no-code peut devenir un business rentable, vérifiez :
 
 1. **Marché** : niche claire, demande réelle, cible solvable.
 2. **Économie** : potentiel d’ARPU > 200 €/mois, churn potentiel faible.
