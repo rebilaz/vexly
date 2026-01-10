@@ -51,7 +51,10 @@ function resolveLinks(graph: MindMapData): MindMapData {
 
 export default function MindMapCanvas({ data, onOpen, onToggle, apiRef }: Props) {
     const graphRef = React.useRef<ForceGraphMethods | null>(null);
+
+    // ✅ SSR-safe dotted background (createDottedBg returns null on server)
     const bg = React.useMemo(() => createDottedBg(), []);
+    const bgUrl = React.useMemo(() => (bg ? `url(${bg.toDataURL()})` : "none"), [bg]);
 
     const laidOut = React.useMemo(() => layoutColumns(data), [data]);
     const graphData = React.useMemo(() => resolveLinks(laidOut), [laidOut]);
@@ -76,7 +79,7 @@ export default function MindMapCanvas({ data, onOpen, onToggle, apiRef }: Props)
             className="absolute inset-0"
             style={{
                 backgroundColor: CANVAS_STYLE.bgColor,
-                backgroundImage: `url(${bg.toDataURL()})`,
+                backgroundImage: bgUrl,
             }}
         >
             <ForceGraph2D
@@ -120,10 +123,12 @@ export default function MindMapCanvas({ data, onOpen, onToggle, apiRef }: Props)
                     const zoom = fg?.zoom?.() ?? 1;
                     const halfW = (w * zoom) / 2;
 
+                    // render.ts offset: 18*u where u=1/max(zoom,1) => screen offset = 18*min(zoom,1)
                     const off = 18 * Math.min(zoom, 1);
                     const chevronCx = center.x + halfW + off;
                     const chevronCy = center.y;
 
+                    // coords in canvas space
                     let px = (evt as any).offsetX as number | undefined;
                     let py = (evt as any).offsetY as number | undefined;
 
