@@ -29,6 +29,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/articles/exemple-validation-pricing-d-ide-2026-01-10</loc>
+    <lastmod>2026-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/articles/me-thode-anti-bullshit-comment-2026-01-09</loc>
     <lastmod>2026-01-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -221,6 +227,11 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/axonaut-com</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/bailfacile-fr</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
