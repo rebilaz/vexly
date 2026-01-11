@@ -31,7 +31,6 @@ function resolveLinks(graph: MindMapData): MindMapData {
 
     const resolved: MindMapLink[] = [];
     for (const l of links as MindMapLink[]) {
-        // keep only drawables
         if (l.kind && l.kind === "canonical") continue;
 
         const sid = asId(l.source);
@@ -52,7 +51,6 @@ function resolveLinks(graph: MindMapData): MindMapData {
 export default function MindMapCanvas({ data, onOpen, onToggle, apiRef }: Props) {
     const graphRef = React.useRef<ForceGraphMethods | null>(null);
 
-    // ✅ SSR-safe dotted background (createDottedBg returns null on server)
     const bg = React.useMemo(() => createDottedBg(), []);
     const bgUrl = React.useMemo(() => (bg ? `url(${bg.toDataURL()})` : "none"), [bg]);
 
@@ -99,12 +97,11 @@ export default function MindMapCanvas({ data, onOpen, onToggle, apiRef }: Props)
                     const x = n.x ?? n.fx ?? 0;
                     const y = n.y ?? n.fy ?? 0;
 
-                    const w = n._w ?? 260;
-                    const h = n._h ?? 100;
-                    const extraRight = 140;
+                    const w = n._w ?? 320;
+                    const h = n._h ?? 96;
 
                     ctx.fillStyle = color;
-                    ctx.fillRect(x - w / 2, y - h / 2, w + extraRight, h);
+                    ctx.fillRect(x - w / 2, y - h / 2, w, h);
                 }}
                 onNodeClick={(node: any, evt: MouseEvent) => {
                     const n = node as MindMapNode;
@@ -119,14 +116,6 @@ export default function MindMapCanvas({ data, onOpen, onToggle, apiRef }: Props)
 
                     const center = fg?.graph2ScreenCoords?.(gx, gy);
                     if (!center) return onOpen(n);
-
-                    const zoom = fg?.zoom?.() ?? 1;
-                    const halfW = (w * zoom) / 2;
-
-                    // render.ts offset: 18*u where u=1/max(zoom,1) => screen offset = 18*min(zoom,1)
-                    const off = 18 * Math.min(zoom, 1);
-                    const chevronCx = center.x + halfW + off;
-                    const chevronCy = center.y;
 
                     // coords in canvas space
                     let px = (evt as any).offsetX as number | undefined;
@@ -144,13 +133,23 @@ export default function MindMapCanvas({ data, onOpen, onToggle, apiRef }: Props)
                         }
                     }
 
-                    const dx = px - chevronCx;
-                    const dy = py - chevronCy;
+                    const zoom = fg?.zoom?.() ?? 1;
 
-                    const R = 28;
-                    const isChevron = dx * dx + dy * dy <= R * R;
+                    // ✅ Card bounds (screen space)
+                    const halfW = (w * zoom) / 2;
+                    const halfH = (h * zoom) / 2;
 
-                    if (isChevron && (n.type === "pillar" || n.type === "content")) {
+                    const left = center.x - halfW;
+                    const right = center.x + halfW;
+                    const top = center.y - halfH;
+                    const bottom = center.y + halfH;
+
+                    // ✅ Toggle zone = bande droite inside la carte
+                    const TOGGLE_BAND = 48; // px
+                    const inCard = px >= left && px <= right && py >= top && py <= bottom;
+                    const inToggle = inCard && px >= right - TOGGLE_BAND;
+
+                    if (inToggle && (n.type === "pillar" || n.type === "content")) {
                         onToggle(n);
                         return;
                     }

@@ -3,9 +3,14 @@ import NextImage from "next/image";
 type Props = {
   image?: string;
   name: string;
+  /**
+   * À activer UNIQUEMENT pour les images réellement above-the-fold
+   * (homepage, featured listing, hero critique)
+   */
+  priority?: boolean;
 };
 
-export function Image({ image, name }: Props) {
+export function Image({ image, name, priority = false }: Props) {
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/40 transition-all duration-500 hover:shadow-slate-200/60">
       <div className="relative aspect-[16/10] w-full bg-slate-100">
@@ -14,9 +19,9 @@ export function Image({ image, name }: Props) {
             src={image}
             alt={`Interface du SaaS ${name}`}
             fill
+            priority={priority}
             className="object-cover transition-transform duration-700 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 800px, 1000px"
-            priority
           />
         ) : (
           <div className="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-50 text-slate-400">

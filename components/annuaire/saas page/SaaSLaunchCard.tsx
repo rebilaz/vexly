@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Rocket, Eye, CreditCard } from "lucide-react";
 import type { Listing } from "@/lib/marketplace";
@@ -36,7 +36,6 @@ export default function SaasLaunchCard({
   listing,
   compact = false,
 }: SaasLaunchCardProps) {
-  // ✅ évite "Cannot read properties of undefined (reading 'slug')"
   if (!listing) {
     return (
       <section className="rounded-[28px] border border-slate-200 bg-white p-6 shadow-sm">
@@ -50,20 +49,14 @@ export default function SaasLaunchCard({
   const [visits, setVisits] = useState(5000);
   const [price, setPrice] = useState(49);
 
-  const safe = useMemo(() => {
-    return {
-      visits: clamp(Number.isFinite(visits) ? visits : 0, 0, 150000),
-      price: clamp(Number.isFinite(price) ? price : 0, 0, 200),
-    };
-  }, [visits, price]);
+  // ✅ Calcul direct (pas besoin de useMemo ici)
+  const safeVisits = clamp(Number.isFinite(visits) ? visits : 0, 0, 150000);
+  const safePrice = clamp(Number.isFinite(price) ? price : 0, 0, 200);
 
-  const range = useMemo(() => {
-    const clientsLow = safe.visits * CONV_LOW;
-    const clientsHigh = safe.visits * CONV_HIGH;
-    const mrrLow = clientsLow * safe.price;
-    const mrrHigh = clientsHigh * safe.price;
-    return { clientsLow, clientsHigh, mrrLow, mrrHigh };
-  }, [safe]);
+  const clientsLow = safeVisits * CONV_LOW;
+  const clientsHigh = safeVisits * CONV_HIGH;
+  const mrrLow = clientsLow * safePrice;
+  const mrrHigh = clientsHigh * safePrice;
 
   const primaryHref = `/form?ref=marketplace&slug=${encodeURIComponent(
     listing.slug,
@@ -100,7 +93,6 @@ export default function SaasLaunchCard({
             SaaS
           </h3>
 
-          {/* Moins de texte */}
           <p className="mt-2 text-sm font-medium text-slate-600">
             Estime ton MRR en 10s.
           </p>
@@ -117,7 +109,7 @@ export default function SaasLaunchCard({
             </div>
 
             <div className="rounded-xl bg-violet-50 px-3 py-1 text-sm font-extrabold text-violet-600">
-              {fmtInt(safe.visits)}
+              {fmtInt(safeVisits)}
             </div>
           </div>
 
@@ -127,7 +119,7 @@ export default function SaasLaunchCard({
             min={0}
             max={150000}
             step={100}
-            value={safe.visits}
+            value={safeVisits}
             onChange={(e) => setVisits(Number(e.target.value))}
             className="
               mt-3 h-2 w-full cursor-pointer appearance-none rounded-full
@@ -164,7 +156,7 @@ export default function SaasLaunchCard({
             </div>
 
             <div className="rounded-xl bg-violet-50 px-3 py-1 text-sm font-extrabold text-violet-600">
-              {fmtInt(safe.price)} €
+              {fmtInt(safePrice)} €
             </div>
           </div>
 
@@ -174,7 +166,7 @@ export default function SaasLaunchCard({
             min={0}
             max={200}
             step={1}
-            value={safe.price}
+            value={safePrice}
             onChange={(e) => setPrice(Number(e.target.value))}
             className="
               mt-3 h-2 w-full cursor-pointer appearance-none rounded-full
@@ -207,15 +199,14 @@ export default function SaasLaunchCard({
               MRR estimé
             </div>
 
-            {/* Layout compact + gros chiffres */}
             <div className="mt-3">
               <div className="flex items-baseline gap-3">
                 <div className="font-geist text-3xl font-extrabold tracking-tight text-slate-900">
-                  {fmtEUR(range.mrrLow)}
+                  {fmtEUR(mrrLow)}
                 </div>
                 <div className="text-slate-300">—</div>
                 <div className="font-geist text-3xl font-extrabold tracking-tight text-slate-900">
-                  {fmtEUR(range.mrrHigh)}
+                  {fmtEUR(mrrHigh)}
                 </div>
               </div>
 
@@ -224,7 +215,7 @@ export default function SaasLaunchCard({
                   / mois
                 </div>
                 <div className="text-sm font-extrabold text-violet-600">
-                  {fmtInt(range.clientsLow)}–{fmtInt(range.clientsHigh)} clients
+                  {fmtInt(clientsLow)}–{fmtInt(clientsHigh)} clients
                 </div>
               </div>
             </div>

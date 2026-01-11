@@ -2,63 +2,160 @@
 import type { MindMapData, MindMapNode } from "../mindmap.types";
 import { LAYOUT } from "./theme";
 
-const MAX_DEPTH_COL = 10; // 10+ bucket (∞ à droite)
+const MAX_DEPTH_COL = 10;
+const ORPHANS_COL = -1; // ✅ colonne spéciale à gauche
 
-function depthCol(n: MindMapNode) {
+function isOrphan(n: MindMapNode): boolean {
+    const indeg = typeof n.in_degree === "number" ? n.in_degree : 0;
+    return n.depth_bfs == null || indeg <= 0;
+}
+
+function depthView(n: MindMapNode): number {
+    if (isOrphan(n)) return ORPHANS_COL; // ✅ bucket visuel
     const d = n.depth_bfs;
     if (typeof d !== "number" || !Number.isFinite(d)) return MAX_DEPTH_COL;
     return Math.min(d, MAX_DEPTH_COL);
 }
 
-// log scale for authority so it spreads well
-function authorityY(n: MindMapNode) {
+function authorityScore(n: MindMapNode): number {
     const a = typeof n.in_degree === "number" ? n.in_degree : 0;
-    // log1p spreads small values nicely
-    const y = Math.log1p(Math.max(0, a));
-    return y;
+    return Math.log1p(Math.max(0, a));
 }
 
-function stableHash(s: string) {
-    // deterministic tiny hash for jitter
-    let h = 2166136261;
-    for (let i = 0; i < s.length; i++) {
-        h ^= s.charCodeAt(i);
-        h = Math.imul(h, 16777619);
+function normalize(s: string): string {
+    return (s ?? "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "");
+}
+
+function buildIndex(nodes: MindMapNode[]): Map<string, MindMapNode> {
+    const map = new Map<string, MindMapNode>();
+    for (const n of nodes) map.set(n.id, n);
+    return map;
+}
+
+type GroupKey = "PAGES" | "ARTICLES" | "ANNUAIRE" | "TAGS";
+const GROUP_ORDER: GroupKey[] = ["PAGES", "ARTICLES", "ANNUAIRE", "TAGS"];
+
+const GROUP_META: Record<GroupKey, { label: string; color: string }> = {
+    PAGES: { label: "Pages", color: "rgba(15,23,42,0.95)" },
+    ARTICLES: { label: "Articles", color: "rgba(37,99,235,0.95)" },
+    ANNUAIRE: { label: "Annuaire", color: "rgba(22,163,74,0.95)" },
+    TAGS: { label: "Tags", color: "rgba(245,158,11,0.95)" },
+};
+
+function groupFromParentChain(n: MindMapNode, index: Map<string, MindMapNode>): GroupKey {
+    let cur: MindMapNode | undefined = n;
+
+    for (let i = 0; i < 14; i++) {
+        const label = normalize(cur?.label ?? "");
+        const id = normalize(cur?.id ?? "");
+
+        if (
+            label.includes("tag") ||
+            label.includes("categorie") ||
+            label.includes("category") ||
+            id.includes("tag") ||
+            id.includes("categorie") ||
+            id.includes("category")
+        ) return "TAGS";
+
+        if (
+            label.includes("marketplace") ||
+            label.includes("annuaire") ||
+            id.includes("marketplace") ||
+            id.includes("annuaire")
+        ) return "ANNUAIRE";
+
+        if (label.includes("article") || label.includes("blog") || id.includes("article") || id.includes("blog"))
+            return "ARTICLES";
+
+        const parentId: string | null | undefined = cur?.parent ?? null;
+        const p: MindMapNode | undefined = parentId ? index.get(parentId) : undefined;
+        if (!p) break;
+        cur = p;
     }
-    return h >>> 0;
+
+    return "PAGES";
+}
+
+function groupFromUrlFallback(n: MindMapNode): GroupKey {
+    const p = normalize(String((n as any).path ?? (n as any).url ?? ""));
+    if (p.includes("/tags/") || p.includes("/tag/") || p.includes("/categorie") || p.includes("/category")) return "TAGS";
+    if (p.includes("/marketplace/") || p.includes("/annuaire/")) return "ANNUAIRE";
+    if (p.includes("/blog/") || p.includes("/articles/") || p.includes("/saas/")) return "ARTICLES";
+    return "PAGES";
+}
+
+function getGroup(n: MindMapNode, index: Map<string, MindMapNode>): GroupKey {
+    const g1 = groupFromParentChain(n, index);
+    return g1 === "PAGES" ? groupFromUrlFallback(n) : g1;
 }
 
 export function layoutColumns(data: MindMapData): MindMapData {
     const nodes = (data.nodes ?? []).map((n) => ({ ...n })) as MindMapNode[];
     const links = (data.links ?? []).map((l) => ({ ...l }));
 
-    // Normalize ranges
-    let maxAuth = 0;
+    const index = buildIndex(nodes);
+
+    const xGap = LAYOUT.colGap;
+    const rowGap = LAYOUT.rowGap ?? 118;
+    const groupGap = LAYOUT.groupGap ?? 34;
+
+    const startX = 0;
+    const startY = -90;
+
+    // group by depth_view (orphelins => -1)
+    const byDepth = new Map<number, MindMapNode[]>();
     for (const n of nodes) {
-        maxAuth = Math.max(maxAuth, authorityY(n));
+        const d = depthView(n);
+        n._depth = d;            // depth visuel
+        n._isOrphan = isOrphan(n);
+        if (!byDepth.has(d)) byDepth.set(d, []);
+        byDepth.get(d)!.push(n);
     }
-    if (!Number.isFinite(maxAuth) || maxAuth <= 0) maxAuth = 1;
 
-    // Tunables
-    const xGap = LAYOUT.colGap;     // 540
-    const yGap = 220;              // vertical spread multiplier (bigger = more separation)
-    const jitter = 22;             // small anti-overlap jitter
+    const sortByAuth = (a: MindMapNode, b: MindMapNode) => {
+        const aa = authorityScore(a);
+        const bb = authorityScore(b);
+        if (bb !== aa) return bb - aa;
+        return a.id.localeCompare(b.id);
+    };
 
-    for (const n of nodes) {
-        const c = depthCol(n);
-        const x = c * xGap;
+    for (const [depth, arr] of byDepth) {
+        const x = startX + depth * xGap; // depth=-1 => colonne à gauche
 
-        // normalized authority (0..1) then invert so high authority = up (negative)
-        const a = authorityY(n) / maxAuth; // 0..1
-        const baseY = -a * yGap * 6;       // 6 bands worth of height
+        const groups = new Map<GroupKey, MindMapNode[]>();
+        for (const n of arr) {
+            const g = getGroup(n, index);
+            n._groupKey = g;
+            n._groupLabel = depth === ORPHANS_COL ? "Orphans" : GROUP_META[g].label; // ✅ label différent
+            n._groupColor = depth === ORPHANS_COL ? "rgba(239,68,68,0.95)" : GROUP_META[g].color; // rouge
 
-        // deterministic jitter so nodes don't overlap perfectly
-        const h = stableHash(n.id);
-        const jx = ((h % 1000) / 1000 - 0.5) * jitter;
-        const jy = (((Math.floor(h / 1000) % 1000) / 1000) - 0.5) * jitter;
+            if (!groups.has(g)) groups.set(g, []);
+            groups.get(g)!.push(n);
+        }
 
-        n.fx = x + jx;
-        n.fy = baseY + jy;
+        let y = startY;
+
+        for (const g of GROUP_ORDER) {
+            const list = groups.get(g);
+            if (!list || list.length === 0) continue;
+
+            list.sort(sortByAuth);
+
+            // petit header pad
+            y += 10;
+
+            for (const n of list) {
+                n.fx = x;
+                n.fy = y;
+                y += rowGap;
+            }
+
+            y += groupGap;
+        }
     }
 
     return { nodes, links };

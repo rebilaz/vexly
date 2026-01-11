@@ -36,6 +36,12 @@ export type MindMapNode = {
     // runtime sizes for canvas hit-testing (chevron click)
     _w?: number;
     _h?: number;
+
+    // group UI (same depth, category grouping)
+    _groupKey?: string;     // "PAGES" | "ARTICLES" | "ANNUAIRE" | "TAGS"
+    _groupLabel?: string;   // "Pages" | "Articles" | ...
+    _groupColor?: string;   // rgba(...)
+    _isOrphan?: boolean;    // ✅ NEW
 };
 
 export type MindMapLink = {

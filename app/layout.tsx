@@ -3,8 +3,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { GeistSans } from "geist/font/sans";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import LayoutChrome from "@/components/LayoutChrome";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.vexly.fr"), // ⭐ ESSENTIEL pour canonical
@@ -47,14 +46,10 @@ export default function RootLayout({
           />
         </noscript>
 
-        {/* WRAPPER */}
-        <div className="flex min-h-screen flex-col">
-          <Header />
-
-          <main className="flex-1">{children}</main>
-
-          <Footer />
-        </div>
+        {/* ✅ WRAPPER CONDITIONNEL (Header/Footer cachés sur /saas/seo-mindmap) */}
+        <LayoutChrome>
+          {children}
+        </LayoutChrome>
 
         {/* ✅ Meta Pixel */}
         <Script id="meta-pixel" strategy="afterInteractive">

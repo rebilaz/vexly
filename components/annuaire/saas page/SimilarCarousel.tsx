@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Listing } from "@/lib/marketplace";
+import type { Listing } from "@/lib/marketplace";
 import { Image as SaaSImage } from "./Images";
 
 type Props = {
@@ -11,34 +11,87 @@ type Props = {
 };
 
 function getImage(p: Listing) {
-    // ✅ priorité: URL du MD (supabase storage public)
     if (p?.image && typeof p.image === "string" && p.image.trim()) return p.image.trim();
-
-    // fallback si jamais y’a pas d’image dans le md
     return "/placeholders/saas.jpg";
+}
+
+function setBtnState(btn: HTMLButtonElement, enabled: boolean) {
+    // Conserve EXACTEMENT le même LUX que ton template (disabled = opacity-40 + cursor-not-allowed)
+    btn.disabled = !enabled;
+
+    // On applique la bonne classe selon l'état, sans React state
+    // Base classes communes: (déjà dans className)
+    // Disabled: "cursor-not-allowed opacity-40"
+    // Enabled: "text-slate-700 hover:bg-slate-50 hover:shadow-md active:scale-95"
+    btn.classList.toggle("cursor-not-allowed", !enabled);
+    btn.classList.toggle("opacity-40", !enabled);
+
+    btn.classList.toggle("text-slate-700", enabled);
+    btn.classList.toggle("hover:bg-slate-50", enabled);
+    btn.classList.toggle("hover:shadow-md", enabled);
+    btn.classList.toggle("active:scale-95", enabled);
 }
 
 export function SimilarCarousel({ similar }: Props) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
-    const [canScrollRight, setCanScrollRight] = useState(true);
+    const leftBtnRef = useRef<HTMLButtonElement>(null);
+    const rightBtnRef = useRef<HTMLButtonElement>(null);
 
-    const checkScroll = () => {
-        if (!containerRef.current) return;
-        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-        setCanScrollLeft(scrollLeft > 0);
-        setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
+    // RAF throttle (anti-spam)
+    const rafRef = useRef<number | null>(null);
+
+    const updateButtons = () => {
+        const el = containerRef.current;
+        const leftBtn = leftBtnRef.current;
+        const rightBtn = rightBtnRef.current;
+        if (!el || !leftBtn || !rightBtn) return;
+
+        const { scrollLeft, scrollWidth, clientWidth } = el;
+
+        const canLeft = scrollLeft > 0;
+        const canRight = scrollLeft + clientWidth < scrollWidth - 1;
+
+        setBtnState(leftBtn, canLeft);
+        setBtnState(rightBtn, canRight);
+    };
+
+    const onScroll = () => {
+        if (rafRef.current != null) return;
+        rafRef.current = window.requestAnimationFrame(() => {
+            rafRef.current = null;
+            updateButtons();
+        });
     };
 
     const scrollBy = (offset: number) => {
-        if (!containerRef.current) return;
-        containerRef.current.scrollBy({ left: offset, behavior: "smooth" });
+        const el = containerRef.current;
+        if (!el) return;
+        el.scrollBy({ left: offset, behavior: "smooth" });
     };
 
     useEffect(() => {
-        checkScroll();
-        const t = setTimeout(checkScroll, 50);
-        return () => clearTimeout(t);
+        // Init
+        updateButtons();
+
+        const el = containerRef.current;
+        if (!el) return;
+
+        // Listener scroll (passive + throttled)
+        el.addEventListener("scroll", onScroll, { passive: true });
+
+        // Re-check après layout (images, fonts, etc.)
+        const t = window.setTimeout(updateButtons, 60);
+
+        // Re-check aussi sur resize (responsive)
+        window.addEventListener("resize", updateButtons, { passive: true });
+
+        return () => {
+            window.clearTimeout(t);
+            el.removeEventListener("scroll", onScroll as any);
+            window.removeEventListener("resize", updateButtons as any);
+            if (rafRef.current != null) window.cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [similar.length]);
 
@@ -51,26 +104,20 @@ export function SimilarCarousel({ similar }: Props) {
 
                 <div className="flex gap-2">
                     <button
+                        ref={leftBtnRef}
                         onClick={() => scrollBy(-320)}
-                        disabled={!canScrollLeft}
                         className={`flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white shadow-sm transition-all
-              ${!canScrollLeft
-                                ? "cursor-not-allowed opacity-40"
-                                : "text-slate-700 hover:bg-slate-50 hover:shadow-md active:scale-95"
-                            }`}
+              cursor-not-allowed opacity-40`}
                         aria-label="Scroll left"
                     >
                         <ChevronLeft size={16} />
                     </button>
 
                     <button
+                        ref={rightBtnRef}
                         onClick={() => scrollBy(320)}
-                        disabled={!canScrollRight}
                         className={`flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-white shadow-sm transition-all
-              ${!canScrollRight
-                                ? "cursor-not-allowed opacity-40"
-                                : "text-slate-700 hover:bg-slate-50 hover:shadow-md active:scale-95"
-                            }`}
+              text-slate-700 hover:bg-slate-50 hover:shadow-md active:scale-95`}
                         aria-label="Scroll right"
                     >
                         <ChevronRight size={16} />
@@ -80,7 +127,6 @@ export function SimilarCarousel({ similar }: Props) {
 
             <div
                 ref={containerRef}
-                onScroll={checkScroll}
                 className="mt-6 flex gap-6 overflow-x-auto pb-8 pt-2 snap-x snap-mandatory"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
@@ -91,7 +137,6 @@ export function SimilarCarousel({ similar }: Props) {
                             className="group block h-full rounded-2xl bg-white transition hover:opacity-100"
                         >
                             <div className="mb-4">
-                                {/* ✅ on affiche l’URL MD, pas une URL reconstruite */}
                                 <SaaSImage image={getImage(p)} name={p.name} />
                             </div>
 

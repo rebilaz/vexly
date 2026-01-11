@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Eye, CreditCard } from "lucide-react";
 
 function clamp(n: number, min: number, max: number) {
@@ -30,22 +30,13 @@ export default function EstimatedMRRCard({ compact = false }: { compact?: boolea
     const [visits, setVisits] = useState(5000);
     const [price, setPrice] = useState(49);
 
-    const safe = useMemo(() => {
-        return {
-            visits: clamp(Number.isFinite(visits) ? visits : 0, 0, 200000),
-            price: clamp(Number.isFinite(price) ? price : 0, 0, 499),
-        };
-    }, [visits, price]);
+    const safeVisits = clamp(Number.isFinite(visits) ? visits : 0, 0, 200000);
+    const safePrice = clamp(Number.isFinite(price) ? price : 0, 0, 499);
 
-    const range = useMemo(() => {
-        const clientsLow = safe.visits * CONV_LOW;
-        const clientsHigh = safe.visits * CONV_HIGH;
-        const mrrLow = clientsLow * safe.price;
-        const mrrHigh = clientsHigh * safe.price;
-
-        return { clientsLow, clientsHigh, mrrLow, mrrHigh };
-    }, [safe]);
-
+    const clientsLow = safeVisits * CONV_LOW;
+    const clientsHigh = safeVisits * CONV_HIGH;
+    const mrrLow = clientsLow * safePrice;
+    const mrrHigh = clientsHigh * safePrice;
 
     const pad = compact ? "p-6" : "p-7";
     const titleSize = compact ? "text-3xl" : "text-4xl";
@@ -71,7 +62,9 @@ export default function EstimatedMRRCard({ compact = false }: { compact?: boolea
                 </div>
 
                 <div className="text-center">
-                    <div className={`font-geist font-extrabold tracking-tight text-slate-900 ${titleSize}`}>
+                    <div
+                        className={`font-geist font-extrabold tracking-tight text-slate-900 ${titleSize}`}
+                    >
                         <span className="mr-2 text-slate-900/90">Crée ton</span>
                         <span className="bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
                             SaaS
@@ -97,7 +90,7 @@ export default function EstimatedMRRCard({ compact = false }: { compact?: boolea
                         </div>
 
                         <div className="rounded-xl bg-violet-50 px-3 py-1.5 text-base font-extrabold text-violet-600">
-                            {fmtInt(safe.visits)}
+                            {fmtInt(safeVisits)}
                         </div>
                     </div>
 
@@ -107,7 +100,7 @@ export default function EstimatedMRRCard({ compact = false }: { compact?: boolea
                         min={0}
                         max={150000}
                         step={100}
-                        value={safe.visits}
+                        value={safeVisits}
                         onChange={(e) => setVisits(Number(e.target.value))}
                         className="
               mt-3 h-2 w-full cursor-pointer appearance-none rounded-full
@@ -142,7 +135,7 @@ export default function EstimatedMRRCard({ compact = false }: { compact?: boolea
                         </div>
 
                         <div className="rounded-xl bg-violet-50 px-3 py-1.5 text-base font-extrabold text-violet-600">
-                            {fmtInt(safe.price)} €
+                            {fmtInt(safePrice)} €
                         </div>
                     </div>
 
@@ -152,7 +145,7 @@ export default function EstimatedMRRCard({ compact = false }: { compact?: boolea
                         min={0}
                         max={200}
                         step={1}
-                        value={safe.price}
+                        value={safePrice}
                         onChange={(e) => setPrice(Number(e.target.value))}
                         className="
               mt-3 h-2 w-full cursor-pointer appearance-none rounded-full
@@ -187,17 +180,16 @@ export default function EstimatedMRRCard({ compact = false }: { compact?: boolea
                     <div className="mt-3 flex items-baseline justify-between gap-4">
                         <div className="flex min-w-0 flex-1 items-baseline justify-between gap-4">
                             <div className="truncate text-3xl font-extrabold tracking-tight text-slate-900">
-                                {fmtEUR(range.mrrLow)}
+                                {fmtEUR(mrrLow)}
                             </div>
 
                             <div className="flex-shrink-0 text-slate-300">—</div>
 
                             <div className="truncate text-3xl font-extrabold tracking-tight text-slate-900">
-                                {fmtEUR(range.mrrHigh)}
+                                {fmtEUR(mrrHigh)}
                             </div>
                         </div>
 
-                        {/* FIX: / mois ne disparaît pas */}
                         <div className="flex-shrink-0 whitespace-nowrap text-sm font-bold text-slate-400">
                             / mois
                         </div>

@@ -6,10 +6,14 @@ function uiScale(globalScale: number) {
     return 1 / Math.max(globalScale, 1);
 }
 
+function clamp(v: number, min: number, max: number) {
+    return Math.max(min, Math.min(max, v));
+}
+
 function riskColor(risk?: string) {
-    if (risk === "danger") return "rgba(239,68,68,1)";   // red-500
-    if (risk === "warn") return "rgba(245,158,11,1)";    // amber-500
-    return "rgba(34,197,94,1)";                          // green-500
+    if (risk === "danger") return "rgba(239,68,68,1)";
+    if (risk === "warn") return "rgba(245,158,11,1)";
+    return "rgba(34,197,94,1)";
 }
 
 function riskLabel(risk?: string) {
@@ -18,157 +22,184 @@ function riskLabel(risk?: string) {
     return "OK";
 }
 
+function typePillBg(type: MindMapNode["type"]) {
+    if (type === "strategic") return "rgba(226,232,240,1)";
+    if (type === "pillar") return "rgba(220,252,231,1)";
+    if (type === "content") return "rgba(219,234,254,1)";
+    return "rgba(241,245,249,1)";
+}
+
+function typePillText(type: MindMapNode["type"]) {
+    if (type === "strategic") return "rgba(15,23,42,0.9)";
+    if (type === "pillar") return "rgba(22,101,52,0.95)";
+    if (type === "content") return "rgba(30,64,175,0.95)";
+    return "rgba(100,116,139,0.95)";
+}
+
 export function drawNode(node: any, ctx: CanvasRenderingContext2D, globalScale: number) {
     const n = node as MindMapNode;
     const x = n.x ?? n.fx ?? 0;
     const y = n.y ?? n.fy ?? 0;
-
     const u = uiScale(globalScale);
 
-    const padX = 22 * u;
-    const padY = 18 * u;
-    const radius = 22 * u;
+    const W = 320 * u;
+    const H = 96 * u;
+    const R = 18 * u;
 
-    const titleFont = clamp(18 * u, 14, 20);
-    const smallFont = clamp(12 * u, 10, 13);
+    n._w = W;
+    n._h = H;
 
-    const iconBox = 44 * u;
-    const iconR = 14 * u;
+    const left = x - W / 2;
+    const top = y - H / 2;
 
-    const typeLabel = TYPE_LABEL[n.type].toUpperCase();
-
-    // show indegree + depth in the card
-    const indeg = n.in_degree ?? 0;
-    const depth = n.depth_bfs == null ? "∞" : String(n.depth_bfs);
-
-    // measure title
-    ctx.font = `900 ${titleFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-    const titleW = ctx.measureText(n.label).width;
-
-    ctx.font = `800 ${smallFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-    const typeW = ctx.measureText(typeLabel).width;
-
-    const rightMeta = `In: ${indeg} • D: ${depth}`;
-    const rightMetaW = ctx.measureText(rightMeta).width;
-
-    const riskText = riskLabel(n.risk);
-    const riskW = ctx.measureText(riskText).width;
-
-    const contentW = Math.max(titleW, typeW + 14 * u + riskW + 34 * u, rightMetaW);
-    const w = padX + iconBox + 14 * u + contentW + padX;
-    const h = Math.max(92 * u, padY * 2 + titleFont + smallFont + 22 * u);
-
-    n._w = w;
-    n._h = h;
-
-    const left = x - w / 2;
-    const top = y - h / 2;
-
-    // shadow
+    // shadow + card
     ctx.save();
-    ctx.shadowColor = "rgba(2,6,23,0.08)";
-    ctx.shadowBlur = 20 * u;
+    ctx.shadowColor = "rgba(2,6,23,0.07)";
+    ctx.shadowBlur = 18 * u;
     ctx.shadowOffsetY = 8 * u;
 
-    roundRect(ctx, left, top, w, h, radius);
+    roundRect(ctx, left, top, W, H, R);
     ctx.fillStyle = "#ffffff";
     ctx.fill();
     ctx.restore();
 
-    // border (risk tinted)
+    // border
     ctx.save();
-    ctx.lineWidth = 1.1 * u;
-    ctx.strokeStyle = "rgba(148,163,184,0.55)";
-    roundRect(ctx, left, top, w, h, radius);
+    ctx.lineWidth = 1 * u;
+    ctx.strokeStyle = "rgba(226,232,240,1)";
+    roundRect(ctx, left, top, W, H, R);
     ctx.stroke();
     ctx.restore();
 
-    // left dot = risk (most important)
+    // ✅ LEFT category bar (group color)
+    const gcol = n._groupColor ?? "rgba(148,163,184,0.9)";
+    ctx.save();
+    roundRect(ctx, left + 1 * u, top + 10 * u, 6 * u, H - 20 * u, 999 * u);
+    ctx.fillStyle = gcol;
+    ctx.fill();
+    ctx.restore();
+
+    // risk dot (top-left)
     ctx.save();
     ctx.fillStyle = riskColor(n.risk);
     ctx.beginPath();
-    ctx.arc(left + 10 * u, top + h / 2, 5.6 * u, 0, Math.PI * 2);
+    ctx.arc(left + 14 * u, top + 18 * u, 4.2 * u, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
 
-    // icon box (keep type color)
-    const accent = TYPE_COLOR[n.type];
-    const boxX = left + padX;
-    const boxY = top + (h - iconBox) / 2;
+    const headerFont = clamp(11 * u, 9, 12);
+    const titleFont = clamp(16 * u, 12, 16);
+    const smallFont = clamp(11 * u, 9, 11);
+
+    // ✅ GROUP pill (top-left after dot)
+    const groupText = (n._groupLabel ?? "").toUpperCase();
+    if (groupText) {
+        ctx.save();
+        ctx.font = `900 ${headerFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+        const gw = ctx.measureText(groupText).width;
+
+        const pillH = 20 * u;
+        const padX = 9 * u;
+        const pillW = gw + padX * 2;
+
+        const gx = left + 24 * u;
+        const gy = top + 18 * u;
+
+        roundRect(ctx, gx, gy - pillH / 2, pillW, pillH, 999 * u);
+        ctx.fillStyle = "rgba(241,245,249,1)";
+        ctx.fill();
+        ctx.strokeStyle = "rgba(226,232,240,1)";
+        ctx.lineWidth = 1 * u;
+        ctx.stroke();
+
+        ctx.fillStyle = gcol;
+        ctx.fillText(groupText, gx + padX, gy + 0.5 * u);
+        ctx.restore();
+    }
+
+    // TYPE pill (top row)
+    const typeText = (TYPE_LABEL[n.type] ?? n.type).toUpperCase();
+    const score = typeof n.in_degree === "number" ? n.in_degree : 0;
 
     ctx.save();
-    roundRect(ctx, boxX, boxY, iconBox, iconBox, iconR);
-    ctx.fillStyle = pastelFill(n.type);
-    ctx.fill();
-    ctx.restore();
+    ctx.font = `900 ${headerFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+    const typeW = ctx.measureText(typeText).width;
 
-    drawGlyph(ctx, boxX + iconBox / 2, boxY + iconBox / 2, n.type, u, accent);
-
-    // text block
-    const textX = boxX + iconBox + 14 * u;
-    const topRowY = top + 28 * u;
-    const titleY = top + h / 2 + 4 * u;
-    const metaY = top + h - 26 * u;
-
-    // type label
-    ctx.save();
-    ctx.font = `900 ${smallFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-    ctx.fillStyle = "rgba(100,116,139,0.95)";
-    ctx.fillText(typeLabel, textX, topRowY);
-
-    // risk pill (right after type)
-    const pillX = textX + typeW + 10 * u;
-    const pillH = 22 * u;
+    const pillH = 20 * u;
     const pillPadX = 10 * u;
-    const pillW = riskW + pillPadX * 2;
+    const pillW = typeW + pillPadX * 2;
 
-    roundRect(ctx, pillX, topRowY - pillH / 2, pillW, pillH, 999 * u);
-    ctx.fillStyle = "rgba(241,245,249,1)";
+    const pillX = left + 24 * u + (groupText ? (ctx.measureText(groupText).width + 34 * u) : 0);
+    const pillY = top + 18 * u;
+
+    roundRect(ctx, pillX, pillY - pillH / 2, pillW, pillH, 999 * u);
+    ctx.fillStyle = typePillBg(n.type);
     ctx.fill();
-    ctx.lineWidth = 1 * u;
-    ctx.strokeStyle = "rgba(226,232,240,1)";
-    ctx.stroke();
-
-    ctx.fillStyle = "rgba(15,23,42,0.9)";
-    ctx.fillText(riskText, pillX + pillPadX, topRowY);
+    ctx.fillStyle = typePillText(n.type);
+    ctx.fillText(typeText, pillX + pillPadX, pillY + 0.5 * u);
     ctx.restore();
 
-    // title
+    // SCORE (top-right)
+    const scoreText = `● ${score}`;
     ctx.save();
-    ctx.font = `950 ${titleFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
-    ctx.fillStyle = "#0f172a";
-    ctx.fillText(n.label, textX, titleY);
+    ctx.font = `900 ${headerFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+    const scoreW = ctx.measureText(scoreText).width;
+    ctx.fillStyle = "rgba(100,116,139,0.95)";
+    ctx.fillText(scoreText, left + W - 18 * u - scoreW, top + 18 * u + 0.5 * u);
     ctx.restore();
 
-    // meta (in-degree & depth)
+    // Title
+    const titleX = left + 18 * u;
+    const titleY = top + 56 * u;
+
+    ctx.save();
+    ctx.font = `900 ${titleFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
+    ctx.fillStyle = "rgba(15,23,42,0.95)";
+    ctx.fillText(truncate(ctx, n.label, W - 36 * u), titleX, titleY);
+    ctx.restore();
+
+    // Bottom meta
+    const indeg = n.in_degree ?? 0;
+    const depth = n.depth_bfs == null ? "∞" : String(n.depth_bfs);
+    const bottomLeft = `In ${indeg} • Depth ${depth}`;
+    const bottomRight = riskLabel(n.risk);
+
     ctx.save();
     ctx.font = `800 ${smallFont}px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto`;
     ctx.fillStyle = "rgba(100,116,139,0.95)";
-    ctx.fillText(rightMeta, textX, metaY);
-    ctx.restore();
+    ctx.fillText(bottomLeft, left + 18 * u, top + H - 14 * u);
 
-    // chevron outside
-    const cR = 14 * u;
-    const cx = left + w + 18 * u;
-    const cy = top + h / 2;
+    const brW = ctx.measureText(bottomRight).width;
+    const chipPad = 10 * u;
+    const chipW = brW + chipPad * 2;
+    const chipH = 20 * u;
+    const chipX = left + W - 18 * u - chipW;
+    const chipY = top + H - 16 * u;
 
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, cR, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(248,250,252,1)";
+    roundRect(ctx, chipX, chipY - chipH / 2, chipW, chipH, 999 * u);
+    ctx.fillStyle = "rgba(241,245,249,1)";
     ctx.fill();
-    ctx.lineWidth = 1 * u;
     ctx.strokeStyle = "rgba(226,232,240,1)";
+    ctx.lineWidth = 1 * u;
     ctx.stroke();
 
-    ctx.strokeStyle = "rgba(100,116,139,0.95)";
+    ctx.fillStyle = "rgba(15,23,42,0.85)";
+    ctx.fillText(bottomRight, chipX + chipPad, chipY + 0.5 * u);
+    ctx.restore();
+
+    // Chevron (inside right)
+    const cx = left + W - 26 * u;
+    const cy = top + H / 2;
+
+    ctx.save();
+    ctx.strokeStyle = "rgba(148,163,184,0.95)";
     ctx.lineWidth = 2.2 * u;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
     ctx.beginPath();
-    ctx.moveTo(cx - 3.5 * u, cy - 5 * u);
-    ctx.lineTo(cx + 3.5 * u, cy);
-    ctx.lineTo(cx - 3.5 * u, cy + 5 * u);
+    ctx.moveTo(cx - 4 * u, cy - 5 * u);
+    ctx.lineTo(cx + 3 * u, cy);
+    ctx.lineTo(cx - 4 * u, cy + 5 * u);
     ctx.stroke();
     ctx.restore();
 }
@@ -183,14 +214,13 @@ export function drawLink(link: any, ctx: CanvasRenderingContext2D, globalScale: 
     const ty = (t.y ?? t.fy ?? 0) as number;
 
     const u = uiScale(globalScale);
-
     const w = clamp(Math.max(1, (link.weight ?? 1) * 0.95) * u, 0.9, 2.0);
     const midX = (sx + tx) / 2;
 
     const dashed = LINK_STYLE.dashLongtail && ((t as any).type as MindMapType) === "longtail";
 
     ctx.save();
-    ctx.strokeStyle = "rgba(148,163,184,0.55)";
+    ctx.strokeStyle = LINK_STYLE.stroke ?? "rgba(148,163,184,0.55)";
     ctx.lineWidth = w;
     if (dashed) ctx.setLineDash([8 * u, 8 * u]);
 
@@ -205,78 +235,7 @@ export function drawLink(link: any, ctx: CanvasRenderingContext2D, globalScale: 
     ctx.restore();
 }
 
-// ===== helpers =====
-function pastelFill(type: MindMapNode["type"]) {
-    if (type === "pillar") return "rgba(220,252,231,0.85)";
-    if (type === "content") return "rgba(219,234,254,0.85)";
-    if (type === "strategic") return "rgba(226,232,240,0.9)";
-    return "rgba(241,245,249,0.9)";
-}
-
-function drawGlyph(
-    ctx: CanvasRenderingContext2D,
-    cx: number,
-    cy: number,
-    type: MindMapNode["type"],
-    u: number,
-    color: string
-) {
-    ctx.save();
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.lineWidth = 2.2 * u;
-    ctx.lineCap = "round";
-    ctx.lineJoin = "round";
-
-    if (type === "strategic") {
-        ctx.beginPath();
-        ctx.moveTo(cx - 10 * u, cy + 4 * u);
-        ctx.lineTo(cx - 10 * u, cy - 2 * u);
-        ctx.lineTo(cx, cy - 10 * u);
-        ctx.lineTo(cx + 10 * u, cy - 2 * u);
-        ctx.lineTo(cx + 10 * u, cy + 4 * u);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(cx - 4.5 * u, cy + 4 * u);
-        ctx.lineTo(cx - 4.5 * u, cy - 1 * u);
-        ctx.lineTo(cx + 4.5 * u, cy - 1 * u);
-        ctx.lineTo(cx + 4.5 * u, cy + 4 * u);
-        ctx.stroke();
-    } else if (type === "pillar") {
-        ctx.beginPath();
-        ctx.moveTo(cx - 9 * u, cy);
-        ctx.lineTo(cx + 9 * u, cy);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - 9 * u);
-        ctx.lineTo(cx, cy + 9 * u);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(cx, cy, 3.5 * u, 0, Math.PI * 2);
-        ctx.stroke();
-    } else if (type === "content") {
-        roundRect(ctx, cx - 10 * u, cy - 12 * u, 20 * u, 24 * u, 6 * u);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(cx - 6 * u, cy - 2 * u);
-        ctx.lineTo(cx + 6 * u, cy - 2 * u);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(cx - 6 * u, cy + 4 * u);
-        ctx.lineTo(cx + 3 * u, cy + 4 * u);
-        ctx.stroke();
-    } else {
-        ctx.beginPath();
-        ctx.arc(cx - 6 * u, cy, 2.2 * u, 0, Math.PI * 2);
-        ctx.arc(cx, cy, 2.2 * u, 0, Math.PI * 2);
-        ctx.arc(cx + 6 * u, cy, 2.2 * u, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    ctx.restore();
-}
-
+// utils
 function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
     const rr = Math.min(r, w / 2, h / 2);
     ctx.beginPath();
@@ -289,6 +248,12 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
     return ctx;
 }
 
-function clamp(v: number, min: number, max: number) {
-    return Math.max(min, Math.min(max, v));
+function truncate(ctx: CanvasRenderingContext2D, text: string, maxW: number) {
+    if (!text) return "";
+    if (ctx.measureText(text).width <= maxW) return text;
+    let t = text;
+    while (t.length > 6 && ctx.measureText(t + "…").width > maxW) {
+        t = t.slice(0, -1);
+    }
+    return t + "…";
 }

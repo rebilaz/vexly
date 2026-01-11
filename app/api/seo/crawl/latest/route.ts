@@ -7,7 +7,11 @@ import { createClient } from "@supabase/supabase-js";
 function sb() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    if (!url || !key) {
+        throw new Error(
+            "Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY"
+        );
+    }
     return createClient(url, key, { auth: { persistSession: false } });
 }
 
@@ -27,10 +31,23 @@ function norm(u: string) {
     try {
         const url = new URL(u);
         url.hash = "";
-        if (url.pathname !== "/" && url.pathname.endsWith("/")) url.pathname = url.pathname.slice(0, -1);
+        if (url.pathname !== "/" && url.pathname.endsWith("/")) {
+            url.pathname = url.pathname.slice(0, -1);
+        }
         return url.toString();
     } catch {
         return u;
+    }
+}
+
+function safePath(u: string | null | undefined): string | null {
+    if (!u) return null;
+    try {
+        return new URL(u).pathname || "/";
+    } catch {
+        // if someone stored a path directly
+        if (u.startsWith("/")) return u;
+        return null;
     }
 }
 
@@ -50,7 +67,6 @@ function pickHomeId(baseUrl: string, nodeSet: Set<string>) {
             if (u.pathname === "/") return id;
         } catch { }
     }
-
     return null;
 }
 
@@ -110,6 +126,27 @@ function bfs(homeId: string, adj: Map<string, string[]>) {
     return { depth, parent };
 }
 
+type PageRow = {
+    url: string;
+    depth: number | null;
+    title: string | null;
+    status_code: number | null;
+    is_indexable: boolean | null;
+    nofollow: boolean | null;
+    content_type: string | null;
+    render_mode: string | null;
+    flags: any;
+    response_ms: number | null;
+    bytes: number | null;
+    canonical_url: string | null;
+    final_url: string | null;
+};
+
+function bestOpenUrl(p?: PageRow | null, fallback?: string) {
+    const u = p?.canonical_url || p?.final_url || p?.url || fallback || "";
+    return u ? norm(u) : null;
+}
+
 export async function GET() {
     try {
         const sbClient = sb();
@@ -127,7 +164,10 @@ export async function GET() {
 
         const run = latestRunRes.data;
         if (!run?.id) {
-            return NextResponse.json({ ok: false, error: "No crawl_runs found" }, { status: 404 });
+            return NextResponse.json(
+                { ok: false, error: "No crawl_runs found" },
+                { status: 404 }
+            );
         }
 
         const run_id = run.id as string;
@@ -144,16 +184,19 @@ export async function GET() {
 
         if (pagesRes.error) throw new Error(pagesRes.error.message);
 
-        const pages = pagesRes.data ?? [];
+        const pages = (pagesRes.data ?? []) as PageRow[];
         if (!pages.length) {
-            return NextResponse.json({ ok: false, error: "Latest run has no pages" }, { status: 404 });
+            return NextResponse.json(
+                { ok: false, error: "Latest run has no pages" },
+                { status: 404 }
+            );
         }
 
-        // url -> page lookup
-        const pageByUrl = new Map<string, any>();
+        // url -> page lookup (by requested url)
+        const pageByUrl = new Map<string, PageRow>();
         for (const p of pages) pageByUrl.set(norm(p.url), p);
 
-        // canonical key
+        // canonical key (used as node.id)
         const keyOf = (u: string) => {
             const p = pageByUrl.get(norm(u));
             const base = p?.canonical_url ? norm(p.canonical_url) : norm(u);
@@ -165,13 +208,34 @@ export async function GET() {
 
         for (const p of pages) {
             const key = keyOf(p.url);
-            const mode = p.render_mode === "js_heavy" ? "JS" : p.render_mode === "html" ? "HTML" : "UNK";
+
+            const openUrl = bestOpenUrl(p, key); // ✅ URL à ouvrir
+            const path = openUrl ? safePath(openUrl) : safePath(key);
+
+            const mode =
+                p.render_mode === "js_heavy"
+                    ? "JS"
+                    : p.render_mode === "html"
+                        ? "HTML"
+                        : "UNK";
 
             const existing = nodeMap.get(key);
+
             if (!existing) {
                 nodeMap.set(key, {
+                    // ✅ ForceGraph ID
                     id: key,
-                    label: p.title?.trim() || labelFromUrl(key),
+
+                    // ✅ Required for side panel actions
+                    url: openUrl ?? key,
+                    path: path ?? undefined,
+
+                    // Useful debug
+                    source_url: norm(p.url),
+                    final_url: p.final_url ? norm(p.final_url) : null,
+                    canonical_url: p.canonical_url ? norm(p.canonical_url) : null,
+
+                    label: p.title?.trim() || labelFromUrl(openUrl ?? key),
 
                     // filled later
                     depth_bfs: null as number | null,
@@ -193,24 +257,36 @@ export async function GET() {
                 });
             } else {
                 // merge: keep best label
-                if ((!existing.label || existing.label === labelFromUrl(key)) && p.title?.trim()) {
+                if (
+                    (!existing.label || existing.label === labelFromUrl(existing.url ?? key)) &&
+                    p.title?.trim()
+                ) {
                     existing.label = p.title.trim();
                 }
 
-                // merge: keep worst status (for risk)
+                // ✅ keep a valid open url if missing
+                if (!existing.url && openUrl) existing.url = openUrl;
+                if (!existing.path && path) existing.path = path;
+
+                // keep worst status (for risk)
                 const prev = existing.status_code ?? 200;
                 const cur = p.status_code ?? 200;
                 existing.status_code = Math.max(prev, cur);
 
-                // merge: keep JS if any
+                // keep JS if any
                 if (existing.render_mode !== "js_heavy" && p.render_mode === "js_heavy") {
                     existing.render_mode = "js_heavy";
                     existing.metaLeft = `JS • ${existing.status_code ?? "—"}`;
                 }
 
-                // merge: keep max bytes/ms
-                existing.response_ms = Math.max(existing.response_ms ?? 0, p.response_ms ?? 0) || null;
+                // keep max bytes/ms
+                existing.response_ms =
+                    Math.max(existing.response_ms ?? 0, p.response_ms ?? 0) || null;
                 existing.bytes = Math.max(existing.bytes ?? 0, p.bytes ?? 0) || null;
+
+                // keep debug urls
+                if (!existing.canonical_url && p.canonical_url) existing.canonical_url = norm(p.canonical_url);
+                if (!existing.final_url && p.final_url) existing.final_url = norm(p.final_url);
             }
         }
 
@@ -230,7 +306,6 @@ export async function GET() {
         const allEdges = linksRes.data ?? [];
 
         // --- weights (Google-like) ---
-        // Used for AUTHORITY (Y). For DEPTH (X) we use reachability graph.
         const AREA_W: Record<string, number> = {
             content: 3.0,
             header: 0.6,
@@ -239,9 +314,7 @@ export async function GET() {
             other: 0.3,
         };
 
-        // two graphs:
-        // - adjContent: strong signal (content-only) for diagnostics
-        // - adjReach: reachability for depth X (content + header + nav)
+        // graphs
         const adjContent = new Map<string, string[]>();
         const adjReach = new Map<string, string[]>();
         for (const id of nodeSet) {
@@ -256,7 +329,7 @@ export async function GET() {
         const inDegContent = new Map<string, number>();
         const outDegContent = new Map<string, number>();
 
-        for (const e of allEdges) {
+        for (const e of allEdges as any[]) {
             if (e.kind !== "a") continue;
 
             const from = keyOf(e.from_url);
@@ -267,27 +340,21 @@ export async function GET() {
             const area = (e.area ?? "other") as string;
             const w = AREA_W[area] ?? 0.3;
 
-            // ✅ Y axis (authority): weighted in/out
             outDegWeighted.set(from, (outDegWeighted.get(from) ?? 0) + w);
             inDegWeighted.set(to, (inDegWeighted.get(to) ?? 0) + w);
 
-            // ✅ strong signal (content)
             if (area === "content") {
                 adjContent.get(from)!.push(to);
                 outDegContent.set(from, (outDegContent.get(from) ?? 0) + 1);
                 inDegContent.set(to, (inDegContent.get(to) ?? 0) + 1);
             }
 
-            // ✅ reachability for depth X
-            // (footer excluded by default because it creates fake “reachability” everywhere)
             if (area === "content" || area === "header" || area === "nav") {
                 adjReach.get(from)!.push(to);
             }
         }
 
-        // BFS from home:
-        // - try content-only first
-        // - fallback to reachability graph if too sparse
+        // BFS from home
         let depth = new Map<string, number>();
         let parent = new Map<string, string | null>();
 
@@ -298,8 +365,6 @@ export async function GET() {
             parent = r1.parent;
 
             const ratio = depth.size / nodeSet.size;
-
-            // if less than 25% pages reached via content-only, use reach graph for X
             if (ratio < 0.25) {
                 const r2 = bfs(homeId, adjReach);
                 depth = r2.depth;
@@ -319,24 +384,26 @@ export async function GET() {
             n.in_degree = Math.round((inDegWeighted.get(n.id) ?? 0) * 10) / 10;
             n.out_degree = Math.round((outDegWeighted.get(n.id) ?? 0) * 10) / 10;
 
-            // optional debug (useful in panel)
+            // optional debug
             n.in_degree_content = inDegContent.get(n.id) ?? 0;
             n.out_degree_content = outDegContent.get(n.id) ?? 0;
 
-            // risk based on weighted indegree + depth + cost
             n.risk = computeRisk(n);
 
-            // type (kept for your legend)
+            // type
             if (n.depth_bfs === 0) n.type = "strategic";
             else if (n.depth_bfs === 1) n.type = "pillar";
             else if (n.depth_bfs === 2) n.type = "content";
             else n.type = "longtail";
 
             n.metaRight = `Depth: ${n.depth_bfs == null ? "∞" : n.depth_bfs}`;
-            // metaLeft already set
+
+            // ✅ ensure url/path never missing
+            if (!n.url) n.url = n.id;
+            if (!n.path) n.path = safePath(n.url) ?? safePath(n.id) ?? undefined;
         }
 
-        // ✅ tree links only = parent -> child (readability)
+        // ✅ tree links only = parent -> child
         const treeLinks: any[] = [];
         for (const n of nodes as any[]) {
             if (n.parent && nodeSet.has(n.parent) && nodeSet.has(n.id)) {
@@ -348,13 +415,13 @@ export async function GET() {
         const edgeSet = new Set<string>();
         const extraLinks: any[] = [];
 
-        for (const e of allEdges) {
+        for (const e of allEdges as any[]) {
             const from = keyOf(e.from_url);
             const to = keyOf(e.to_url);
             if (!nodeSet.has(from) || !nodeSet.has(to)) continue;
             if (from === to) continue;
 
-            // drop edges that are already in the tree
+            // drop edges that are already in the tree (for content edges)
             if (e.kind === "a" && e.area === "content") {
                 const toNode = nodeMap.get(to);
                 if (toNode?.parent === from) continue;
@@ -377,12 +444,17 @@ export async function GET() {
         const depths = nodes
             .map((n: any) => (typeof n.depth_bfs === "number" ? n.depth_bfs : null))
             .filter((x: any) => x != null) as number[];
-        const avgDepth = depths.length ? depths.reduce((a, b) => a + b, 0) / depths.length : 0;
+        const avgDepth = depths.length
+            ? depths.reduce((a, b) => a + b, 0) / depths.length
+            : 0;
 
         const jsCount = nodes.filter((n: any) => n.render_mode === "js_heavy").length;
         const orphanCount = nodes.filter((n: any) => (n.in_degree ?? 0) === 0).length;
         const deepWeak = nodes.filter(
-            (n: any) => typeof n.depth_bfs === "number" && n.depth_bfs >= 4 && (n.in_degree ?? 0) <= 1
+            (n: any) =>
+                typeof n.depth_bfs === "number" &&
+                n.depth_bfs >= 4 &&
+                (n.in_degree ?? 0) <= 1
         ).length;
 
         return NextResponse.json({
@@ -405,6 +477,9 @@ export async function GET() {
             extraLinks,
         });
     } catch (e: any) {
-        return NextResponse.json({ ok: false, error: String(e?.message ?? e) }, { status: 500 });
+        return NextResponse.json(
+            { ok: false, error: String(e?.message ?? e) },
+            { status: 500 }
+        );
     }
 }
