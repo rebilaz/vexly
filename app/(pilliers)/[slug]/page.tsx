@@ -1,7 +1,11 @@
 // app/(pillars)/[slug]/page.tsx
+export const dynamicParams = true;
+export const revalidate = 3600; // 1h, ajuste si tu veux
+
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAllPillarSlugs, getPillar } from "@/lib/pillars";
+
 
 function asString(v: unknown): string | undefined {
     if (typeof v === "string") {
