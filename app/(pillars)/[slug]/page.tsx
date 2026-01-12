@@ -1,6 +1,7 @@
 // app/(pillars)/[slug]/page.tsx
+export const runtime = "nodejs";
 export const dynamicParams = true;
-export const revalidate = 3600; // 1h, ajuste si tu veux
+export const revalidate = 3600;
 
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";

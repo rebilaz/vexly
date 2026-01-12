@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
+
   async redirects() {
     return [
       {
@@ -12,6 +13,14 @@ const nextConfig = {
         permanent: true,
       },
     ];
+  },
+
+  // ✅ IMPORTANT: inclure content/ dans le bundle prod (standalone/Vercel)
+  output: "standalone",
+  experimental: {
+    outputFileTracingIncludes: {
+      "/*": ["content/**/*"],
+    },
   },
 };
 
