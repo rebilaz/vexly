@@ -15,12 +15,10 @@ const nextConfig = {
     ];
   },
 
-  // ✅ IMPORTANT: inclure content/ dans le bundle prod (standalone/Vercel)
+  // ✅ IMPORTANT: embarque content/ en prod (standalone / tracing)
   output: "standalone",
-  experimental: {
-    outputFileTracingIncludes: {
-      "/*": ["content/**/*"],
-    },
+  outputFileTracingIncludes: {
+    "/*": ["content/**/*"],
   },
 };
 

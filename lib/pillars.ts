@@ -7,7 +7,7 @@ export type PillarFrontmatter = {
     slug?: string;
     type?: string; // "pillar"
     pillar?: string; // ex: nom du cluster
-    cluster?: string; // optionnel
+    cluster?: string;
     canonical_url?: string;
     description?: string;
     updated_at?: string;
@@ -25,12 +25,9 @@ export type PillarDoc = {
 const CONTENT_DIR = path.join(process.cwd(), "content", "pillars");
 
 /**
- * Very small frontmatter parser (YAML-like).
- * Supports:
- * ---
- * key: "value"
- * key: value
- * ---
+ * ---------------------------------------------------------------------
+ * Frontmatter parser (minimal YAML-like)
+ * ---------------------------------------------------------------------
  */
 function parseFrontmatter(raw: string): { fm: PillarFrontmatter; body: string } {
     const s = raw.replace(/\r\n/g, "\n");
@@ -46,13 +43,13 @@ function parseFrontmatter(raw: string): { fm: PillarFrontmatter; body: string } 
     for (const line of fmBlock.split("\n")) {
         const trimmed = line.trim();
         if (!trimmed || trimmed.startsWith("#")) continue;
+
         const idx = trimmed.indexOf(":");
         if (idx === -1) continue;
 
         const key = trimmed.slice(0, idx).trim();
         let val = trimmed.slice(idx + 1).trim();
 
-        // remove surrounding quotes
         if (
             (val.startsWith('"') && val.endsWith('"')) ||
             (val.startsWith("'") && val.endsWith("'"))
@@ -67,8 +64,9 @@ function parseFrontmatter(raw: string): { fm: PillarFrontmatter; body: string } 
 }
 
 /**
- * Minimal Markdown -> HTML
- * (headings, paragraphs, bold, italics, inline code, links, lists)
+ * ---------------------------------------------------------------------
+ * Markdown -> HTML (minimal)
+ * ---------------------------------------------------------------------
  */
 function escapeHtml(s: string) {
     return s
@@ -82,16 +80,10 @@ function escapeHtml(s: string) {
 function mdInlineToHtml(line: string) {
     let out = escapeHtml(line);
 
-    // inline code
     out = out.replace(/`([^`]+)`/g, (_, a) => `<code>${escapeHtml(a)}</code>`);
-
-    // bold **x**
     out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-
-    // italics *x*
     out = out.replace(/\*([^*]+)\*/g, "<em>$1</em>");
 
-    // links [text](url)
     out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
         const safeText = escapeHtml(text);
         const safeUrl = escapeHtml(url);
@@ -104,10 +96,9 @@ function mdInlineToHtml(line: string) {
 }
 
 function markdownToHtml(md: string) {
-    // strip fenced code blocks
     const clean = md.replace(/```[\s\S]*?```/g, "");
-
     const lines = clean.split("\n");
+
     let html = "";
     let inUl = false;
     let inOl = false;
@@ -130,19 +121,20 @@ function markdownToHtml(md: string) {
             continue;
         }
 
-        // headings
         const h1 = line.match(/^#\s+(.+)$/);
         if (h1) {
             closeLists();
             html += `<h1>${mdInlineToHtml(h1[1])}</h1>`;
             continue;
         }
+
         const h2 = line.match(/^##\s+(.+)$/);
         if (h2) {
             closeLists();
             html += `<h2>${mdInlineToHtml(h2[1])}</h2>`;
             continue;
         }
+
         const h3 = line.match(/^###\s+(.+)$/);
         if (h3) {
             closeLists();
@@ -150,7 +142,6 @@ function markdownToHtml(md: string) {
             continue;
         }
 
-        // unordered list
         const ul = line.match(/^[-*+]\s+(.+)$/);
         if (ul) {
             if (inOl) {
@@ -165,7 +156,6 @@ function markdownToHtml(md: string) {
             continue;
         }
 
-        // ordered list
         const ol = line.match(/^\d+\.\s+(.+)$/);
         if (ol) {
             if (inUl) {
@@ -188,6 +178,11 @@ function markdownToHtml(md: string) {
     return html;
 }
 
+/**
+ * ---------------------------------------------------------------------
+ * FS helpers
+ * ---------------------------------------------------------------------
+ */
 async function fileExists(filePath: string) {
     try {
         await fs.access(filePath);
@@ -197,12 +192,26 @@ async function fileExists(filePath: string) {
     }
 }
 
+/**
+ * ---------------------------------------------------------------------
+ * Public API
+ * ---------------------------------------------------------------------
+ */
 export async function getPillar(slug: string): Promise<PillarDoc | null> {
-    // slug is dynamic, file-based
     const safeSlug = String(slug || "").trim();
     if (!safeSlug) return null;
 
     const filePath = path.join(CONTENT_DIR, `${safeSlug}.md`);
+
+    // 🔎 DEBUG LOGS (temp)
+    console.log("──────── PILLAR LOOKUP ────────");
+    console.log("slug        :", safeSlug);
+    console.log("cwd         :", process.cwd());
+    console.log("CONTENT_DIR :", CONTENT_DIR);
+    console.log("filePath    :", filePath);
+    console.log("exists      :", await fileExists(filePath));
+    console.log("────────────────────────────────");
+
     if (!(await fileExists(filePath))) return null;
 
     const raw = await fs.readFile(filePath, "utf8");
@@ -232,18 +241,15 @@ export async function getPillar(slug: string): Promise<PillarDoc | null> {
 }
 
 export async function getAllPillarSlugs(): Promise<string[]> {
-    // filesystem-driven (dynamic)
     try {
         const entries = await fs.readdir(CONTENT_DIR, { withFileTypes: true });
-        const slugs = entries
+
+        return entries
             .filter((e) => e.isFile() && e.name.endsWith(".md"))
             .map((e) => e.name.replace(/\.md$/, ""))
-            .filter(Boolean)
             .sort();
-
-        return slugs;
-    } catch {
-        // folder may not exist yet
+    } catch (err) {
+        console.log("⚠️ getAllPillarSlugs() failed:", err);
         return [];
     }
 }
