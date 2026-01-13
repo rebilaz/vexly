@@ -29,6 +29,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13</loc>
+    <lastmod>2026-01-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/articles/quel-prix-pre-vente-saas-2026-01-12</loc>
     <lastmod>2026-01-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -304,6 +310,11 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/shine-fr</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/stonly-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
