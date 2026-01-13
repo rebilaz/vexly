@@ -1,10 +1,11 @@
 // app/(pillars)/[slug]/page.tsx
-export const runtime = "nodejs"; // ✅ fs works (avoid Edge runtime)
+export const runtime = "nodejs";
 export const dynamicParams = true;
-export const revalidate = 3600; // 1h
+export const revalidate = 3600;
 
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import PillarLayout from "@/components/pillars/PillarLayout";
 import { getAllPillarSlugs, getPillar } from "@/lib/pillars";
 
 function asString(v: unknown): string | undefined {
@@ -17,7 +18,6 @@ function asString(v: unknown): string | undefined {
     return undefined;
 }
 
-// ✅ Compatible avec params sync (Next 13/14) ET params async (Next récent)
 async function getSlugFromParams(
     params: { slug: string } | Promise<{ slug: string }>,
 ): Promise<string> {
@@ -66,21 +66,21 @@ export default async function PillarPage({
     if (!doc) return notFound();
 
     const title = asString(doc.frontmatter.title) ?? doc.slug;
-    const description = asString(doc.frontmatter.description);
+    const subtitle = asString(doc.frontmatter.description);
+
+    const tags = Array.isArray(doc.frontmatter.tags)
+        ? doc.frontmatter.tags.map((t) => String(t)).filter(Boolean)
+        : [];
 
     return (
-        <main className="mx-auto max-w-3xl px-5 py-10">
-            <header className="mb-8">
-                <h1 className="text-3xl font-semibold tracking-tight">{title}</h1>
-                {description ? (
-                    <p className="mt-3 text-base text-slate-600">{description}</p>
-                ) : null}
-            </header>
-
-            <article
-                className="prose prose-slate max-w-none"
-                dangerouslySetInnerHTML={{ __html: doc.html }}
-            />
-        </main>
+        <PillarLayout
+            title={title}
+            subtitle={subtitle}
+            tags={tags}
+            niche={asString(doc.frontmatter.niche) ?? undefined}
+            coverImageUrl={asString(doc.frontmatter.coverImageUrl) ?? undefined}
+            backHref="/articles"
+            sections={doc.sections}
+        />
     );
 }

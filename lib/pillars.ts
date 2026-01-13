@@ -11,7 +11,18 @@ export type PillarFrontmatter = {
     canonical_url?: string;
     description?: string;
     updated_at?: string;
+    date?: string;
+    readingTime?: string;
+    tags?: string[];
+    niche?: string;
+    coverImageUrl?: string;
     [k: string]: unknown;
+};
+
+export type PillarSection = {
+    id?: string;
+    heading?: string; // texte du "##"
+    body: string; // MARKDOWN
 };
 
 export type PillarDoc = {
@@ -19,6 +30,11 @@ export type PillarDoc = {
     filePath: string;
     frontmatter: PillarFrontmatter;
     markdown: string;
+
+    // ✅ new: sections markdown comme tes articles
+    sections: PillarSection[];
+
+    // (optionnel) tu peux garder si ailleurs tu l'utilises
     html: string;
 };
 
@@ -57,6 +73,16 @@ function parseFrontmatter(raw: string): { fm: PillarFrontmatter; body: string } 
             val = val.slice(1, -1);
         }
 
+        // mini support array YAML simple: tags: ["a","b"] (optionnel)
+        if (val.startsWith("[") && val.endsWith("]")) {
+            try {
+                (fm as any)[key] = JSON.parse(val);
+                continue;
+            } catch {
+                // fallback string
+            }
+        }
+
         (fm as any)[key] = val;
     }
 
@@ -65,7 +91,73 @@ function parseFrontmatter(raw: string): { fm: PillarFrontmatter; body: string } 
 
 /**
  * ---------------------------------------------------------------------
- * Markdown -> HTML (minimal)
+ * Helpers
+ * ---------------------------------------------------------------------
+ */
+function toSlug(input: string) {
+    return String(input ?? "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[’]/g, "'")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .replace(/-+/g, "-")
+        .trim();
+}
+
+/**
+ * ---------------------------------------------------------------------
+ * Markdown -> sections (split sur "## ")
+ * - Tout ce qui est avant le 1er "##" => section d'intro (heading undefined)
+ * - Chaque "## X" => nouvelle section (heading = X)
+ * ---------------------------------------------------------------------
+ */
+function markdownToSections(md: string): PillarSection[] {
+    const s = String(md ?? "").replace(/\r\n/g, "\n").trim();
+    if (!s) return [];
+
+    const lines = s.split("\n");
+
+    const sections: PillarSection[] = [];
+    let current: PillarSection = { id: "intro", heading: undefined, body: "" };
+
+    const pushCurrent = () => {
+        const body = current.body.trim();
+        // on push même si body vide ? non
+        if (body) sections.push({ ...current, body });
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // on split seulement sur H2
+        const m = line.match(/^##\s+(.+)\s*$/);
+        if (m) {
+            // flush section précédente
+            pushCurrent();
+
+            const headingRaw = m[1] ?? "";
+            const heading = headingRaw.trim();
+
+            current = {
+                heading,
+                id: heading ? toSlug(heading) : `section-${sections.length + 1}`,
+                body: "",
+            };
+            continue;
+        }
+
+        current.body += line + "\n";
+    }
+
+    pushCurrent();
+    return sections;
+}
+
+/**
+ * ---------------------------------------------------------------------
+ * Markdown -> HTML (minimal) (tu peux garder / supprimer)
  * ---------------------------------------------------------------------
  */
 function escapeHtml(s: string) {
@@ -230,13 +322,15 @@ export async function getPillar(slug: string): Promise<PillarDoc | null> {
     };
 
     const md = body.trim();
+    const sections = markdownToSections(md);
 
     return {
         slug: safeSlug,
         filePath,
         frontmatter: mergedFm,
         markdown: md,
-        html: markdownToHtml(md),
+        sections,
+        html: markdownToHtml(md), // optionnel
     };
 }
 
