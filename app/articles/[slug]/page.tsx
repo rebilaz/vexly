@@ -4,6 +4,19 @@ import { getArticleBySlug, getAllArticles } from "@/lib/articles";
 
 type Params = { slug: string };
 
+// ✅ slugify simple (même logique que tes fonctions)
+function toSlug(input: string) {
+  return String(input ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’]/g, "'")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .replace(/-+/g, "-")
+    .trim();
+}
+
 export async function generateStaticParams() {
   const articles = await getAllArticles();
   return articles.map((article) => ({ slug: article.slug }));
@@ -19,7 +32,6 @@ export async function generateMetadata(
 
   const { frontmatter } = article;
 
-  // ✅ Canonical: frontmatter si tu veux (absolue), sinon fallback propre
   const canonical =
     (frontmatter.canonical_url && frontmatter.canonical_url.trim()) ||
     `/articles/${slug}`;
@@ -27,9 +39,7 @@ export async function generateMetadata(
   return {
     title: frontmatter.title,
     description: frontmatter.description,
-    alternates: {
-      canonical, // ✅ LA BALISE CANONICAL SERA GÉNÉRÉE
-    },
+    alternates: { canonical },
     openGraph: {
       title: frontmatter.title,
       description: frontmatter.description,
@@ -54,6 +64,10 @@ export default async function ArticlePage({
 
   const { frontmatter, sections } = article;
 
+  // ✅ On utilise cluster comme “nom du pilier”
+  const pillarTitle = String(frontmatter.cluster ?? "").trim() || undefined;
+  const pillarSlug = pillarTitle ? toSlug(pillarTitle) : undefined;
+
   return (
     <ArticleLayout
       title={frontmatter.title}
@@ -65,6 +79,17 @@ export default async function ArticlePage({
       coverImageUrl={frontmatter.coverImageUrl}
       backHref="/articles"
       sections={sections}
+      // ✅ NEW
+      pillar={
+        pillarSlug && pillarTitle
+          ? {
+            title: pillarTitle,
+            slug: pillarSlug,
+            href: `/${pillarSlug}`,          // ton pilier est à la racine
+            breadcrumbBase: "/articles",     // pour afficher /articles/...
+          }
+          : undefined
+      }
     />
   );
 }
