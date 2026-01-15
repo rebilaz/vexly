@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Search, X } from "lucide-react";
+import { Search } from "lucide-react";
 
 export default function ArticlesHeroClient({
   query,
@@ -11,42 +11,44 @@ export default function ArticlesHeroClient({
   onQueryChange: (v: string) => void;
 }) {
   return (
-    <header className="relative overflow-hidden border-b border-slate-100 bg-white min-h-[75vh] flex items-center">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:20px_20px] opacity-[0.35]" />
+    <header className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
+      {/* Image de fond — INCHANGÉE */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            "url('/Gemini_Generated_Image_vdi976vdi976vdi9.webp')",
+        }}
+      />
 
-      <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-        <div className="max-w-4xl">
-          <h1 className="text-6xl sm:text-7xl lg:text-[5.5rem] font-extrabold tracking-tight text-slate-900 mb-10 leading-[1.02]">
-            Explorez, apprenez, <span className="text-indigo-600">bâtissez.</span>
-          </h1>
 
-          <p className="text-xl sm:text-2xl leading-relaxed text-slate-600 max-w-2xl mb-16">
-            Des guides pratiques et des retours d&apos;expérience pour accélérer sur le Design, le Code et le Business.
-          </p>
+      {/* Contenu */}
+      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.05]">
+          Apprenez vite.
+          <br />
+          Construisez juste.
+        </h1>
 
-          <div className="relative max-w-xl group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-            </div>
+        <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+          Une sélection d’articles clairs et concrets pour avancer sur la
+          validation, le produit, le code et la croissance.
+        </p>
 
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => onQueryChange(e.target.value)}
-              placeholder="Rechercher un sujet..."
-              className="block w-full rounded-2xl py-5 pl-12 pr-12 text-base text-slate-900 ring-1 ring-inset ring-slate-200 placeholder:text-slate-400 focus:ring-2 focus:ring-indigo-600 bg-white/90 backdrop-blur"
-            />
+        {/* Search minimaliste */}
+        <div className="relative mt-10 max-w-md mx-auto">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
 
-            {query && (
-              <button
-                onClick={() => onQueryChange("")}
-                className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-600"
-                aria-label="Effacer la recherche"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            )}
-          </div>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            placeholder="Rechercher un article…"
+            className="w-full rounded-full bg-white py-3 pl-11 pr-4 text-sm
+                       text-slate-900 placeholder:text-slate-400
+                       ring-1 ring-slate-200
+                       focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          />
         </div>
       </div>
     </header>

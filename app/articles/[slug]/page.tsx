@@ -32,9 +32,19 @@ export async function generateMetadata(
 
   const { frontmatter } = article;
 
+  const isPillar = String((frontmatter as any)?.type || "") === "pillar";
+
   const canonical =
     (frontmatter.canonical_url && frontmatter.canonical_url.trim()) ||
-    `/articles/${slug}`;
+    (isPillar ? `/${slug}` : `/articles/${slug}`);
+
+  const canonicalAbs =
+    typeof canonical === "string" && canonical.startsWith("http")
+      ? canonical
+      : `https://www.vexly.fr${canonical}`;
+
+  // ✅ OG image déterministe (pas besoin de frontmatter)
+  const ogImageAbs = `https://www.vexly.fr/images/articles/${slug}.webp`;
 
   return {
     title: frontmatter.title,
@@ -44,10 +54,15 @@ export async function generateMetadata(
       title: frontmatter.title,
       description: frontmatter.description,
       type: "article",
-      url:
-        typeof canonical === "string" && canonical.startsWith("http")
-          ? canonical
-          : `https://www.vexly.fr${canonical}`,
+      url: canonicalAbs,
+      images: [
+        {
+          url: ogImageAbs,
+          width: 1536,
+          height: 1024,
+          alt: frontmatter.title,
+        },
+      ],
     },
   };
 }
@@ -64,29 +79,41 @@ export default async function ArticlePage({
 
   const { frontmatter, sections } = article;
 
-  // ✅ On utilise cluster comme “nom du pilier”
-  const pillarTitle = String(frontmatter.cluster ?? "").trim() || undefined;
+  const isPillar = String((frontmatter as any)?.type || "") === "pillar";
+
+  // ✅ pilier associé (priorité à frontmatter.pillar, fallback cluster)
+  const pillarTitle =
+    String((frontmatter as any)?.pillar ?? "").trim() ||
+    String((frontmatter as any)?.pillar_title ?? "").trim() ||
+    String(frontmatter.cluster ?? "").trim() ||
+    undefined;
+
   const pillarSlug = pillarTitle ? toSlug(pillarTitle) : undefined;
+
+  // ✅ date optionnelle
+  const date =
+    (frontmatter as any)?.date ||
+    (frontmatter as any)?.updated_at ||
+    undefined;
 
   return (
     <ArticleLayout
       title={frontmatter.title}
       subtitle={frontmatter.subtitle}
-      date={frontmatter.date}
+      date={date}
       readingTime={frontmatter.readingTime}
       tags={frontmatter.tags}
       niche={frontmatter.niche}
-      coverImageUrl={frontmatter.coverImageUrl}
+      coverImageUrl={frontmatter.coverImageUrl} // ✅ injecté par lib/articles.ts
       backHref="/articles"
       sections={sections}
-      // ✅ NEW
       pillar={
-        pillarSlug && pillarTitle
+        !isPillar && pillarSlug && pillarTitle
           ? {
             title: pillarTitle,
             slug: pillarSlug,
-            href: `/${pillarSlug}`,          // ton pilier est à la racine
-            breadcrumbBase: "/articles",     // pour afficher /articles/...
+            href: `/${pillarSlug}`, // ton pilier est à la racine
+            breadcrumbBase: "/articles",
           }
           : undefined
       }

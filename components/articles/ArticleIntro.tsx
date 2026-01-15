@@ -7,7 +7,10 @@ import { Calendar, Clock, Tag } from "lucide-react";
 type ArticleIntroProps = {
   title: string;
   subtitle?: string;
-  date: string;
+
+  // ✅ date optionnelle (sinon ça casse quand c’est undefined)
+  date?: string;
+
   readingTime?: string;
   tags: string[];
   coverImageUrl?: string;
@@ -46,22 +49,24 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
 
       {/* meta */}
       <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-500">
-        <div className="inline-flex items-center gap-1.5">
-          <Calendar className="size-3.5" />
-          <span>{date}</span>
-        </div>
+        {date ? (
+          <div className="inline-flex items-center gap-1.5">
+            <Calendar className="size-3.5" />
+            <span>{date}</span>
+          </div>
+        ) : null}
 
-        {readingTime && (
+        {readingTime ? (
           <>
-            <span className="h-1 w-1 rounded-full bg-slate-300" />
+            {date ? <span className="h-1 w-1 rounded-full bg-slate-300" /> : null}
             <div className="inline-flex items-center gap-1.5">
               <Clock className="size-3.5" />
               <span>{readingTime}</span>
             </div>
           </>
-        )}
+        ) : null}
 
-        {tags.length > 0 && (
+        {tags.length > 0 ? (
           <>
             <span className="hidden sm:inline h-1 w-1 rounded-full bg-slate-300" />
             <div className="flex flex-wrap items-center gap-2">
@@ -76,10 +81,10 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
               ))}
             </div>
           </>
-        )}
+        ) : null}
       </div>
 
-      {coverImageUrl && (
+      {coverImageUrl ? (
         <div className="mt-4 overflow-hidden rounded-3xl border border-slate-200/70 bg-slate-100/60">
           <img
             src={coverImageUrl}
@@ -87,7 +92,7 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
             className="h-[220px] w-full object-cover sm:h-[280px] lg:h-[320px]"
           />
         </div>
-      )}
+      ) : null}
     </motion.section>
   );
 };

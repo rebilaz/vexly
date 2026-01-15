@@ -21,14 +21,17 @@ export type ArticleSection = {
 type PillarNav = {
   title: string;
   slug: string;
-  href: string;          // ex: "/trouver-une-idee-rentable"
+  href: string; // ex: "/trouver-une-idee-rentable"
   breadcrumbBase?: string; // ex: "/articles"
 };
 
 type ArticleLayoutProps = {
   title: string;
   subtitle?: string;
-  date: string;
+
+  // ✅ date optionnelle (cohérent avec ArticleIntro)
+  date?: string;
+
   readingTime?: string;
   tags?: string[];
   niche?: string;
@@ -144,24 +147,24 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
             ) : null}
           </div>
 
-          {niche && (
+          {niche ? (
             <span className="rounded-full border border-slate-200/70 bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-600">
               {niche}
             </span>
-          )}
+          ) : null}
         </div>
       </header>
 
-      {sections.length > 0 && (
+      {sections.length > 0 ? (
         <ArticleProgressBar
           items={timelineItems}
           activeIndex={activeIndex}
           progress={scrollProgress}
         />
-      )}
+      ) : null}
 
       <main className="mx-auto max-w-5xl px-8 lg:px-16 py-10 lg:py-14 md:pl-28">
-        {/* ✅ Petit bloc "fait partie du guide" au-dessus du H1 (optionnel mais très bon) */}
+        {/* ✅ Petit bloc "fait partie du guide" au-dessus du H1 */}
         {pillar?.href ? (
           <div className="mb-6 max-w-3xl">
             <Link
@@ -169,7 +172,8 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
               className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-700 hover:border-indigo-200 hover:text-indigo-700"
             >
               <BookOpen className="size-4" />
-              Ce guide fait partie du hub : <span className="font-semibold">{pillar.title}</span>
+              Ce guide fait partie du hub :{" "}
+              <span className="font-semibold">{pillar.title}</span>
               <span className="text-slate-400">→</span>
             </Link>
           </div>
@@ -193,7 +197,8 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
               Retour au guide central
             </h3>
             <p className="mt-2 text-sm sm:text-base text-slate-600">
-              Si tu veux la vue d’ensemble (et les autres articles du parcours), reviens sur le hub :
+              Si tu veux la vue d’ensemble (et les autres articles du parcours),
+              reviens sur le hub :
             </p>
             <div className="mt-4">
               <Link

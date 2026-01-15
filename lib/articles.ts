@@ -5,6 +5,7 @@ import matter from "gray-matter";
 import type { ArticleSection } from "@/components/articles/ArticleLayout";
 
 const articlesDir = path.join(process.cwd(), "content", "articles");
+const pillarsDir = path.join(process.cwd(), "content", "pillars");
 
 /**
  * Frontmatter tel qu’il existe dans tes fichiers .md
@@ -17,18 +18,30 @@ export type ArticleFrontmatter = {
   subtitle?: string;
   slug?: string; // informatif uniquement (NON utilisé pour router)
   description?: string;
-  date: string; // YYYY-MM-DD
+
+  // NOTE: tes piliers n'ont pas forcément "date"
+  date?: string; // YYYY-MM-DD ou ISO (optionnel)
+  updated_at?: string; // ISO
   readingTime?: string;
+
   tags?: string[];
   niche?: string;
+
+  // ✅ on garde ce champ (si tu le mets dans certains MD)
   coverImageUrl?: string;
+
   cluster?: string;
+
+  type?: string; // "pillar" etc.
   pillar?: string;
+
   main_keyword?: string;
   search_intent?: string;
   angle?: string;
   priority?: number;
   canonical_url?: string;
+
+  clusters_count?: number;
 };
 
 export type Article = {
@@ -38,11 +51,11 @@ export type Article = {
 };
 
 /**
- * Liste tous les fichiers markdown
+ * Liste tous les fichiers markdown d'un dossier (non récursif)
  */
-function getAllArticleFiles(): string[] {
-  if (!fs.existsSync(articlesDir)) return [];
-  return fs.readdirSync(articlesDir).filter((file) => file.endsWith(".md"));
+function getAllMdFilesInDir(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter((file) => file.endsWith(".md"));
 }
 
 /**
@@ -100,62 +113,90 @@ function splitMarkdownIntoSections(content: string): ArticleSection[] {
 }
 
 /**
- * ✅ Récupère un article par slug D’URL
+ * Lit un fichier md et le convertit en Article (slug basé sur filename)
+ */
+function readMdAsArticle(fullPath: string, fileName: string): Article {
+  const fileContents = fs.readFileSync(fullPath, "utf8");
+  const { data, content } = matter(fileContents);
+
+  const frontmatter = data as ArticleFrontmatter;
+  const sections = splitMarkdownIntoSections(content);
+  const fileSlug = fileName.replace(/\.md$/, "");
+
+  // ✅ COVER DÉTERMINISTE (sans modifier les MD)
+  const coverImageUrl =
+    frontmatter.coverImageUrl && frontmatter.coverImageUrl.trim()
+      ? frontmatter.coverImageUrl.trim()
+      : `/images/articles/${fileSlug}.webp`;
+
+  return {
+    frontmatter: {
+      ...frontmatter,
+      coverImageUrl, // ✅ injecté pour le front
+    },
+    slug: fileSlug,
+    sections,
+  };
+}
+
+/**
+ * ✅ Récupère un article OU un pilier par slug D’URL
  * 👉 slug = filename sans ".md"
  */
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  const files = getAllArticleFiles();
-
-  for (const file of files) {
+  const articleFiles = getAllMdFilesInDir(articlesDir);
+  for (const file of articleFiles) {
     const fileSlug = file.replace(/\.md$/, "");
-
     if (slug !== fileSlug) continue;
 
     const fullPath = path.join(articlesDir, file);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { data, content } = matter(fileContents);
+    return readMdAsArticle(fullPath, file);
+  }
 
-    const frontmatter = data as ArticleFrontmatter;
-    const sections = splitMarkdownIntoSections(content);
+  const pillarFiles = getAllMdFilesInDir(pillarsDir);
+  for (const file of pillarFiles) {
+    const fileSlug = file.replace(/\.md$/, "");
+    if (slug !== fileSlug) continue;
 
-    return {
-      frontmatter,
-      slug: fileSlug,
-      sections,
-    };
+    const fullPath = path.join(pillarsDir, file);
+    return readMdAsArticle(fullPath, file);
   }
 
   return null;
 }
 
 /**
- * ✅ Récupère tous les articles
+ * ✅ Récupère tous les articles + piliers
  * 👉 slug = filename sans ".md"
  */
 export async function getAllArticles(): Promise<Article[]> {
-  const files = getAllArticleFiles();
-  const articles: Article[] = [];
+  const articleFiles = getAllMdFilesInDir(articlesDir);
+  const pillarFiles = getAllMdFilesInDir(pillarsDir);
 
-  for (const file of files) {
+  const items: Article[] = [];
+
+  for (const file of articleFiles) {
     const fullPath = path.join(articlesDir, file);
-    const fileContents = fs.readFileSync(fullPath, "utf8");
-    const { data, content } = matter(fileContents);
-
-    const frontmatter = data as ArticleFrontmatter;
-    const sections = splitMarkdownIntoSections(content);
-    const fileSlug = file.replace(/\.md$/, "");
-
-    articles.push({
-      frontmatter,
-      slug: fileSlug,
-      sections,
-    });
+    items.push(readMdAsArticle(fullPath, file));
   }
 
-  // Plus récent → plus ancien
-  articles.sort((a, b) =>
-    a.frontmatter.date < b.frontmatter.date ? 1 : -1
-  );
+  for (const file of pillarFiles) {
+    const fullPath = path.join(pillarsDir, file);
+    items.push(readMdAsArticle(fullPath, file));
+  }
 
-  return articles;
+  // Tri: plus récent → plus ancien
+  // - priorise date si présente, sinon updated_at, sinon 0
+  const toTs = (a: Article) => {
+    const fm: any = a.frontmatter || {};
+    const d = fm.date ? Date.parse(fm.date) : NaN;
+    if (!Number.isNaN(d)) return d;
+    const u = fm.updated_at ? Date.parse(fm.updated_at) : NaN;
+    if (!Number.isNaN(u)) return u;
+    return 0;
+  };
+
+  items.sort((a, b) => toTs(b) - toTs(a));
+
+  return items;
 }
