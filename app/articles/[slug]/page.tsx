@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArticleLayout } from "@/components/articles/ArticleLayout";
+import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
 import { getArticleBySlug, getAllArticles } from "@/lib/articles";
 
 type Params = { slug: string };

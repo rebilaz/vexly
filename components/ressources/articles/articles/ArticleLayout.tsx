@@ -3,11 +3,11 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight, BookOpen } from "lucide-react";
-import { ArticleCTA } from "@/components/articles/ArticleCTA";
+import { ArticleCTA } from "@/components/ressources/articles/articles/ArticleCTA";
 import {
   ArticleProgressBar,
   TimelineItem,
-} from "@/components/articles/ArticleProgressBar";
+} from "@/components/ressources/articles/articles/ArticleProgressBar";
 
 import { ArticleIntro } from "./ArticleIntro";
 import { ArticleSections } from "./ArticleSections";

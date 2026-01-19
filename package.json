@@ -30,6 +30,7 @@
     "react-markdown": "^10.1.0",
     "recharts": "^2.12.7",
     "remark": "^15.0.1",
+    "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
     "three": "^0.181.0"
   },

@@ -5,7 +5,7 @@ export const revalidate = 3600;
 
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import PillarLayout from "@/components/pillars/PillarLayout";
+import PillarLayout from "@/components/ressources/articles/pillars/PillarLayout";
 import { getAllPillarSlugs, getPillar } from "@/lib/pillars";
 
 function asString(v: unknown): string | undefined {

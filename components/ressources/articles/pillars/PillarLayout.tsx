@@ -3,9 +3,9 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { ArticleCTA } from "@/components/articles/ArticleCTA";
-import { ArticleProgressBar, TimelineItem } from "@/components/articles/ArticleProgressBar";
-import { ArticleSections } from "@/components/articles/ArticleSections";
+import { ArticleCTA } from "@/components/ressources/articles/articles/ArticleCTA";
+import { ArticleProgressBar, TimelineItem } from "@/components/ressources/articles/articles/ArticleProgressBar";
+import { ArticleSections } from "@/components/ressources/articles/articles/ArticleSections";
 
 // ✅ On copie ArticleIntro en version "Guide" sans date
 type PillarIntroProps = {

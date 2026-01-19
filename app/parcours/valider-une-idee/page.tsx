@@ -1,262 +1,147 @@
-"use client";
+import HubShell from "@/components/ressources/parcours/hub/HubShell";
+import HubHero from "@/components/ressources/parcours/hub/HubHero";
+import EntryCards, { Entry } from "@/components/ressources/parcours/hub/EntryCards";
+import MacroMap, { MacroZone } from "@/components/ressources/parcours/hub/MacroMap";
+import DirectLinks, { DirectLink } from "@/components/ressources/parcours/hub/DirectLinks";
 
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  CheckCircle2,
-  Circle,
-  ArrowRight,
-  Flame,
-  Swords,
-  Shield,
-  Sparkle,
-} from "lucide-react";
+/* =========================
+   POINTS D’ENTRÉE (YouTubeurs)
+   ========================= */
 
-type Quest = {
-  step: number;
-  title: string;
-  href: string;
-  difficulty: "Facile" | "Moyen" | "Difficile";
-  reward: string;
-};
-
-const STORAGE_KEY = "vexly:parcours:valider-une-idee:min:v2";
-
-const QUESTS: Quest[] = [
+const ENTRIES: Entry[] = [
   {
-    step: 1,
-    title: "Identifier un vrai problème",
-    href: "/articles/identifier-un-vrai-probleme",
-    difficulty: "Facile",
-    reward: "Clarté",
+    title: "Mes revenus YouTube sont instables",
+    description:
+      "AdSense et sponsors font le yo-yo. Je veux comprendre pourquoi et ce que je peux changer.",
+    href: "/parcours/revenus-instables-createur-diagnostic",
+    tone: "indigo",
+    icon: "compass",
   },
   {
-    step: 2,
-    title: "Trouver une idée rentable",
-    href: "/articles/trouver-une-idee-rentable",
-    difficulty: "Moyen",
-    reward: "Angle",
+    title: "Je veux un revenu mensuel en plus de YouTube",
+    description:
+      "Abonnement, communauté ou outil : je cherche une base stable, pas seulement des pics.",
+    href: "/parcours/abonnement-revenu-recurrent-avantages",
+    tone: "emerald",
+    icon: "sparkles",
   },
   {
-    step: 3,
-    title: "Tester la demande rapidement",
-    href: "/articles/tester-la-demande-rapidement",
-    difficulty: "Moyen",
-    reward: "Signal",
-  },
-  {
-    step: 4,
-    title: "Landing de validation",
-    href: "/articles/landing-page-de-validation",
-    difficulty: "Facile",
-    reward: "Preuve",
-  },
-  {
-    step: 5,
-    title: "Signaux forts & préventes",
-    href: "/articles/preventes-signaux-forts",
-    difficulty: "Difficile",
-    reward: "Go/No-go",
-  },
-  {
-    step: 6,
-    title: "Erreurs à éviter",
-    href: "/articles/erreurs-validation-idee",
-    difficulty: "Facile",
-    reward: "Lucidité",
+    title: "Je dépends trop des sponsors",
+    description:
+      "Je veux mesurer le risque réel et décider si je dois construire un plan B maintenant.",
+    href: "/parcours/monetisation-sponsors-dependance",
+    tone: "amber",
+    icon: "shield",
   },
 ];
 
-type ProgressState = { done: Record<number, boolean> };
+/* =========================
+   CARTE DU PARCOURS (macro)
+   ========================= */
 
-function loadState(): ProgressState {
-  if (typeof window === "undefined") return { done: {} };
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return { done: {} };
-    const parsed = JSON.parse(raw) as ProgressState;
-    return { done: parsed.done ?? {} };
-  } catch {
-    return { done: {} };
-  }
-}
+const ZONES: MacroZone[] = [
+  {
+    title: "Dépendance à YouTube et aux annonceurs",
+    description:
+      "Comprendre pourquoi les revenus publicitaires et sponsoring sont instables par nature.",
+    bullets: [
+      "algorithmes hors de ton contrôle",
+      "CPM variables selon les périodes",
+      "annonceurs qui peuvent disparaître",
+    ],
+    icon: "target",
+  },
+  {
+    title: "Plan B pour YouTubeur",
+    description:
+      "Identifier des revenus qui ne dépendent pas directement de YouTube.",
+    bullets: [
+      "produits one-shot (formation, ebook)",
+      "services liés à l’audience",
+      "première reprise de contrôle",
+    ],
+    icon: "layers",
+  },
+  {
+    title: "Revenu récurrent (MRR)",
+    description:
+      "Transformer une partie de ton audience YouTube en base mensuelle stable.",
+    bullets: [
+      "abonnement",
+      "communauté payante",
+      "outil ou service utile",
+    ],
+    icon: "zap",
+  },
+  {
+    title: "Choix techniques pour créateurs",
+    description:
+      "Plateformes existantes, no-code ou développement sur mesure : décider sans se piéger.",
+    bullets: [
+      "lancer vite ≠ tenir longtemps",
+      "dette technique",
+      "qualité d’expérience pour l’audience",
+    ],
+    icon: "compass",
+  },
+];
 
-function saveState(state: ProgressState) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  } catch {}
-}
+/* =========================
+   ACCÈS DIRECT (SEO / libre)
+   ========================= */
 
-function DifficultyIcon({ d }: { d: Quest["difficulty"] }) {
-  if (d === "Facile") return <Shield className="w-4 h-4" />;
-  if (d === "Moyen") return <Swords className="w-4 h-4" />;
-  return <Flame className="w-4 h-4" />;
-}
+const LINKS: DirectLink[] = [
+  {
+    title: "Revenus YouTube instables : faites le diagnostic de votre modèle",
+    href: "/parcours/revenus-instables-createur-diagnostic",
+    label: "Diagnostic",
+  },
+  {
+    title: "« Louer » son audience : limites des pubs et sponsors",
+    href: "/parcours/monetisation-sponsors-dependance",
+    label: "Dépendance",
+  },
+  {
+    title: "Revenus pub et sponsors : un modèle risqué sans plan B",
+    href: "/parcours/risque-revenus-sponsors-plan-b",
+    label: "Risque",
+  },
+  {
+    title: "Ventes uniques : des pics de revenus… sans stabilité",
+    href: "/parcours/ventes-pas-recurring-instabilite",
+    label: "Constat",
+  },
+  {
+    title: "Abonnement : construire un revenu mensuel récurrent",
+    href: "/parcours/abonnement-revenu-recurrent-avantages",
+    label: "Stabilité",
+  },
+  {
+    title: "Créer un outil ou SaaS pour son audience YouTube : choix techniques",
+    href: "/parcours/outil-saas-createur-choix-tech",
+    label: "Décision tech",
+  },
+];
+
+/* =========================
+   PAGE
+   ========================= */
 
 export default function Page() {
-  const router = useRouter();
-  const [state, setState] = React.useState<ProgressState>({ done: {} });
-
-  React.useEffect(() => setState(loadState()), []);
-
-  const doneCount = React.useMemo(
-    () => QUESTS.filter((q) => state.done[q.step]).length,
-    [state],
-  );
-
-  const progressPct = React.useMemo(
-    () => Math.round((doneCount / QUESTS.length) * 100),
-    [doneCount],
-  );
-
-  const nextQuest = React.useMemo(
-    () => QUESTS.find((q) => !state.done[q.step]) ?? QUESTS[QUESTS.length - 1],
-    [state],
-  );
-
-  function toggleDone(step: number) {
-    setState((prev) => {
-      const next = { done: { ...prev.done, [step]: !prev.done[step] } };
-      saveState(next);
-      return next;
-    });
-  }
-
-  function reset() {
-    const cleared: ProgressState = { done: {} };
-    setState(cleared);
-    saveState(cleared);
-  }
-
   return (
-    <main className="mx-auto max-w-5xl px-6 lg:px-8 py-14 sm:py-16">
-      {/* HERO */}
-      <header className="max-w-3xl">
-        <span className="text-xs uppercase tracking-wide text-indigo-600 font-medium">
-          Parcours
-        </span>
+    <HubShell>
+      <HubHero
+        title="YouTubeur : sortir de l’instabilité des revenus"
+        subtitle="Ce parcours s’adresse aux YouTubeurs qui gagnent déjà de l’argent avec AdSense et les sponsors, mais qui subissent des revenus irréguliers. Il t’aide à comprendre la dépendance à YouTube, à construire un plan B, puis à décider si un revenu récurrent (abonnement, communauté, outil) est pertinent pour toi."
+        backHref="/parcours"
+        backLabel="Tous les parcours"
+      />
 
-        <h1 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
-          Valider une idée <span className="text-slate-500 font-normal">(avant de coder)</span>
-        </h1>
+      <EntryCards entries={ENTRIES} />
 
-        {/* Progress (minimal) */}
-        <div className="mt-7">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-700 font-medium">
-              {doneCount}/{QUESTS.length}
-            </span>
-            <div className="flex items-center gap-2">
-              <span className="text-slate-500">{progressPct}%</span>
-              <button
-                onClick={reset}
-                className="text-xs px-2.5 py-1.5 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 transition"
-              >
-                Reset
-              </button>
-            </div>
-          </div>
+      <MacroMap zones={ZONES} />
 
-          <div className="mt-2 h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
-            <div
-              className="h-full bg-indigo-600 rounded-full transition-all"
-              style={{ width: `${progressPct}%` }}
-            />
-          </div>
-
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Link
-              href={nextQuest.href}
-              className="inline-flex items-center gap-2 text-sm px-4 py-2.5 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition"
-            >
-              Continuer <ArrowRight className="w-4 h-4" />
-            </Link>
-
-            <Link
-              href="/parcours"
-              className="inline-flex items-center gap-2 text-sm px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 hover:bg-white transition"
-            >
-              Tous les parcours
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {/* QUESTS */}
-      <section className="mt-10 sm:mt-12">
-        <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
-          Quêtes
-        </h2>
-
-        <ol className="space-y-3">
-          {QUESTS.map((q) => {
-            const isDone = !!state.done[q.step];
-
-            return (
-              <li key={q.step}>
-                <div
-                  className={`group rounded-2xl border bg-white transition hover:shadow-md
-                    ${isDone ? "border-emerald-200" : "border-slate-200"}`}
-                >
-                  <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4">
-                    <div className="flex items-center gap-3 min-w-0 flex-1">
-                      {isDone ? (
-                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                      ) : (
-                        <Circle className="w-5 h-5 text-slate-300 group-hover:text-slate-400 transition-colors" />
-                      )}
-
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-xs uppercase tracking-wide text-indigo-600 font-medium">
-                            Quête {q.step}
-                          </span>
-
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-slate-50 text-slate-600 border border-slate-200 inline-flex items-center gap-1.5">
-                            <DifficultyIcon d={q.difficulty} />
-                            {q.difficulty}
-                          </span>
-
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100 inline-flex items-center gap-1.5">
-                            <Sparkle className="w-3.5 h-3.5" />
-                            {q.reward}
-                          </span>
-                        </div>
-
-                        <h3 className="mt-1 text-base sm:text-lg font-semibold text-slate-900 truncate">
-                          {q.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 sm:justify-end">
-                      <button
-                        onClick={() => toggleDone(q.step)}
-                        className={`text-sm px-3 py-2 rounded-xl border transition
-                          ${
-                            isDone
-                              ? "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                              : "border-slate-200 text-slate-700 hover:bg-slate-50"
-                          }`}
-                      >
-                        {isDone ? "Fait ✓" : "Marquer fait"}
-                      </button>
-
-                      <button
-                        onClick={() => router.push(q.href)}
-                        className="text-sm px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition inline-flex items-center gap-2"
-                      >
-                        Lire <ArrowRight className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-      </section>
-    </main>
+      <DirectLinks links={LINKS} />
+    </HubShell>
   );
 }

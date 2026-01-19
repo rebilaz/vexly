@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-import type { ArticleSection } from "@/components/articles/ArticleLayout";
+import type { ArticleSection } from "@/components/ressources/articles/articles/ArticleLayout";
 
 const articlesDir = path.join(process.cwd(), "content", "articles");
 const pillarsDir = path.join(process.cwd(), "content", "pillars");
