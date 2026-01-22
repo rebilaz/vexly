@@ -2,10 +2,29 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Clock, Search } from "lucide-react";
 import type { EnrichedArticle } from "./ArticlesGrid";
 
-function formatDateFr(value: string) {
+/* =========================
+   Helpers (inline)
+========================= */
+function getFm(a: EnrichedArticle) {
+    return (a?.frontmatter ?? {}) as any;
+}
+
+function hrefFor(a: EnrichedArticle) {
+    const fm = getFm(a);
+    return String(fm?.type || "") === "pillar" ? `/${a.slug}` : `/articles/${a.slug}`;
+}
+
+function getCover(a: EnrichedArticle) {
+    const fm = getFm(a);
+    return (fm?.coverImageUrl || fm?.cover || fm?.image || null) as string | null;
+}
+
+function formatDateFr(value?: string) {
+    if (!value) return null;
     const d = new Date(value);
     if (Number.isNaN(d.getTime())) return value;
     return new Intl.DateTimeFormat("fr-FR", {
@@ -15,90 +34,196 @@ function formatDateFr(value: string) {
     }).format(d);
 }
 
-function Cover() {
-    return (
-        <div className="relative overflow-hidden rounded-3xl ring-1 ring-slate-200/70 bg-white shadow-sm">
-            <div className="relative h-[260px] md:h-[320px] lg:h-[380px]">
-                <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-indigo-400/25 blur-3xl" />
-                <div className="absolute -bottom-28 -left-28 h-96 w-96 rounded-full bg-violet-400/20 blur-3xl" />
-                <div className="absolute top-1/2 left-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-400/15 blur-3xl" />
-                <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/80" />
+/* =========================
+   UI atoms (inline)
+========================= */
+function ArticleThumb({
+    src,
+    alt,
+    size = "md",
+}: {
+    src?: string | null;
+    alt: string;
+    size?: "sm" | "md";
+}) {
+    const cls = size === "sm" ? "h-10 w-10 rounded-xl" : "h-16 w-16 rounded-2xl";
 
-                <div className="absolute left-1/2 top-1/2 w-[78%] max-w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-slate-900/90 shadow-2xl ring-1 ring-black/10">
-                    <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
-                        <span className="h-2.5 w-2.5 rounded-full bg-rose-400/80" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-amber-300/80" />
-                        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
-                        <span className="ml-3 text-xs font-medium text-white/70">Journal</span>
-                    </div>
-                    <div className="p-5">
-                        <div className="h-3 w-44 rounded bg-white/10" />
-                        <div className="mt-4 space-y-2">
-                            <div className="h-3 w-[92%] rounded bg-white/10" />
-                            <div className="h-3 w-[78%] rounded bg-white/10" />
-                            <div className="h-3 w-[86%] rounded bg-white/10" />
-                            <div className="h-3 w-[70%] rounded bg-white/10" />
-                        </div>
-                        <div className="mt-6 h-8 w-[56%] rounded bg-indigo-400/15 ring-1 ring-indigo-300/20" />
-                    </div>
-                </div>
+    if (!src) {
+        return (
+            <div
+                className={`shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}
+            >
+                <div className="h-full w-full bg-gradient-to-br from-indigo-100 via-white to-violet-100" />
             </div>
+        );
+    }
+
+    return (
+        <div
+            className={`relative shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}
+        >
+            <Image src={src} alt={alt} fill className="object-cover" sizes="96px" />
         </div>
     );
 }
 
+function Chip({ children }: { children: React.ReactNode }) {
+    return (
+        <span className="inline-flex items-center rounded-full bg-slate-900 text-white px-2.5 py-1 text-[10px] font-semibold tracking-wide">
+            {String(children).toUpperCase()}
+        </span>
+    );
+}
+
+function MetaLine({ a }: { a: EnrichedArticle }) {
+    const fm = getFm(a);
+    const date = formatDateFr(fm?.date);
+    const rt = fm?.readingTime;
+
+    return (
+        <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+            <Chip>{a._clusterLabel || "Autres"}</Chip>
+            {date ? <span>{date}</span> : null}
+            {rt ? (
+                <span className="inline-flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5" />
+                    {rt}
+                </span>
+            ) : null}
+        </div>
+    );
+}
+
+/* =========================
+   Rows
+========================= */
 function Row({ a }: { a: EnrichedArticle }) {
-    const fm = a.frontmatter as any;
+    const fm = getFm(a);
+    const title = fm?.title ?? a.slug;
+    const desc = fm?.description ?? "";
 
     return (
         <Link
-            href={`/articles/${a.slug}`}
-            className="group block rounded-2xl px-2 py-3 transition hover:bg-slate-50"
+            href={hrefFor(a)}
+            className="group flex gap-4 rounded-2xl p-3 transition hover:bg-slate-50"
         >
-            <div className="flex items-start gap-4">
-                <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500">
-                        <span className="inline-flex items-center rounded-full bg-slate-900 text-white px-2.5 py-1 text-[11px] font-semibold tracking-wide">
-                            {(a._clusterLabel || "Autres").toUpperCase()}
-                        </span>
-                        {fm?.date ? <span>{formatDateFr(fm.date)}</span> : null}
-                        {fm?.readingTime ? (
-                            <span className="inline-flex items-center gap-1.5">
-                                <Clock className="h-4 w-4" />
-                                {fm.readingTime}
-                            </span>
-                        ) : null}
-                    </div>
+            <ArticleThumb src={getCover(a)} alt={title} size="md" />
 
-                    <h3 className="mt-2 text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-2">
-                        {fm?.title ?? a.slug}
-                    </h3>
+            <div className="min-w-0 flex-1">
+                <MetaLine a={a} />
 
-                    {fm?.description ? (
-                        <p className="mt-2 text-slate-600 leading-relaxed line-clamp-2">
-                            {fm.description}
-                        </p>
-                    ) : null}
+                <h3 className="mt-2 text-base md:text-lg font-extrabold tracking-tight text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-2">
+                    {title}
+                </h3>
+
+                {desc ? (
+                    <p className="mt-1.5 text-sm text-slate-600 leading-relaxed line-clamp-2">
+                        {desc}
+                    </p>
+                ) : null}
+            </div>
+
+            <div className="shrink-0 pt-1 text-slate-300 group-hover:text-indigo-600 transition-colors">
+                <ArrowRight className="h-5 w-5" />
+            </div>
+        </Link>
+    );
+}
+
+function SidebarMiniRow({ a }: { a: EnrichedArticle }) {
+    const fm = getFm(a);
+    const title = fm?.title ?? a.slug;
+    const rt = fm?.readingTime;
+
+    return (
+        <Link
+            href={hrefFor(a)}
+            className="group flex items-center gap-3 rounded-2xl px-3 py-2 hover:bg-slate-50 transition"
+        >
+            <ArticleThumb src={getCover(a)} alt={title} size="sm" />
+            <div className="min-w-0 flex-1">
+                <div className="text-sm font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-1">
+                    {title}
                 </div>
-
-                <div className="pt-1 shrink-0 text-slate-300 group-hover:text-indigo-600 transition-colors">
-                    <ArrowRight className="h-5 w-5" />
+                <div className="mt-0.5 text-xs text-slate-500">
+                    {rt ? rt : "Lire"}
                 </div>
             </div>
         </Link>
     );
 }
 
+/* =========================
+   Featured (remplace le gros Cover déco)
+========================= */
+function Featured({ a }: { a: EnrichedArticle }) {
+    const fm = getFm(a);
+    const title = fm?.title ?? a.slug;
+    const desc = fm?.description ?? "";
+
+    return (
+        <Link
+            href={hrefFor(a)}
+            className="group block overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200/70 shadow-sm transition hover:shadow-lg hover:ring-slate-300"
+        >
+            <div className="relative h-[220px] md:h-[260px] overflow-hidden bg-slate-100">
+                {getCover(a) ? (
+                    <>
+                        <Image
+                            src={getCover(a)!}
+                            alt={title}
+                            fill
+                            className="object-cover"
+                            sizes="(min-width: 1024px) 720px, 100vw"
+                            priority
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-white/0 to-white/50" />
+                    </>
+                ) : (
+                    <>
+                        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-indigo-400/18 blur-3xl" />
+                        <div className="absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-violet-400/18 blur-3xl" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/65 via-white/35 to-white/70" />
+                    </>
+                )}
+            </div>
+
+            <div className="p-6 md:p-7">
+                <MetaLine a={a} />
+
+                <h3 className="mt-3 text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 group-hover:text-indigo-700 transition-colors">
+                    {title}
+                </h3>
+
+                {desc ? (
+                    <p className="mt-2 text-slate-600 leading-relaxed line-clamp-3">
+                        {desc}
+                    </p>
+                ) : null}
+
+                <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-2 text-xs font-semibold group-hover:bg-indigo-700 transition">
+                    Lire <ArrowRight className="h-4 w-4" />
+                </div>
+            </div>
+        </Link>
+    );
+}
+
+/* =========================
+   Component
+========================= */
 type Props = {
     query?: string;
     onQueryChange?: (v: string) => void;
 
-    // ✅ defaults pour éviter undefined.length
     pillars?: EnrichedArticle[];
     sidebarArticles?: EnrichedArticle[];
     articles?: EnrichedArticle[];
 
     rightLimit?: number;
+
+    // optionnel: si tu veux forcer un featured précis
+    featured?: EnrichedArticle | null;
 };
 
 export default function ArticlesFeed({
@@ -108,10 +233,14 @@ export default function ArticlesFeed({
     sidebarArticles = [],
     articles = [],
     rightLimit = 10,
+    featured = null,
 }: Props) {
     const list = (articles || []).slice(0, rightLimit);
 
-    // ✅ safe
+    // featured auto : 1er article de la liste si non fourni
+    const hero = featured ?? list[0] ?? null;
+    const rest = hero ? list.filter((a) => a.slug !== hero.slug) : list;
+
     if (!pillars.length && !list.length && !sidebarArticles.length) return null;
 
     return (
@@ -161,13 +290,13 @@ export default function ArticlesFeed({
                                     Guides piliers
                                 </div>
 
-                                <div className="mt-3 space-y-2">
+                                <div className="mt-3 space-y-1">
                                     {pillars.map((p) => {
-                                        const fm = p.frontmatter as any;
+                                        const fm = getFm(p);
                                         return (
                                             <Link
                                                 key={p.slug}
-                                                href={`/${p.slug}`}
+                                                href={hrefFor(p)}
                                                 className="group block rounded-2xl px-3 py-2 hover:bg-slate-50 transition"
                                             >
                                                 <div className="text-sm font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-1">
@@ -192,24 +321,10 @@ export default function ArticlesFeed({
                                     Articles
                                 </div>
 
-                                <div className="mt-3 space-y-2">
-                                    {sidebarArticles.map((a) => {
-                                        const fm = a.frontmatter as any;
-                                        return (
-                                            <Link
-                                                key={a.slug}
-                                                href={`/articles/${a.slug}`}
-                                                className="group block rounded-2xl px-3 py-2 hover:bg-slate-50 transition"
-                                            >
-                                                <div className="text-sm font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-1">
-                                                    {fm?.title ?? a.slug}
-                                                </div>
-                                                <div className="mt-0.5 text-xs text-slate-500">
-                                                    {fm?.readingTime ? fm.readingTime : "Lire"}
-                                                </div>
-                                            </Link>
-                                        );
-                                    })}
+                                <div className="mt-3 space-y-1">
+                                    {sidebarArticles.map((a) => (
+                                        <SidebarMiniRow key={a.slug} a={a} />
+                                    ))}
                                 </div>
                             </div>
                         )}
@@ -236,14 +351,18 @@ export default function ArticlesFeed({
                         </Link>
                     </div>
 
-                    <div className="mt-8">
-                        <Cover />
-                    </div>
+                    {/* Featured (remplace ton Cover décoratif) */}
+                    {hero ? (
+                        <div className="mt-8">
+                            <Featured a={hero} />
+                        </div>
+                    ) : null}
 
-                    {!!list.length && (
+                    {/* List */}
+                    {!!rest.length && (
                         <div className="mt-8">
                             <div className="divide-y divide-slate-200/70">
-                                {list.map((a) => (
+                                {rest.map((a) => (
                                     <Row key={a.slug} a={a} />
                                 ))}
                             </div>

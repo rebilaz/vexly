@@ -151,10 +151,16 @@ export default function ArticlesIndexClient({ articles }: { articles: Article[] 
     return { pillar, items };
   }, [pillars, posts, query, AROUND_LIMIT]);
 
+  const gridLimit = useMemo(() => {
+    // si on insère un guide dans la grille, on enlève 1 slot aux articles
+    return spotlight?.pillar ? Math.max(0, AROUND_LIMIT - 1) : AROUND_LIMIT;
+  }, [spotlight, AROUND_LIMIT]);
+
   const gridOnly: EnrichedArticle[] = useMemo(() => {
-    if (spotlight?.items?.length) return spotlight.items.slice(0, AROUND_LIMIT);
-    return filteredPosts.slice(0, AROUND_LIMIT);
-  }, [spotlight, filteredPosts, AROUND_LIMIT]);
+    if (spotlight?.items?.length) return spotlight.items.slice(0, gridLimit);
+    return filteredPosts.slice(0, gridLimit);
+  }, [spotlight, filteredPosts, gridLimit]);
+
 
   const gridSlugs = useMemo(() => new Set(gridOnly.map((a) => a.slug)), [gridOnly]);
 

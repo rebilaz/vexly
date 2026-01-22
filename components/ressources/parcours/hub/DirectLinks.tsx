@@ -9,49 +9,61 @@ export type DirectLink = {
 
 export default function DirectLinks({
     title = "Entrer par un problème précis",
-    subtitle = "Ces pages répondent chacune à une situation réelle. Tu peux commencer par celle qui te concerne le plus.",
+    subtitle = "Choisis la situation qui te correspond le plus.",
     links,
 }: {
     title?: string;
     subtitle?: string;
     links: DirectLink[];
 }) {
+    // Optionnel : Si tu veux forcer la limitation à 4 choix max pour ne pas surcharger
+    const displayedLinks = links.slice(0, 4);
+
     return (
-        <section>
-            {/* Header */}
-            <div className="flex flex-col gap-2">
-                <h2 className="text-lg sm:text-xl font-semibold text-slate-900">
-                    {title}
-                </h2>
-                <p className="text-sm text-slate-600 max-w-3xl">
-                    {subtitle}
-                </p>
-            </div>
+        <section className="py-10">
+            <div className="mx-auto max-w-4xl px-4">
 
-            {/* Links */}
-            <div className="mt-5 grid gap-3 md:grid-cols-2">
-                {links.map((l) => (
-                    <Link
-                        key={l.href}
-                        href={l.href}
-                        className="group flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 hover:bg-slate-50 transition"
-                    >
-                        <div className="min-w-0">
-                            {l.label && (
-                                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
-                                    {l.label}
-                                </p>
-                            )}
-                            <p className="mt-1 font-semibold text-slate-900 leading-snug">
-                                {l.title}
-                            </p>
-                        </div>
+                {/* Header centré */}
+                <div className="mb-10 text-center">
+                    <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+                        {title}
+                    </h2>
+                    <p className="mt-2 text-slate-500">
+                        {subtitle}
+                    </p>
+                </div>
 
-                        <span className="inline-flex items-center gap-2 text-slate-400 group-hover:text-slate-700 transition">
-                            <ArrowRight className="size-4" />
-                        </span>
-                    </Link>
-                ))}
+                {/* Grille aérée */}
+                <div className="grid gap-6 md:grid-cols-2">
+                    {displayedLinks.map((l) => (
+                        <Link
+                            key={l.href}
+                            href={l.href}
+                            className="group relative flex flex-col justify-between rounded-3xl bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+                        >
+                            <div className="flex items-start justify-between gap-4">
+                                <div className="flex flex-col gap-3">
+                                    {/* Badge Label (plus discret) */}
+                                    {l.label && (
+                                        <span className="inline-flex w-fit items-center rounded-full bg-indigo-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-indigo-600">
+                                            {l.label}
+                                        </span>
+                                    )}
+
+                                    {/* Titre du lien */}
+                                    <span className="text-lg font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">
+                                        {l.title}
+                                    </span>
+                                </div>
+
+                                {/* Bouton flèche interactif */}
+                                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-all duration-300 group-hover:bg-indigo-600 group-hover:text-white group-hover:rotate-[-45deg] md:group-hover:rotate-0">
+                                    <ArrowRight className="size-5 transition-transform group-hover:translate-x-0.5" />
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
             </div>
         </section>
     );
