@@ -41,6 +41,24 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/articles/erreurs-landing-page-validation-5-2026-01-22</loc>
+    <lastmod>2026-01-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/articles/test-marche-rapide-ton-saas-2026-01-21</loc>
+    <lastmod>2026-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/articles/erreurs-pre-vente-saas-7-2026-01-20</loc>
+    <lastmod>2026-01-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/articles/7-erreurs-identifier-proble-me-2026-01-19</loc>
     <lastmod>2026-01-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -269,13 +287,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/deleguer-saas-rentable-2025-11-30</loc>
+    <loc>https://www.vexly.fr/articles/micro-saas-no-code-ia-2025-11-30</loc>
     <lastmod>2025-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/micro-saas-no-code-ia-2025-11-30</loc>
+    <loc>https://www.vexly.fr/articles/deleguer-saas-rentable-2025-11-30</loc>
     <lastmod>2025-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -292,6 +310,11 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/bailfacile-fr</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/bridge-audio</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -326,7 +349,17 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/marketplace/jitter-video</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/marketplace/keap-keap-com</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/klaxoon-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -357,6 +390,11 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/qonto-com</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/rayon-design</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
