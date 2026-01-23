@@ -18,9 +18,26 @@ function hrefFor(a: EnrichedArticle) {
     return String(fm?.type || "") === "pillar" ? `/${a.slug}` : `/articles/${a.slug}`;
 }
 
+/**
+ * ✅ FIX: supporte plusieurs clés possibles (selon ton pipeline)
+ * Ajoute/enlève des champs ici si besoin.
+ */
 function getCover(a: EnrichedArticle) {
     const fm = getFm(a);
-    return (fm?.coverImageUrl || fm?.cover || fm?.image || null) as string | null;
+
+    return (
+        fm?.coverImageUrl ||
+        fm?.coverImage ||
+        fm?.cover ||
+        fm?.image ||
+        fm?.imageUrl ||
+        fm?.hero_url ||
+        fm?.heroUrl ||
+        fm?.hero ||
+        fm?.hero_image ||
+        fm?.heroImage ||
+        null
+    ) as string | null;
 }
 
 function formatDateFr(value?: string) {
@@ -50,18 +67,14 @@ function ArticleThumb({
 
     if (!src) {
         return (
-            <div
-                className={`shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}
-            >
+            <div className={`shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}>
                 <div className="h-full w-full bg-gradient-to-br from-indigo-100 via-white to-violet-100" />
             </div>
         );
     }
 
     return (
-        <div
-            className={`relative shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}
-        >
+        <div className={`relative shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}>
             <Image src={src} alt={alt} fill className="object-cover" sizes="96px" />
         </div>
     );
@@ -101,13 +114,11 @@ function Row({ a }: { a: EnrichedArticle }) {
     const fm = getFm(a);
     const title = fm?.title ?? a.slug;
     const desc = fm?.description ?? "";
+    const cover = getCover(a);
 
     return (
-        <Link
-            href={hrefFor(a)}
-            className="group flex gap-4 rounded-2xl p-3 transition hover:bg-slate-50"
-        >
-            <ArticleThumb src={getCover(a)} alt={title} size="md" />
+        <Link href={hrefFor(a)} className="group flex gap-4 rounded-2xl p-3 transition hover:bg-slate-50">
+            <ArticleThumb src={cover} alt={title} size="md" />
 
             <div className="min-w-0 flex-1">
                 <MetaLine a={a} />
@@ -117,9 +128,7 @@ function Row({ a }: { a: EnrichedArticle }) {
                 </h3>
 
                 {desc ? (
-                    <p className="mt-1.5 text-sm text-slate-600 leading-relaxed line-clamp-2">
-                        {desc}
-                    </p>
+                    <p className="mt-1.5 text-sm text-slate-600 leading-relaxed line-clamp-2">{desc}</p>
                 ) : null}
             </div>
 
@@ -134,32 +143,32 @@ function SidebarMiniRow({ a }: { a: EnrichedArticle }) {
     const fm = getFm(a);
     const title = fm?.title ?? a.slug;
     const rt = fm?.readingTime;
+    const cover = getCover(a);
 
     return (
         <Link
             href={hrefFor(a)}
             className="group flex items-center gap-3 rounded-2xl px-3 py-2 hover:bg-slate-50 transition"
         >
-            <ArticleThumb src={getCover(a)} alt={title} size="sm" />
+            <ArticleThumb src={cover} alt={title} size="sm" />
             <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors line-clamp-1">
                     {title}
                 </div>
-                <div className="mt-0.5 text-xs text-slate-500">
-                    {rt ? rt : "Lire"}
-                </div>
+                <div className="mt-0.5 text-xs text-slate-500">{rt ? rt : "Lire"}</div>
             </div>
         </Link>
     );
 }
 
 /* =========================
-   Featured (remplace le gros Cover déco)
+   Featured (avec image si dispo)
 ========================= */
 function Featured({ a }: { a: EnrichedArticle }) {
     const fm = getFm(a);
     const title = fm?.title ?? a.slug;
     const desc = fm?.description ?? "";
+    const cover = getCover(a);
 
     return (
         <Link
@@ -167,10 +176,10 @@ function Featured({ a }: { a: EnrichedArticle }) {
             className="group block overflow-hidden rounded-3xl bg-white ring-1 ring-slate-200/70 shadow-sm transition hover:shadow-lg hover:ring-slate-300"
         >
             <div className="relative h-[220px] md:h-[260px] overflow-hidden bg-slate-100">
-                {getCover(a) ? (
+                {cover ? (
                     <>
                         <Image
-                            src={getCover(a)!}
+                            src={cover}
                             alt={title}
                             fill
                             className="object-cover"
@@ -195,11 +204,7 @@ function Featured({ a }: { a: EnrichedArticle }) {
                     {title}
                 </h3>
 
-                {desc ? (
-                    <p className="mt-2 text-slate-600 leading-relaxed line-clamp-3">
-                        {desc}
-                    </p>
-                ) : null}
+                {desc ? <p className="mt-2 text-slate-600 leading-relaxed line-clamp-3">{desc}</p> : null}
 
                 <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-slate-900 text-white px-4 py-2 text-xs font-semibold group-hover:bg-indigo-700 transition">
                     Lire <ArrowRight className="h-4 w-4" />
@@ -249,9 +254,7 @@ export default function ArticlesFeed({
                 {/* ===== Sidebar ===== */}
                 <aside className="lg:sticky lg:top-8 h-fit">
                     <div className="rounded-3xl bg-white ring-1 ring-slate-200/70 shadow-sm p-5">
-                        <div className="text-lg font-extrabold tracking-tight text-slate-900">
-                            Journal.
-                        </div>
+                        <div className="text-lg font-extrabold tracking-tight text-slate-900">Journal.</div>
 
                         {/* Search */}
                         <div className="mt-4">
@@ -323,7 +326,7 @@ export default function ArticlesFeed({
 
                                 <div className="mt-3 space-y-1">
                                     {sidebarArticles.map((a) => (
-                                        <SidebarMiniRow key={a.slug} a={a} />
+                                        <SidebarMiniRow key={`${a.slug}::mini`} a={a} />
                                     ))}
                                 </div>
                             </div>
@@ -338,9 +341,7 @@ export default function ArticlesFeed({
                             <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900">
                                 Derniers Articles
                             </h2>
-                            <p className="mt-2 text-slate-600">
-                                Explorations sur le design, le code et la culture.
-                            </p>
+                            <p className="mt-2 text-slate-600">Explorations sur le design, le code et la culture.</p>
                         </div>
 
                         <Link
@@ -351,7 +352,7 @@ export default function ArticlesFeed({
                         </Link>
                     </div>
 
-                    {/* Featured (remplace ton Cover décoratif) */}
+                    {/* Featured */}
                     {hero ? (
                         <div className="mt-8">
                             <Featured a={hero} />
@@ -363,7 +364,7 @@ export default function ArticlesFeed({
                         <div className="mt-8">
                             <div className="divide-y divide-slate-200/70">
                                 {rest.map((a) => (
-                                    <Row key={a.slug} a={a} />
+                                    <Row key={`${a.slug}::row`} a={a} />
                                 ))}
                             </div>
 
