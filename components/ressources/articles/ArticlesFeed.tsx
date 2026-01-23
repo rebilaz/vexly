@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowRight, Clock, Search } from "lucide-react";
 import type { EnrichedArticle } from "./ArticlesGrid";
 
@@ -18,28 +17,6 @@ function hrefFor(a: EnrichedArticle) {
     return String(fm?.type || "") === "pillar" ? `/${a.slug}` : `/articles/${a.slug}`;
 }
 
-/**
- * ✅ FIX: supporte plusieurs clés possibles (selon ton pipeline)
- * Ajoute/enlève des champs ici si besoin.
- */
-function getCover(a: EnrichedArticle) {
-    const fm = getFm(a);
-
-    return (
-        fm?.coverImageUrl ||
-        fm?.coverImage ||
-        fm?.cover ||
-        fm?.image ||
-        fm?.imageUrl ||
-        fm?.hero_url ||
-        fm?.heroUrl ||
-        fm?.hero ||
-        fm?.hero_image ||
-        fm?.heroImage ||
-        null
-    ) as string | null;
-}
-
 function formatDateFr(value?: string) {
     if (!value) return null;
     const d = new Date(value);
@@ -51,8 +28,72 @@ function formatDateFr(value?: string) {
     }).format(d);
 }
 
+function resolveCover(a: EnrichedArticle): string | null {
+    const fm = getFm(a);
+    const raw = fm?.coverImageUrl ? String(fm.coverImageUrl).trim() : "";
+
+    if (!raw) return null;
+
+    // normalisation chemins public
+    if (raw.startsWith("public/")) return raw.replace(/^public\//, "/");
+    if (!raw.startsWith("/") && !raw.startsWith("http")) return `/${raw}`;
+    return raw;
+}
+
 /* =========================
-   UI atoms (inline)
+   Fallback deco
+========================= */
+function SoftFallback() {
+    return (
+        <>
+            <div className="absolute -top-10 -right-10 h-24 w-24 rounded-full bg-indigo-400/18 blur-2xl" />
+            <div className="absolute -bottom-12 -left-12 h-28 w-28 rounded-full bg-violet-400/18 blur-2xl" />
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-100/70 via-white to-violet-100/70" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-white/0 to-white/35" />
+        </>
+    );
+}
+
+/* =========================
+   Safe <img> (CORRIGÉ)
+========================= */
+function SafeImg({
+    src,
+    alt,
+    className,
+}: {
+    src: string;
+    alt: string;
+    className?: string;
+}) {
+    const [broken, setBroken] = useState(false);
+
+    // ✅ IMPORTANT : Si l'URL change (ex: navigation), on reset l'état d'erreur
+    useEffect(() => {
+        setBroken(false);
+    }, [src]);
+
+    if (broken) return <SoftFallback />;
+
+    return (
+        <>
+            <img
+                src={src}
+                alt={alt}
+                className={className ?? "h-full w-full object-cover"}
+                loading="lazy"
+                onError={() => {
+                    console.warn(`[SafeImg] Impossible de charger : ${src}`); // Debug pour toi
+                    setBroken(true);
+                }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-white/0 to-white/35" />
+        </>
+    );
+}
+
+/* =========================
+   UI atoms
 ========================= */
 function ArticleThumb({
     src,
@@ -65,17 +106,9 @@ function ArticleThumb({
 }) {
     const cls = size === "sm" ? "h-10 w-10 rounded-xl" : "h-16 w-16 rounded-2xl";
 
-    if (!src) {
-        return (
-            <div className={`shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}>
-                <div className="h-full w-full bg-gradient-to-br from-indigo-100 via-white to-violet-100" />
-            </div>
-        );
-    }
-
     return (
         <div className={`relative shrink-0 ${cls} overflow-hidden bg-slate-100 ring-1 ring-slate-200/70`}>
-            <Image src={src} alt={alt} fill className="object-cover" sizes="96px" />
+            {src ? <SafeImg src={src} alt={alt} /> : <SoftFallback />}
         </div>
     );
 }
@@ -114,7 +147,7 @@ function Row({ a }: { a: EnrichedArticle }) {
     const fm = getFm(a);
     const title = fm?.title ?? a.slug;
     const desc = fm?.description ?? "";
-    const cover = getCover(a);
+    const cover = resolveCover(a);
 
     return (
         <Link href={hrefFor(a)} className="group flex gap-4 rounded-2xl p-3 transition hover:bg-slate-50">
@@ -143,7 +176,7 @@ function SidebarMiniRow({ a }: { a: EnrichedArticle }) {
     const fm = getFm(a);
     const title = fm?.title ?? a.slug;
     const rt = fm?.readingTime;
-    const cover = getCover(a);
+    const cover = resolveCover(a);
 
     return (
         <Link
@@ -162,13 +195,13 @@ function SidebarMiniRow({ a }: { a: EnrichedArticle }) {
 }
 
 /* =========================
-   Featured (avec image si dispo)
+   Featured
 ========================= */
 function Featured({ a }: { a: EnrichedArticle }) {
     const fm = getFm(a);
     const title = fm?.title ?? a.slug;
     const desc = fm?.description ?? "";
-    const cover = getCover(a);
+    const cover = resolveCover(a);
 
     return (
         <Link
@@ -177,23 +210,11 @@ function Featured({ a }: { a: EnrichedArticle }) {
         >
             <div className="relative h-[220px] md:h-[260px] overflow-hidden bg-slate-100">
                 {cover ? (
-                    <>
-                        <Image
-                            src={cover}
-                            alt={title}
-                            fill
-                            className="object-cover"
-                            sizes="(min-width: 1024px) 720px, 100vw"
-                            priority
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/0 via-white/0 to-white/50" />
-                    </>
+                    <div className="absolute inset-0">
+                        <SafeImg src={cover} alt={title} className="h-full w-full object-cover" />
+                    </div>
                 ) : (
-                    <>
-                        <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-indigo-400/18 blur-3xl" />
-                        <div className="absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-violet-400/18 blur-3xl" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-white/65 via-white/35 to-white/70" />
-                    </>
+                    <SoftFallback />
                 )}
             </div>
 
@@ -227,7 +248,6 @@ type Props = {
 
     rightLimit?: number;
 
-    // optionnel: si tu veux forcer un featured précis
     featured?: EnrichedArticle | null;
 };
 
