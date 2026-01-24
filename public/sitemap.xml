@@ -309,6 +309,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/parcours/risque-revenus-sponsors-plan-b</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/parcours/monetisation-sponsors-dependance</loc>
     <lastmod>2026-01-24</lastmod>
     <changefreq>weekly</changefreq>
@@ -316,6 +322,12 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/parcours/revenus-instables-createur-diagnostic</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/parcours/monetisation-produit-propre-creer</loc>
     <lastmod>2026-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
