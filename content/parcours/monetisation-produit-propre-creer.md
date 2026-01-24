@@ -1,26 +1,30 @@
 ---
 id: "N1B"
-slug: "vente-produit-existant"
+slug: "monetisation-produit-propre-creer"
 title: "Tu vends déjà un produit : est-ce vraiment stable ?"
 type: "diagnostic_node"
-canonical_url: "https://www.vexly.fr/parcours/vente-produit-existant"
+canonical_url: "https://www.vexly.fr/parcours/monetisation-produit-propre-creer"
 seo_intent: "vente produit créateur stabilité"
 block_key: "one-shot-vs-recurrent"
+
 problem: "Vendre quelque chose ne garantit pas la stabilité."
 question: "Ton revenu est-il prévisible ou dépend-il de pics ?"
 shock: "Un bon mois peut masquer une instabilité structurelle."
 example: "Un lancement marche, puis plus rien pendant 2 mois."
+
 keywords:
   - "vente produit"
   - "revenu créateur"
+
 choices:
-  - label: "Ventes ponctuelles"
-    to: "modele-one-shot"
+  - label: "Ventes ponctuelles (produit one-shot : e-book, merch, formation…)"
+    to: "ventes-pas-recurring-instabilite"
     to_id: "N2BA"
-  - label: "Abonnement / récurrent"
-    to: "modele-recurrent"
+  - label: "Revenu récurrent (abonnement : SaaS, appli, communauté payante…)"
+    to: "abonnement-revenu-recurrent-avantages"
     to_id: "N2BB"
-status: "draft"
+
+status: "published"
 ---
 
 # Tu vends déjà un produit : est-ce vraiment stable ?

@@ -1,11 +1,12 @@
 ---
 id: "N2AA"
-slug: "risque-sponsors-assume"
+slug: "risque-revenus-sponsors-plan-b"
 title: "Assumer la dépendance aux sponsors"
 type: "diagnostic_node"
-canonical_url: "https://www.vexly.fr/parcours/risque-sponsors-assume"
+canonical_url: "https://www.vexly.fr/parcours/risque-revenus-sponsors-plan-b"
 seo_intent: "vivre des sponsors risques"
 block_key: "dependance-plateformes"
+
 problem: "Tu acceptes de dépendre de plateformes et d’annonceurs."
 question: "Es-tu prêt à vivre avec cette incertitude ?"
 shock: "Le risque n’est pas ponctuel, il est permanent."
@@ -14,11 +15,15 @@ keywords:
   - "risque créateur"
   - "dépendance"
 choices:
-  - label: "Je continue malgré tout"
-    to: "plateforme-risque-eleve"
-    to_id: "N3AAA"
-status: "draft"
+  - label: "« Ça ira, je croise les doigts » (continuer sans plan B)"
+    to: "pas-de-plan-b-danger"
+    to_id: "N3AA"
+  - label: "« Il me faut un revenu alternatif stable » (diversifier maintenant)"
+    to: "diversifier-revenus-avec-produit"
+    to_id: "N3AB"
+status: "published"
 ---
+
 
 # Assumer la dépendance aux sponsors
 

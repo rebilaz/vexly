@@ -1,17 +1,17 @@
 ---
-id: N1A
-slug: monetisation-sponsors-dependance
+id: "N1A"
+slug: "monetisation-sponsors-dependance"
 title: "“Louer” son audience : les limites des revenus pub & sponsoring"
-type: diagnostic_node
+type: "diagnostic_node"
+canonical_url: "https://www.vexly.fr/parcours/monetisation-sponsors-dependance"
+seo_intent: "revenus YouTube sponsoring instables, dépendance AdSense, Adpocalypse, modèle créateur pub sponsors"
+block_key: "dependance-plateformes"
 
 problem: "Monétiser via AdSense et des sponsors est simple, mais tu dépends d’acteurs externes (algorithmes, annonceurs). Le risque : revenus instables + perte de contrôle."
 question: "Est-ce que tu veux continuer à dépendre d’algorithmes et d’annonceurs… ou construire un revenu que tu contrôles ?"
 shock: "La moindre baisse de CPM, une démonétisation, ou un sponsor qui annule, et ton mois peut être coupé en deux."
 example: "Un gros sponsor annule sa campagne au dernier moment : tu perds d’un coup ~30% de tes revenus du mois."
-seo_intent: "revenus YouTube sponsoring instables, dépendance AdSense, Adpocalypse, modèle créateur pub sponsors"
-
 description: "Monétiser via pubs YouTube et sponsoring, c’est “louer” son audience : simple, mais instable. Comprends pourquoi tes revenus varient et comment reprendre le contrôle."
-canonical_url: "https://www.vexly.fr/parcours/monetisation-sponsors-dependance"
 keywords:
   - "sponsoring YouTube"
   - "revenus AdSense"
@@ -19,14 +19,14 @@ keywords:
   - "CPM YouTube"
   - "démonétisation YouTube"
   - "Adpocalypse"
-
 choices:
   - label: "Continuer avec les sponsors/publicités (pas de changement)"
-    to: "continuer-sponsors-publicites"
+    to: "risque-revenus-sponsors-plan-b"
     to_id: "N2AA"
   - label: "Envisager de créer mon propre produit (revenu à moi)"
     to: "monetisation-produit-propre-creer"
     to_id: "N1B"
+status: "published"
 ---
 
 # “Louer” son audience : les limites des revenus pub & sponsoring
