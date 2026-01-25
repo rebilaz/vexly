@@ -1,12 +1,13 @@
 export default function RessourcesHero() {
   return (
     <section className="relative w-full overflow-hidden min-h-[520px] sm:min-h-[620px]">
-      {/* Background (fast, no Next image pipeline) */}
+      {/* =========================
+          BACKGROUND (AVIF ONLY – FAST)
+         ========================= */}
       <picture className="absolute inset-0">
         <source srcSet="/ressources/Hero.avif" type="image/avif" />
-        <source srcSet="/ressources/Hero.webp" type="image/webp" />
         <img
-          src="/ressources/Hero.webp"
+          src="/ressources/Hero.avif"
           alt=""
           className="h-full w-full object-cover object-center"
           fetchPriority="high"
@@ -14,12 +15,16 @@ export default function RessourcesHero() {
         />
       </picture>
 
-      {/* Bottom transition */}
+      {/* =========================
+          BOTTOM TRANSITION
+         ========================= */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0">
         <div className="h-24 bg-gradient-to-b from-transparent to-slate-50" />
       </div>
 
-      {/* Content */}
+      {/* =========================
+          CONTENT
+         ========================= */}
       <header className="relative mx-auto flex max-w-6xl flex-col items-center px-6 py-28 text-center sm:px-10">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-700">
           Centre de ressources Vexly
