@@ -8,7 +8,7 @@ export default function RessourcesHero() {
          ========================= */}
       <div className="absolute inset-0">
         <Image
-          src="/ressources/Hero.png"
+          src="/ressources/Hero.webp"
           alt=""
           fill
           priority
