@@ -16,10 +16,7 @@ export type LandingSection = {
 };
 
 type LandingLayoutProps = {
-  // CONTENT
   sections: LandingSection[];
-
-  // FINAL CTA
   finalTitle: string;
   finalSubtitle: string;
   primaryCtaLabel: string;
@@ -27,16 +24,12 @@ type LandingLayoutProps = {
 
 export default function LandingLayout(props: LandingLayoutProps) {
   return (
-    // ✅ IMPORTANT: block horizontal page scroll WITHOUT cutting the hero visual
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50">
-      {/* Tracking isolé */}
       <LandingTracking />
 
-      {/* =========================
-          HERO — GRAND / GAUCHE / CENTRÉ VERTICALEMENT
-      ========================== */}
-      <section className="min-h-[calc(100vh-96px)] flex items-center">
-        <div className="w-full mx-auto max-w-[1600px] px-10 lg:px-20">
+      {/* HERO */}
+      <section className="flex min-h-[calc(100vh-96px)] items-center">
+        <div className="mx-auto w-full max-w-[1600px] px-6 sm:px-10 lg:px-20">
           <HeroSection
             eyebrow="Ne lancez pas juste un produit."
             titleLine1="Construisez un"
@@ -47,11 +40,8 @@ export default function LandingLayout(props: LandingLayoutProps) {
         </div>
       </section>
 
-      {/* =========================
-          CONTENU — CADRÉ / RYTHMÉ
-      ========================== */}
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 space-y-28 lg:space-y-32">
-        {/* Revenue */}
+      {/* CONTENU */}
+      <div className="mx-auto max-w-7xl px-6 py-16 space-y-16 sm:py-24 sm:space-y-24 lg:px-8 lg:space-y-32">
         <RevenueProjectionSection
           clients={100}
           pricePerMonth={49}
@@ -59,13 +49,10 @@ export default function LandingLayout(props: LandingLayoutProps) {
           ctaLabel="Vérifier la faisabilité de mon idée"
         />
 
-        {/* Features */}
         <FeaturesSection />
 
-        {/* Méthode */}
         <ExecutionMethodSection />
 
-        {/* Alignment */}
         <PartnerFitSection
           leftItems={[
             "Expertise sectorielle prouvée.",
@@ -79,7 +66,6 @@ export default function LandingLayout(props: LandingLayoutProps) {
           ]}
         />
 
-        {/* CTA final */}
         <FinalCTASection
           title={props.finalTitle}
           subtitle={props.finalSubtitle}

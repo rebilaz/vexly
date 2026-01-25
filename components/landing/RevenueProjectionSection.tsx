@@ -65,15 +65,8 @@ export default function RevenueProjectionSection({
               </span>
             </span>
             <span className="text-slate-300">=</span>
-            <span
-              className="
-              rounded-2xl 
-              bg-slate-50 
-              px-6 
-              py-3 
-              text-slate-900
-            "
-            >
+            <span className="rounded-2xl bg-slate-50 px-6 py-3 text-slate-900">
+
               {mrr.toLocaleString("fr-FR")}€
               <span className="ml-2 text-lg sm:text-xl font-medium text-slate-400">
                 MRR

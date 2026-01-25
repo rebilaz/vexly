@@ -48,14 +48,15 @@ export default function HeroSection({
           {/* RIGHT */}
           <div className="relative z-0 lg:justify-self-end">
             <div className="relative mx-auto w-full max-w-[620px] lg:max-w-[720px]">
-              <div className="pointer-events-none absolute -inset-12 rounded-[40px] bg-gradient-to-tr from-indigo-300/25 via-sky-200/15 to-violet-300/20 blur-2xl" />
+              <div className="pointer-events-none absolute -inset-12 rounded-[40px] bg-gradient-to-tr from-indigo-300/25 via-sky-200/15 to-violet-300/20 blur-2xl transform-gpu will-change-transform" />
 
+              {/* keep the luxe transform ONCE */}
               <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
-                <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
-                  <div className="relative w-[820px] max-w-none h-[440px] lg:h-[480px] -mr-[220px] lg:-mr-[260px] rounded-[28px] overflow-hidden border border-slate-200 bg-white shadow-2xl">
-                    <div className="relative -translate-y-[46px] lg:-translate-y-[60px]">
-                      <SaasPreview />
-                    </div>
+                <div
+                  className="relative w-[820px] max-w-none h-[440px] lg:h-[480px] -mr-[220px] lg:-mr-[260px] rounded-[28px] overflow-hidden border border-slate-200 bg-white shadow-2xl will-change-transform [contain:layout_paint_style] [content-visibility:auto]"
+                >
+                  <div className="relative -translate-y-[46px] lg:-translate-y-[60px]">
+                    <SaasPreview />
                   </div>
                 </div>
 
