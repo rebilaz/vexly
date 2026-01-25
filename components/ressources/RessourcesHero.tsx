@@ -1,33 +1,25 @@
-import Image from "next/image";
-
 export default function RessourcesHero() {
   return (
-    <section className="relative w-full overflow-hidden">
-      {/* =========================
-          BACKGROUND IMAGE (optimized)
-         ========================= */}
-      <div className="absolute inset-0">
-        <Image
+    <section className="relative w-full overflow-hidden min-h-[520px] sm:min-h-[620px]">
+      {/* Background (fast, no Next image pipeline) */}
+      <picture className="absolute inset-0">
+        <source srcSet="/ressources/Hero.avif" type="image/avif" />
+        <source srcSet="/ressources/Hero.webp" type="image/webp" />
+        <img
           src="/ressources/Hero.webp"
           alt=""
-          fill
-          priority
-          sizes="100vw"
-          quality={80}
-          className="object-cover object-center"
+          className="h-full w-full object-cover object-center"
+          fetchPriority="high"
+          decoding="async"
         />
-      </div>
+      </picture>
 
-      {/* =========================
-          BOTTOM CURVED TRANSITION
-         ========================= */}
+      {/* Bottom transition */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0">
         <div className="h-24 bg-gradient-to-b from-transparent to-slate-50" />
       </div>
 
-      {/* =========================
-          CONTENT
-         ========================= */}
+      {/* Content */}
       <header className="relative mx-auto flex max-w-6xl flex-col items-center px-6 py-28 text-center sm:px-10">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-700">
           Centre de ressources Vexly
