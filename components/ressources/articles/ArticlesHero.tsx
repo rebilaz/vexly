@@ -12,15 +12,22 @@ export default function ArticlesHeroClient({
 }) {
   return (
     <header className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-      {/* Image de fond — INCHANGÉE */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('/Gemini_Generated_Image_vdi976vdi976vdi9.webp')",
-        }}
-      />
+      {/* ✅ IMAGE LCP — rendue DIRECT dans le HTML */}
+      <picture className="absolute inset-0">
+        {/* Optionnel : si tu as une version AVIF, décommente et mets le bon chemin */}
+        {/* <source srcSet="/images/hero/articles-hero.avif" type="image/avif" /> */}
+        <img
+          src="/Gemini_Generated_Image_vdi976vdi976vdi9.webp"
+          alt=""
+          className="h-full w-full object-cover object-center"
+          fetchPriority="high"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
 
+      {/* Voile de lisibilité (léger) */}
+      <div className="absolute inset-0 bg-white/40" />
 
       {/* Contenu */}
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
