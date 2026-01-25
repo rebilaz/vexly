@@ -1,19 +1,27 @@
+import Image from "next/image";
+
 export default function RessourcesHero() {
   return (
     <section className="relative w-full overflow-hidden">
       {/* =========================
-          BACKGROUND IMAGE
+          BACKGROUND IMAGE (optimized)
          ========================= */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/ressources/Hero.png')" }}
-      />
+      <div className="absolute inset-0">
+        <Image
+          src="/ressources/Hero.png"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          quality={80}
+          className="object-cover object-center"
+        />
+      </div>
 
       {/* =========================
           BOTTOM CURVED TRANSITION
          ========================= */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0">
-        {/* Fade doux */}
         <div className="h-24 bg-gradient-to-b from-transparent to-slate-50" />
       </div>
 
@@ -21,12 +29,10 @@ export default function RessourcesHero() {
           CONTENT
          ========================= */}
       <header className="relative mx-auto flex max-w-6xl flex-col items-center px-6 py-28 text-center sm:px-10">
-        {/* Eyebrow */}
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-700">
           Centre de ressources Vexly
         </p>
 
-        {/* H1 contrasté */}
         <h1 className="mt-6 text-balance text-4xl font-extrabold tracking-tight sm:text-6xl">
           <span className="text-slate-950 [text-shadow:0_2px_20px_rgba(255,255,255,0.55)]">
             Comment souhaitez-vous
@@ -39,7 +45,6 @@ export default function RessourcesHero() {
           </span>
         </h1>
 
-        {/* CTA */}
         <div className="mt-10">
           <a
             href="#hubs"

@@ -2,18 +2,16 @@
 
 import { useMemo, useState } from "react";
 import MarketplaceHero from "./MarketplaceHero";
-import MarketplaceControls, { type CategoryTab } from "./MarketplaceControls";
+import MarketplaceControls from "./MarketplaceControls";
 import MarketplaceFeatured, { type ClientListing } from "./MarketplaceFeatured";
 import MarketplaceGrid from "./MarketplaceGrid";
 
 export default function MarketplaceClient({
   listings,
-  metrics,
 }: {
   listings: ClientListing[];
   metrics?: { total: number; niches: number; stacks: number };
 }) {
-  const [activeTab, setActiveTab] = useState<CategoryTab>("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const featuredItem = listings.find((i) => i.featured);
@@ -22,9 +20,8 @@ export default function MarketplaceClient({
     const q = searchQuery.toLowerCase().trim();
 
     return listings.filter((item) => {
-      if (activeTab === "All" && item.featured && q === "") return false;
-
-      const matchesTab = activeTab === "All" || item.category === activeTab;
+      // cache le featured du grid quand on n'a pas de recherche
+      if (item.featured && q === "") return false;
 
       const matchesSearch =
         q === "" ||
@@ -33,37 +30,24 @@ export default function MarketplaceClient({
         (item.niche_category ?? "").toLowerCase().includes(q) ||
         item.slug.toLowerCase().includes(q);
 
-      return matchesTab && matchesSearch;
+      return matchesSearch;
     });
-  }, [listings, activeTab, searchQuery]);
-
-  const total = metrics?.total ?? listings.length;
-  const niches = metrics?.niches ?? 0;
-  const stacks = metrics?.stacks ?? 0;
+  }, [listings, searchQuery]);
 
   return (
     <div className="min-h-screen bg-slate-50 pb-20">
-      <MarketplaceHero total={total} niches={niches} stacks={stacks} />
+      <MarketplaceHero />
 
-      {/* ✅ Tout le contenu "page" dans le même container */}
       <div className="mx-auto max-w-6xl px-6">
-        <MarketplaceControls
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-        />
+        <MarketplaceControls searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        <div className="pt-10 space-y-10">
-          {featuredItem && searchQuery === "" && activeTab === "All" && (
-            <MarketplaceFeatured item={featuredItem} />
-          )}
+        <div className="space-y-10 pt-10">
+          {featuredItem && searchQuery === "" && <MarketplaceFeatured item={featuredItem} />}
 
           <MarketplaceGrid
             items={filteredListings}
             onReset={() => {
               setSearchQuery("");
-              setActiveTab("All");
             }}
           />
         </div>
