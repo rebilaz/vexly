@@ -1,4 +1,7 @@
+import fs from "fs";
+import path from "path";
 import type { Metadata } from "next";
+
 import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
 import { getArticleBySlug, getAllArticles } from "@/lib/articles";
 
@@ -17,9 +20,41 @@ function toSlug(input: string) {
     .trim();
 }
 
+/**
+ * ✅ Charge les slugs à EXCLURE du build statique
+ * - On lit redirects.generated.json (généré par ta function Supabase)
+ * - Format: [{ from: "/articles/<slug>", to: "/articles/<slug>" }, ...]
+ */
+function loadRedirectedSlugs(): Set<string> {
+  try {
+    const p = path.join(process.cwd(), "redirects.generated.json");
+    if (!fs.existsSync(p)) return new Set();
+
+    const raw = fs.readFileSync(p, "utf8");
+    const arr = JSON.parse(raw);
+
+    const slugs = new Set<string>();
+    if (!Array.isArray(arr)) return slugs;
+
+    for (const r of arr) {
+      if (!r?.from || typeof r.from !== "string") continue;
+      const m = r.from.match(/^\/articles\/(.+)$/);
+      if (m?.[1]) slugs.add(m[1]);
+    }
+    return slugs;
+  } catch {
+    return new Set();
+  }
+}
+
 export async function generateStaticParams() {
   const articles = await getAllArticles();
-  return articles.map((article) => ({ slug: article.slug }));
+  const redirected = loadRedirectedSlugs();
+
+  // ✅ On ne pré-rend pas les pages "mortes" (elles seront servies en 301 via next.config.js)
+  return articles
+    .filter((article) => !redirected.has(article.slug))
+    .map((article) => ({ slug: article.slug }));
 }
 
 export async function generateMetadata(
