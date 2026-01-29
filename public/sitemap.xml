@@ -308,8 +308,8 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/parcours/abonnement-revenu-recurrent-avantages</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://www.vexly.fr/parcours/pas-de-plan-b-danger</loc>
+    <lastmod>2026-01-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -345,6 +345,12 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/parcours/monetisation-produit-propre-creer</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/parcours/abonnement-revenu-recurrent-avantages</loc>
     <lastmod>2026-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -517,6 +523,11 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/voilanorbert-com</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/woosmap-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
