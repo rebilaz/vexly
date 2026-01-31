@@ -3,7 +3,7 @@ title: "Valider une idée SaaS rentable : méthode de scoring sur 100 points (sa
 slug: "comment-valider-ide-e-business-2026-01-08"
 base_slug: "comment-valider-ide-e-business"
 subtitle: "Score GO / NO-GO + module rentabilité (ARPU, marge, CAC) pour décider avant de payer un MVP."
-description: "Apprenez à utiliser une méthode de scoring sur 100 points pour évaluer la rentabilité théorique de votre projet SaaS avant de coder."
+description: "Apprenez à utiliser une méthode de scoring sur 100 points pour évaluer une idée de SaaS (marché, douleur, concurrence, monétisation, exécution) puis vérifier sa rentabilité (ARPU, marge, CAC) avant de coder."
 date: "2026-01-08"
 niche: "validation d’idées SaaS pour non-développeurs"
 cluster: "Trouver une idée rentable"
@@ -62,7 +62,7 @@ Valider une idée avant le développement vous permet de :
 
 - **éviter de cramer votre budget** sur un SaaS que personne n’utilise
 - **prioriser** vos idées (surtout si vous en avez 3, 4, 10…)
-- **parler la même langue qu’un prestataire** (avec des hypothèses claires, pas des émotions)
+- **parler la même langue qu’un prestataire** (hypothèses claires, pas des émotions)
 - décider : **MVP maintenant**, ou **encore de la validation terrain**
 
 L’objectif n’est pas d’avoir une certitude à 100%, mais un système **rationnel** qui réduit fortement les erreurs.
@@ -74,7 +74,7 @@ L’objectif n’est pas d’avoir une certitude à 100%, mais un système **rat
 1) **Le score (100 points)** : est-ce que l’idée est “prometteuse” ?  
 2) **Le module rentabilité** : est-ce que ça peut “payer” dans la vraie vie ?
 
-> Règle simple : un bon score sans rentabilité = piège.
+> Règle simple : un bon score sans rentabilité = piège.  
 > Vous devez passer les deux.
 
 ---
@@ -109,7 +109,7 @@ Barème simple :
 - **11–15** : marché correct (5 000–10 000)
 - **16–20** : marché > 10 000 clients potentiels
 
-**Test concret (sans outils)** :  
+**Tests concrets (sans outils)** :  
 - pouvez-vous lister **50 à 100 prospects** précis (métiers + exemples) ?
 - pouvez-vous passer de **10 à 100 clients** sans changer de cible ?
 - y a-t-il des concurrents ? (souvent bon signe : marché existant)
@@ -131,7 +131,7 @@ Barème :
 Test simple : demandez à un prospect  
 > “Si ce problème n’est pas réglé dans 3 mois, qu’est-ce que ça vous coûte concrètement ?”
 
-Si la réponse parle de **temps, argent, opportunités, conformité, erreurs** → c’est bon signe.
+Si la réponse parle de **temps, argent, opportunités, conformité, erreurs** → bon signe.
 
 ---
 
@@ -162,7 +162,7 @@ Barème :
 - **0–5** : faible valeur perçue, difficile à monétiser
 - **6–10** : abonnement possible mais ticket bas
 - **11–15** : MRR potentiel > 1 000 €/mois
-- **16–20** : potentiel > 5 000 €/mois (ou atteignable grâce à audience/réseau)
+- **16–20** : potentiel > 5 000 €/mois (ou atteignable via audience/réseau)
 
 Ici, on prépare la suite : vous allez valider “pour de vrai” avec le module rentabilité.
 
@@ -307,8 +307,133 @@ Souvent : **GO** si pain confirmé + pricing réaliste + CAC maîtrisable.
 
 ---
 
+# Bonus : 7 erreurs de validation qui ruinent une idée (et comment les éviter)
+
+Cette section remplace tes deux articles “erreurs” et te sert de garde-fou :  
+un score peut être bon… **et pourtant** ton idée peut être non viable si tu lis mal les signaux.
+
+> Objectif : éliminer les **faux positifs** avant de payer un MVP.
+
+---
+
+## 1) Biais de confirmation (tu cherches des “oui”)
+
+Symptôme : tu postes ton idée → likes → “ça a l’air cool” → tu conclus que c’est validé.
+
+**Correction**
+- pose des questions pour **invalider** :
+  - “Pourquoi tu ne paierais pas ?”
+  - “Qu’est-ce qui te ferait dire non ?”
+- cherche des faits : “Tu as déjà payé pour régler ça ?”
+
+**Signal fort**
+- quelqu’un accepte un call sérieux / demande “tu lances quand ?” / met un petit montant.
+
+---
+
+## 2) Mauvais échantillon (tu demandes aux mauvaises personnes)
+
+Tester sur :
+- amis,
+- followers trop généralistes,
+- gens hors cible,
+
+… te donne des retours gentils, pas des retours utiles.
+
+**Correction**
+- décris une cible *ultra précise* (métier, contexte, budget)
+- parle à 10–20 profils **strictement** dedans
+
+---
+
+## 3) Questions biaisées (tu guides les réponses)
+
+“Si je crée un outil qui te fait gagner du temps, tu serais intéressé ?”  
+Tout le monde dit oui. Ça ne vaut rien.
+
+**Correction**
+- questions neutres ancrées dans le passé :
+  - “Comment tu fais aujourd’hui ?”
+  - “Qu’est-ce qui te coûte le plus ?”
+  - “Qu’est-ce que tu as déjà essayé ?”
+
+---
+
+## 4) Confondre intérêt et achat (likes ≠ clients)
+
+Vanity metrics = carburant de l’ego.
+
+**Correction**
+- cherche des engagements :
+  - précommande,
+  - dépôt,
+  - call de 30 min,
+  - “OK pour payer X€/mois si…”
+
+---
+
+## 5) Oublier la concurrence indirecte
+
+“Il n’existe pas de SaaS qui fait exactement ça.”  
+Souvent, le marché est déjà “servi” par :
+- Notion
+- Google Sheets
+- Trello
+- automatisations
+- assistants humains
+
+**Correction**
+- demande : “Tu utilises quoi aujourd’hui ?”
+- ta promesse doit être : **10× plus simple / plus rapide / plus fiable**, pas “un outil de plus”.
+
+---
+
+## 6) Se focaliser sur le deck, pas sur les clients
+
+Tu passes 2 semaines sur un business plan, mais 0 discussion réelle avec des prospects.
+
+**Correction**
+- ton premier investisseur = ton premier client
+- vise une preuve de revenu à 3–6 mois, pas une valorisation
+
+---
+
+## 7) Arriver flou devant un dev (et le faire fuir)
+
+Si tu dis :
+- “c’est pour tout le monde”
+- “on verra les features plus tard”
+- “les intégrations on sait pas”
+
+… tu vas payer plus cher et prendre du retard.
+
+**Correction**
+Avant MVP, fixe :
+- 1 cible principale
+- 2–3 cas d’usage prioritaires
+- 3–5 intégrations essentielles
+
+---
+
+## Checklist express (à copier dans un tableur)
+
+- Cible décrite en 1 phrase précise : **oui/non**
+- 10 prospects identifiés : **oui/non**
+- 5 interviews faites : **oui/non**
+- Problème chiffré (temps/€) : **oui/non**
+- Solutions actuelles identifiées : **oui/non**
+- Prix testé (même à l’oral) : **oui/non**
+- 1 signal fort (call / dépôt / prévente) : **oui/non**
+- MVP scope (3 features + intégrations) : **oui/non**
+
+Si tu coches la majorité : tu peux passer au terrain puis au MVP.
+
+---
+
 ## Conclusion : l’essentiel en 3 lignes
 
 - **Score + rentabilité** = décision GO/NO-GO propre  
 - Une idée rentable vise **un avatar solvable + un prix réaliste + un CAC maîtrisé**  
 - Si c’est vert : passez au terrain, puis au MVP.
+
+---
