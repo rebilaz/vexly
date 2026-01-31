@@ -74,12 +74,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/erreurs-pre-vente-saas-7-2026-01-20</loc>
-    <lastmod>2026-01-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/articles/7-erreurs-identifier-proble-me-2026-01-19</loc>
     <lastmod>2026-01-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -106,12 +100,6 @@
   <url>
     <loc>https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13</loc>
     <lastmod>2026-01-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/articles/quel-prix-pre-vente-saas-2026-01-12</loc>
-    <lastmod>2026-01-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -152,12 +140,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/comment-faire-pre-ventes-valider-2025-12-29</loc>
-    <lastmod>2025-12-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/articles/comment-identifier-proble-me-rentable-2025-12-28</loc>
     <lastmod>2025-12-28</lastmod>
     <changefreq>weekly</changefreq>
@@ -188,18 +170,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/pre-vente-saas-coder-valider-2025-12-23</loc>
-    <lastmod>2025-12-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/articles/cas-d-e-tude-saas-2025-12-22</loc>
-    <lastmod>2025-12-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/articles/e-tude-cas-saas-comment-2025-12-21</loc>
     <lastmod>2025-12-21</lastmod>
     <changefreq>weekly</changefreq>
@@ -226,18 +196,6 @@
   <url>
     <loc>https://www.vexly.fr/articles/landing-page-validation-saas-plan-2025-12-17</loc>
     <lastmod>2025-12-17</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/articles/mvp-rapide-tester-ide-e-2025-12-16</loc>
-    <lastmod>2025-12-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/articles/outils-lancer-pre-vente-coder-2025-12-15</loc>
-    <lastmod>2025-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -296,16 +254,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.vexly.fr/articles/micro-saas-no-code-ia-2025-11-30</loc>
+    <lastmod>2025-11-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/articles/deleguer-saas-rentable-2025-11-30</loc>
     <lastmod>2025-11-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/micro-saas-no-code-ia-2025-11-30</loc>
-    <lastmod>2025-11-30</lastmod>
+    <loc>https://www.vexly.fr/parcours/communaute-payante-ou-publique</loc>
+    <lastmod>2026-01-30</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.vexly.fr/parcours/pas-de-plan-b-danger</loc>
@@ -316,12 +280,6 @@
   <url>
     <loc>https://www.vexly.fr/parcours/diversifier-revenus-avec-produit</loc>
     <lastmod>2026-01-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/parcours/ventes-pas-recurring-instabilite</loc>
-    <lastmod>2026-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -363,6 +321,12 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/parcours/risque-revenus-sponsors-plan-b</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/parcours/ventes-pas-recurring-instabilite</loc>
     <lastmod>2026-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -444,6 +408,11 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/n2f-com</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/namsor-app</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
