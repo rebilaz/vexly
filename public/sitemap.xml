@@ -152,8 +152,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/parcours/monetisation-sponsors-dependance</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://www.vexly.fr/parcours/produit-one-shot-plateforme</loc>
+    <lastmod>2026-02-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -164,8 +164,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/parcours/abonnement-revenu-recurrent-avantages</loc>
-    <lastmod>2026-01-24</lastmod>
+    <loc>https://www.vexly.fr/parcours/ajouter-revenu-abonnement-strategie</loc>
+    <lastmod>2026-01-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -176,8 +176,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/parcours/ajouter-revenu-abonnement-strategie</loc>
-    <lastmod>2026-01-27</lastmod>
+    <loc>https://www.vexly.fr/parcours/abonnement-revenu-recurrent-avantages</loc>
+    <lastmod>2026-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -196,6 +196,12 @@
   <url>
     <loc>https://www.vexly.fr/parcours/rester-ventes-ponctuelles-seul</loc>
     <lastmod>2026-01-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/parcours/monetisation-sponsors-dependance</loc>
+    <lastmod>2026-01-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -246,6 +252,11 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/harvestr-io</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/marketplace/imaios-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
