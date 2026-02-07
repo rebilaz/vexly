@@ -224,11 +224,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/agent-x-recruiter</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/axonaut-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -239,27 +234,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/bridge-audio</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/brivity-brivity-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/businessanalytiq-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/ecovadis-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/freelancers-union-contract-creator</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -280,11 +255,6 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/indy-fr</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/jitter-video</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -329,17 +299,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/peel-insights-peelinsights-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/pennylane-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/photoroom-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -354,16 +314,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/rayon-design</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/saas-insights</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/scrapingbee-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -374,17 +324,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/ship24-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/sociabble-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/soundiiz-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -395,11 +335,6 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/marketplace/treelyapp-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/vexly-app</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
