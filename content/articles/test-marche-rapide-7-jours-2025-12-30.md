@@ -16,9 +16,15 @@ angle: "Framework terrain complet avant développement"
 slice: "framework"
 slice_label: "Méthode complète de validation en 7 jours"
 readingTime: "15 min de lecture"
-canonical_url: "[https://www.vexly.fr/articles/test-marche-rapide-7-jours-2025-12-30](https://www.vexly.fr/articles/test-marche-rapide-7-jours-2025-12-30)"
-tags: ["SaaS", "validation", "no-code", "MVP", "prévente", "traction"]
-keywords:
+canonical_url: "https://www.vexly.fr/articles/test-marche-rapide-7-jours-2025-12-30"
+tags:
+  - "SaaS"
+  - "validation"
+  - "no-code"
+  - "MVP"
+  - "prévente"
+  - "traction"
+keywords: 
   - "test de marché SaaS"
   - "valider idée SaaS"
   - "tester idée SaaS sans coder"

@@ -17,23 +17,31 @@ slice_label: "Étude de cas complète (de l'idée au go/no-go) — format narrat
 primary_query: "exemple complet de validation d'idée"
 priority: 1
 readingTime: "12 min de lecture"
-canonical_url: "[https://www.vexly.fr/articles/exemple-complet-validation-d-ide-2025-12-27](https://www.vexly.fr/articles/exemple-complet-validation-d-ide-2025-12-27)"
-tags: ["SaaS", "no-code", "validation", "freelance", "startup", "interviews", "pricing", "go/no-go"]
+canonical_url: "https://www.vexly.fr/articles/exemple-complet-validation-d-ide-2025-12-27"
+tags: 
+
+  -"SaaS"
+  -"no-code"
+  -"validation"
+  -"freelance"
+  -"startup"
+  -"interviews"
+  -"pricing"
+  -"go/no-go"
 keywords:
-[
-"validation idée saas",
-"valider idée business",
-"valider idée saas sans coder",
-"exemple validation idée startup",
-"interviews utilisateurs saas",
-"étude de cas validation saas",
-"prévente saas no code",
-"go no go startup",
-"comment tester son idée saas",
-"validation marché saas",
-"exemple validation pricing saas",
-"exemple interviews clients saas"
-]
+
+  -"validation idée saas"
+  -"valider idée business"
+  -"valider idée saas sans coder"
+  -"exemple validation idée startup"
+  -"interviews utilisateurs saas"
+  -"étude de cas validation saas"
+  -"prévente saas no code"
+  -"go no go startup"
+  -"comment tester son idée saas"
+  -"validation marché saas"
+  -"exemple validation pricing saas"
+  -"exemple interviews clients saas"
 ---
 
 # Exemple complet de validation d’idée SaaS no-code : le cas pratique de l’idée au go/no-go

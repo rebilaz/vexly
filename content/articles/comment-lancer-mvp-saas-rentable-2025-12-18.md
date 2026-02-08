@@ -17,7 +17,7 @@ slice_label: "Transformer une idée en MVP vendable (sans se disperser)"
 primary_query: "comment lancer un MVP SaaS rentable"
 priority: 1
 readingTime: "12 min de lecture"
-canonical_url: "[https://www.vexly.fr/articles/comment-lancer-mvp-saas-rentable-2025-12-18](https://www.vexly.fr/articles/comment-lancer-mvp-saas-rentable-2025-12-18)"
+canonical_url: "https://www.vexly.fr/articles/comment-lancer-mvp-saas-rentable-2025-12-18"
 
 ---
 

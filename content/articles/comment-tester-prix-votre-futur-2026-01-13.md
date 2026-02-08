@@ -11,7 +11,7 @@ cluster: "Créer et valider un SaaS rentable"
 pillar: false
 priority: 1
 readingTime: "12 min"
-canonical_url: "[https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13](https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13)"
+canonical_url: "https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13"
 
 ---
 

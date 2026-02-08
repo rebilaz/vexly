@@ -1,7 +1,7 @@
 ---
 title: "SaaS pour YouTubers : comment transformer ton audience en revenu récurrent sans coder"
-slug: "saas-youtubers-comment-transformer-ton-3"
-canonical_url: "https://www.vexly.fr/articles/saas-youtubers-comment-transformer-ton-3"
+slug: "saas-youtubers-comment-transformer-ton-3-2025-12-04"
+canonical_url: "https://www.vexly.fr/articles/saas-youtubers-comment-transformer-ton-3-2025-12-04"
 ---
 
 # SaaS pour YouTubers : comment transformer ton audience en revenu récurrent sans coder

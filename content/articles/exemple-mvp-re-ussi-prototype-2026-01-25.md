@@ -17,20 +17,27 @@ slice_label: "Exemple MVP : du prototype à la vente"
 primary_query: "exemple de MVP réussi"
 priority: 1
 readingTime: "10 min de lecture"
-canonical_url: "[https://www.vexly.fr/articles/exemple-mvp-re-ussi-prototype-2026-01-25](https://www.vexly.fr/articles/exemple-mvp-re-ussi-prototype-2026-01-25)"
-tags: ["MVP", "SaaS", "no-code", "prototype", "fake door", "traction"]
+canonical_url: "https://www.vexly.fr/articles/exemple-mvp-re-ussi-prototype-2026-01-25"
+tags: 
+
+  -"MVP"
+  -"SaaS"
+  -"no-code"
+  -"prototype"
+  -"fake door"
+  -"traction"
 keywords:
-[
-"exemple mvp saas",
-"mvp sans coder",
-"prototype saas",
-"fake door test",
-"lancer saas sans développeur",
-"valider mvp saas",
-"mvp no code",
-"premiers clients saas",
-"exemple traction saas"
-]
+
+  -"exemple mvp saas"
+  -"mvp sans coder"
+  -"prototype saas"
+  -"fake door test"
+  -"lancer saas sans développeur"
+  -"valider mvp saas"
+  -"mvp no code"
+  -"premiers clients saas"
+  -"exemple traction saas"
+
 ---
 
 # Exemple de MVP réussi : le prototype SaaS qui a généré 10 clients payants en 30 jours sans coder

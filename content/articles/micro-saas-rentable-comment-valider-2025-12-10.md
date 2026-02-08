@@ -1,8 +1,7 @@
 ---
-
 title: "Micro-SaaS rentable : comment valider ton idée, fixer ton prix et déléguer tout le technique"
-slug: "micro-saas-rentable-comment-valider"
-base_slug: "micro-saas-rentable-comment-valider"
+slug: "micro-saas-rentable-comment-valider-2025-12-10"
+base_slug: "micro-saas-rentable-comment-valider-2025-12-10"
 subtitle: "Valide ton idée, trouve ton pricing et fais développer ton SaaS sans coder"
 description: "Guide complet pour lancer un micro-SaaS rentable : niche, validation, MVP vendable, pricing, intégrations et délégation du développement."
 date: "2025-12-10"
@@ -14,24 +13,29 @@ search_intent: "Comprendre ce qu’est un micro-SaaS et comment le lancer"
 angle: "Méthode complète : validation + pricing + MVP + délégation"
 priority: 4
 readingTime: "12 min de lecture"
-canonical_url: "[https://www.vexly.fr/articles/micro-saas-rentable-comment-valider](https://www.vexly.fr/articles/micro-saas-rentable-comment-valider)"
-tags: ["micro saas", "no code", "mvp", "pricing saas", "revenu récurrent", "validation"]
+canonical_url: "https://www.vexly.fr/articles/micro-saas-rentable-comment-valider-2025-12-10"
+tags:
+  - "micro saas"
+  - "no code"
+  - "mvp"
+  - "pricing saas"
+  - "revenu récurrent"
+  - "validation"
 keywords:
-[
-"micro saas rentable",
-"idée saas",
-"valider idée saas",
-"créer micro saas sans coder",
-"déléguer développement saas",
-"fixer prix saas",
-"lancer mvp saas",
-"saas pour freelances",
-"monétiser audience avec saas",
-"prestataire saas no code",
-"roadmap lancement saas",
-"revenu récurrent saas"
-]
+  - "micro saas rentable"
+  - "idée saas"
+  - "valider idée saas"
+  - "créer micro saas sans coder"
+  - "déléguer développement saas"
+  - "fixer prix saas"
+  - "lancer mvp saas"
+  - "saas pour freelances"
+  - "monétiser audience avec saas"
+  - "prestataire saas no code"
+  - "roadmap lancement saas"
+  - "revenu récurrent saas"
 ---
+
 
 # Micro-SaaS rentable : comment valider ton idée, fixer ton prix et déléguer tout le technique
 
