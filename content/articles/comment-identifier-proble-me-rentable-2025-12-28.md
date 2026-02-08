@@ -18,19 +18,19 @@ priority: 1
 readingTime: "9 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/comment-identifier-proble-me-rentable-2025-12-28"
 tags:
-  -"saas"
-  -"validation idée"
-  -"business"
-  -"no-code"
-  -"micro-saas"
+  - "saas"
+  - "validation idée"
+  - "business"
+  - "no-code"
+  - "micro-saas"
 keywords:
-  -"problème business rentable"
-  -"valider problème saas"
-  -"trouver idée saas rentable"
-  -"identifier douleur client"
-  -"framework validation idée"
-  -"go no go saas"
-  -"micro saas rentable"
+  - "problème business rentable"
+  - "valider problème saas"
+  - "trouver idée saas rentable"
+  - "identifier douleur client"
+  - "framework validation idée"
+  - "go no go saas"
+  - "micro saas rentable"
 ---
 
 # Identifier un problème rentable : framework en 5 étapes pour lancer un SaaS

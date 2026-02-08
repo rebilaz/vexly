@@ -12,11 +12,11 @@ priority: 1
 readingTime: "16 min"
 canonical_url: "https://www.vexly.fr/articles/comment-valider-ide-e-business-2026-01-08"
 tags:
-  -"SaaS"
-  -"validation"
-  -"MVP"
-  -"business"
-  -"rentabilité"
+  - "SaaS"
+  - "validation"
+  - "MVP"
+  - "business"
+  - "rentabilité"
 ---
 
 # Valider une idée SaaS rentable : la méthode complète pour décider avant de construire

@@ -18,13 +18,13 @@ priority: 1
 readingTime: "14 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/landing-page-validation-saas-plan-2025-12-17"
 tags:
-  -"SaaS"
-  -"no-code"
-  -"landing page"
-  -"validation"
-  -"MVP"
-  -"fake door"
-  -"traction"
+  - "SaaS"
+  - "no-code"
+  - "landing page"
+  - "validation"
+  - "MVP"
+  - "fake door"
+  - "traction"
 ---
 
 # Landing page de validation SaaS : le plan en 1 jour pour tester et vendre sans coder
