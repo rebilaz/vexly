@@ -48,6 +48,16 @@ Ce guide vous donne un **framework simple en 5 étapes** pour répondre à une s
 
 ---
 
+> ### ⚠️ Avant d’aller plus loin
+> Identifier un problème est une étape. Décider **GO / NO-GO** en est une autre.
+>
+> Si vous voulez une méthode complète (scoring sur 100 points + rentabilité + pricing + décision), c’est ici :
+>
+> **→ [Valider une idée SaaS rentable : méthode complète](/articles/comment-valider-ide-e-business-2026-01-08)**  
+> *(méthode de scoring SaaS sur 100 points)*
+
+---
+
 ## Pourquoi identifier le bon problème est l’étape la plus critique
 
 Un SaaS est un produit à abonnement.  
@@ -79,6 +89,14 @@ Un SaaS rentable s’attaque **à la cause**, pas au ressenti superficiel.
 - “Qu’est-ce que vous faites aujourd’hui pour la gérer ?”
 - “Depuis quand c’est un problème ?”
 
+### Micro-test (utile immédiatement)
+Si ton “problème” disparaît dès qu’on ajoute :
+- une checklist,
+- un template,
+- une procédure,
+
+… alors tu es probablement sur un symptôme ou un problème trop faible.
+
 ---
 
 ## Étape 2 – Définir une cible précise (et solvable)
@@ -95,6 +113,15 @@ Phrase test :
 
 Si tu n’arrives pas à formuler cette phrase → le problème n’est pas encore clair.
 
+### Signal solvable (sans te mentir)
+Demande-toi : **est-ce que cette cible a déjà payé pour résoudre ça ?**  
+- outil
+- prestataire
+- freelance
+- service
+
+S’il n’y a **aucune trace de budget**, c’est rarement un bon problème SaaS.
+
 ---
 
 ## Étape 3 – Vérifier la fréquence du problème
@@ -108,6 +135,10 @@ Repères simples :
 
 Question clé :
 > “À quelle fréquence ce problème revient-il ?”
+
+### Astuce : fréquence ≠ occurrence
+Un problème peut être “rare” mais coûter très cher (risque légal, risque financier).  
+Dans ce cas, la fréquence est faible, mais l’intensité peut compenser.
 
 ---
 
@@ -123,6 +154,15 @@ Exemple :
 👉 Un SaaS à 50–100 € / mois devient logique.
 
 Si le client ne peut **rien chiffrer**, c’est souvent un problème secondaire.
+
+### Attention au piège “c’est chiant donc je paie”
+Non.
+
+Les gens paient quand :
+- ça coûte du temps *répété*,
+- ça coûte de l’argent,
+- ça crée du risque,
+- ou ça bloque un objectif business.
 
 ---
 
@@ -143,21 +183,41 @@ Checklist simple :
 
 ---
 
-## Approfondir selon votre situation
+## (Très important) Ne décidez pas “à l’intuition” : scorez la douleur
 
-Une fois le problème validé, vous pouvez approfondir chaque angle :
+À ce stade, la question n’est plus “est-ce un problème ?”.
 
-- ❌ **Erreurs à éviter**  
-  → `/articles/7-erreurs-identifier-proble-me-2026-01-19`
+La question devient :
 
-- 💰 **Monétisation et budget**  
-  → `/articles/checklist-signes-qu-proble-me-2026-01-11`
+> Est-ce un problème **assez fort** pour supporter un abonnement rentable ?
 
-- 🧪 **Recherche terrain (outils gratuits)**  
-  → `/articles/7-outils-gratuits-comprendre-besoins-2025-12-14`
+C’est exactement ce que mesure la grille Vexly (douleur = 25 points, monétisation = 20 points, faisabilité MVP = 20 points).
 
-- 📊 **Exemple réel de validation**  
-  → `/articles/e-tude-cas-saas-comment-2025-12-21`
+**→ [Analyse de la douleur client : méthode complète de scoring SaaS sur 100 points](/articles/comment-valider-ide-e-business-2026-01-08)**
+
+---
+
+## Preuve terrain (pour éviter le piège du “problème dans ma tête”)
+
+Si tu veux éviter de te raconter une histoire, lis une validation complète étape par étape :
+
+**→ [Exemple complet de validation d’idée (cas réel)](/articles/exemple-complet-validation-d-ide-2025-12-27)**
+
+*(Une méthode n’a de valeur que si quelqu’un peut l’appliquer et obtenir un signal net.)*
+
+---
+
+## Prochaine étape logique : tester la demande en conditions réelles
+
+Une fois le problème clarifié, tu n’as pas besoin de coder.
+
+Tu dois obtenir des preuves :
+- clics
+- emails
+- discussions
+- intent-to-pay
+
+**→ [Test de marché rapide en 7 jours : sprint de validation](/articles/test-marche-rapide-7-jours-2025-12-30)**
 
 ---
 
@@ -173,3 +233,16 @@ Si tu pars d’un bon problème :
 
 Le code vient **après**.  
 Le vrai levier, c’est la **qualité du problème choisi**.
+
+---
+
+## Ce guide n’est qu’une pièce du puzzle
+
+Si tu veux décider comme un investisseur (GO / AJUSTER / STOP) avec :
+- scoring 100 points
+- filtre rentabilité
+- test pricing
+- moment exact pour MVP
+
+**→ [Valider une idée SaaS rentable : la méthode complète](/articles/comment-valider-ide-e-business-2026-01-08)**  
+*(méthode complète de scoring SaaS sur 100 points)*
