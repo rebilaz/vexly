@@ -18,25 +18,6 @@ primary_query: "comment lancer un MVP SaaS rentable"
 priority: 1
 readingTime: "12 min de lecture"
 canonical_url: "[https://www.vexly.fr/articles/comment-lancer-mvp-saas-rentable-2025-12-18](https://www.vexly.fr/articles/comment-lancer-mvp-saas-rentable-2025-12-18)"
-tags:
-
-* "mvp saas"
-* "no-code"
-* "validation"
-* "pricing"
-* "MRR"
-* "IA"
-  keywords:
-* "lancer mvp saas"
-* "mvp saas sans coder"
-* "créer saas sans code"
-* "offre minimum vendable"
-* "lancer produit saas rapidement"
-* "fixer prix mvp saas"
-* "itérer mvp saas"
-* "no-code saas"
-* "micro saas no code"
-* "ia pour saas"
 
 ---
 

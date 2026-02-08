@@ -12,30 +12,6 @@ pillar: false
 priority: 1
 readingTime: "12 min"
 canonical_url: "[https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13](https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13)"
-tags:
-
-* "SaaS"
-* "pricing"
-* "willingness to pay"
-* "MRR"
-* "validation"
-  main_keyword: "tester prix saas"
-  primary_query: "comment tester un prix rapidement"
-  search_intent: "valider un prix et la willingness-to-pay"
-  angle: "pricing validation : mesurer intent-to-pay sans coder"
-  slice: "profitability"
-  slice_label: "Tester le pricing et la volonté de payer rapidement"
-  keywords:
-* "tester prix saas"
-* "valider willingness to pay"
-* "pricing page test"
-* "tester un prix avec une landing page"
-* "packs tarifaires SaaS"
-* "depot remboursable saas"
-* "fake checkout"
-* "ancrage prix saas"
-* "MRR potentiel"
-* "pricing SaaS B2B"
 
 ---
 
