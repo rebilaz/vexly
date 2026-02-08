@@ -34,7 +34,7 @@ keywords:
 "exemple validation pricing saas",
 "exemple interviews clients saas"
 ]
--
+---
 
 # Exemple complet de validation d’idée SaaS no-code : le cas pratique de l’idée au go/no-go
 

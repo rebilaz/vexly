@@ -31,7 +31,7 @@ keywords:
 "roadmap lancement saas",
 "revenu récurrent saas"
 ]
--
+---
 
 # Micro-SaaS rentable : comment valider ton idée, fixer ton prix et déléguer tout le technique
 

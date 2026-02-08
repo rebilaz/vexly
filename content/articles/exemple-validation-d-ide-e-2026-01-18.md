@@ -30,7 +30,7 @@ keywords:
 "prévente saas",
 "validation marché saas"
 ]
--
+---
 
 # Exemple de validation d’idée ratée : 3 faux signaux qui auraient pu tuer ton SaaS no-code
 
