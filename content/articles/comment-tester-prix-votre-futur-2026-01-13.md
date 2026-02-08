@@ -12,7 +12,6 @@ pillar: false
 priority: 1
 readingTime: "12 min"
 canonical_url: "https://www.vexly.fr/articles/comment-tester-prix-votre-futur-2026-01-13"
-
 ---
 
 # Tester le prix d’un SaaS : 7 méthodes rapides pour valider la volonté de payer

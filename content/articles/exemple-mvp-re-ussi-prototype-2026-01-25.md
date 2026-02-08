@@ -18,8 +18,7 @@ primary_query: "exemple de MVP réussi"
 priority: 1
 readingTime: "10 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/exemple-mvp-re-ussi-prototype-2026-01-25"
-tags: 
-
+tags:
   -"MVP"
   -"SaaS"
   -"no-code"
@@ -27,7 +26,6 @@ tags:
   -"fake door"
   -"traction"
 keywords:
-
   -"exemple mvp saas"
   -"mvp sans coder"
   -"prototype saas"
@@ -37,7 +35,6 @@ keywords:
   -"mvp no code"
   -"premiers clients saas"
   -"exemple traction saas"
-
 ---
 
 # Exemple de MVP réussi : le prototype SaaS qui a généré 10 clients payants en 30 jours sans coder

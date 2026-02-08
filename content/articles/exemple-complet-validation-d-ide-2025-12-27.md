@@ -18,8 +18,7 @@ primary_query: "exemple complet de validation d'idée"
 priority: 1
 readingTime: "12 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/exemple-complet-validation-d-ide-2025-12-27"
-tags: 
-
+tags:
   -"SaaS"
   -"no-code"
   -"validation"
@@ -29,7 +28,6 @@ tags:
   -"pricing"
   -"go/no-go"
 keywords:
-
   -"validation idée saas"
   -"valider idée business"
   -"valider idée saas sans coder"

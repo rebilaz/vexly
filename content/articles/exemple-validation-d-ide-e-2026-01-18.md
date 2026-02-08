@@ -18,16 +18,13 @@ primary_query: "exemple de validation d'idée ratée"
 priority: 1
 readingTime: "10 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/exemple-validation-d-ide-e-2026-01-18"
-tags: 
-
+tags:
   -"SaaS"
   -"validation"
   -"no-code"
   -"faux signaux"
   -"interviews utilisateurs"
-
 keywords:
-
   -"validation idée saas ratée"
   -"faux signaux validation produit"
   -"erreurs validation idée business"
@@ -36,7 +33,6 @@ keywords:
   -"valider idée startup"
   -"prévente saas"
   -"validation marché saas"
-
 ---
 
 # Exemple de validation d’idée ratée : 3 faux signaux qui auraient pu tuer ton SaaS no-code

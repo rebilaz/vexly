@@ -17,8 +17,7 @@ primary_query: "landing page de validation"
 priority: 1
 readingTime: "14 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/landing-page-validation-saas-plan-2025-12-17"
-tags: 
-
+tags:
   -"SaaS"
   -"no-code"
   -"landing page"

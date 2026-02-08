@@ -17,15 +17,13 @@ primary_query: "comment identifier un problème rentable"
 priority: 1
 readingTime: "9 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/comment-identifier-proble-me-rentable-2025-12-28"
-tags: 
-
+tags:
   -"saas"
   -"validation idée"
   -"business"
   -"no-code"
   -"micro-saas"
 keywords:
-
   -"problème business rentable"
   -"valider problème saas"
   -"trouver idée saas rentable"

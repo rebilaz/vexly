@@ -18,7 +18,6 @@ primary_query: "comment lancer un MVP SaaS rentable"
 priority: 1
 readingTime: "12 min de lecture"
 canonical_url: "https://www.vexly.fr/articles/comment-lancer-mvp-saas-rentable-2025-12-18"
-
 ---
 
 # Comment lancer un MVP SaaS rentable sans coder : la méthode pour transformer ton idée en offre minimum vendable
