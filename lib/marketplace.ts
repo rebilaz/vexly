@@ -13,7 +13,7 @@ const DATA_DIR = path.join(process.cwd(), "content/marketplace");
 export type TrafficPoint = {
   label: string;
   value: number;
-  fullLabel?: string; // tooltip (optionnel)
+  fullLabel?: string;
 };
 
 export type ListingFacts = {
@@ -21,6 +21,19 @@ export type ListingFacts = {
   coverage?: string; // France / Europe / Global...
   status?: string;   // Mature / Early access / Enterprise...
   note?: string;     // phrase courte
+};
+
+export type ListingSeo = {
+  canonical_url?: string;
+
+  meta_title?: string;
+  meta_description?: string;
+
+  og_title?: string;
+  og_description?: string;
+  og_image?: string;
+
+  twitter_card?: string;
 };
 
 export type VexlyAnalysis = {
@@ -41,7 +54,7 @@ export type Listing = {
   url?: string;
   demo_url?: string;
 
-  // SEO / SaaS proof (optionnel)
+  // Legacy / internal (on les garde si tu veux, mais l’UI n’en dépend plus)
   pricing_url?: string;
   login_url?: string;
   proof_of_saas?: string;
@@ -53,11 +66,14 @@ export type Listing = {
   content: string;
   mvp_features?: string[];
 
-  // Tech
+  // Legacy tech (ne plus afficher côté UI)
   stack_guess?: string[];
 
-  // Facts (from YAML "facts:")
+  // Facts
   facts?: ListingFacts;
+
+  // SEO (nouveau frontmatter)
+  seo?: ListingSeo;
 
   // Traction
   monthly_visits?: TrafficPoint[];
@@ -115,10 +131,13 @@ export function getListing(slug: string): Listing | null {
   const facts: ListingFacts | undefined =
     isObject((data as any)?.facts)
       ? {
+        // ✅ support pricing OR pricing_model (tes nouveaux MD utilisent pricing_model)
         pricing:
           typeof (data as any).facts.pricing === "string"
             ? (data as any).facts.pricing
-            : undefined,
+            : typeof (data as any).facts.pricing_model === "string"
+              ? (data as any).facts.pricing_model
+              : undefined,
         coverage:
           typeof (data as any).facts.coverage === "string"
             ? (data as any).facts.coverage
@@ -134,38 +153,55 @@ export function getListing(slug: string): Listing | null {
       }
       : undefined;
 
+  const seo: ListingSeo = {
+    canonical_url:
+      typeof (data as any)?.canonical_url === "string"
+        ? (data as any).canonical_url
+        : undefined,
+
+    meta_title:
+      typeof (data as any)?.meta_title === "string"
+        ? (data as any).meta_title
+        : undefined,
+    meta_description:
+      typeof (data as any)?.meta_description === "string"
+        ? (data as any).meta_description
+        : undefined,
+
+    og_title:
+      typeof (data as any)?.og_title === "string" ? (data as any).og_title : undefined,
+    og_description:
+      typeof (data as any)?.og_description === "string"
+        ? (data as any).og_description
+        : undefined,
+    og_image:
+      typeof (data as any)?.og_image === "string" ? (data as any).og_image : undefined,
+
+    twitter_card:
+      typeof (data as any)?.twitter_card === "string"
+        ? (data as any).twitter_card
+        : undefined,
+  };
+
   const listing: Listing = {
     slug,
 
     name: typeof (data as any)?.name === "string" ? (data as any).name : slug,
-    tagline:
-      typeof (data as any)?.tagline === "string" ? (data as any).tagline : undefined,
+    tagline: typeof (data as any)?.tagline === "string" ? (data as any).tagline : undefined,
 
     niche_category:
-      typeof (data as any)?.niche_category === "string"
-        ? (data as any).niche_category
-        : undefined,
+      typeof (data as any)?.niche_category === "string" ? (data as any).niche_category : undefined,
     discovered_at:
-      typeof (data as any)?.discovered_at === "string"
-        ? (data as any).discovered_at
-        : undefined,
+      typeof (data as any)?.discovered_at === "string" ? (data as any).discovered_at : undefined,
 
     url: typeof (data as any)?.url === "string" ? (data as any).url : undefined,
-    demo_url:
-      typeof (data as any)?.demo_url === "string" ? (data as any).demo_url : undefined,
+    demo_url: typeof (data as any)?.demo_url === "string" ? (data as any).demo_url : undefined,
 
     pricing_url:
-      typeof (data as any)?.pricing_url === "string"
-        ? (data as any).pricing_url
-        : undefined,
-    login_url:
-      typeof (data as any)?.login_url === "string"
-        ? (data as any).login_url
-        : undefined,
+      typeof (data as any)?.pricing_url === "string" ? (data as any).pricing_url : undefined,
+    login_url: typeof (data as any)?.login_url === "string" ? (data as any).login_url : undefined,
     proof_of_saas:
-      typeof (data as any)?.proof_of_saas === "string"
-        ? (data as any).proof_of_saas
-        : undefined,
+      typeof (data as any)?.proof_of_saas === "string" ? (data as any).proof_of_saas : undefined,
 
     image: typeof (data as any)?.image === "string" ? (data as any).image : undefined,
 
@@ -176,18 +212,19 @@ export function getListing(slug: string): Listing | null {
       ? (data as any).mvp_features
       : undefined,
 
+    // legacy tech (on la garde mais l’UI ne doit pas l’afficher)
     stack_guess: isStringArray((data as any)?.stack_guess)
       ? (data as any).stack_guess
       : undefined,
 
     facts,
+    seo,
 
     monthly_visits: isTrafficPointArray((data as any)?.monthly_visits)
       ? (data as any).monthly_visits
       : undefined,
 
-    growth_rate:
-      typeof (data as any)?.growth_rate === "number" ? (data as any).growth_rate : undefined,
+    growth_rate: typeof (data as any)?.growth_rate === "number" ? (data as any).growth_rate : undefined,
 
     vexly_analysis: isObject((data as any)?.vexly_analysis)
       ? {
@@ -206,9 +243,6 @@ export function getListing(slug: string): Listing | null {
   return listing;
 }
 
-/**
- * ✅ Utile pour “Produits similaires”, “Alternatives”, etc.
- */
 export function getAllListings(): Listing[] {
   return getAllListingSlugs()
     .map(({ slug }) => getListing(slug))
@@ -217,8 +251,6 @@ export function getAllListings(): Listing[] {
 
 /* =========================
    TRAFFIC (SUPABASE)
-   - Source: hunt_results.raw.traffic
-   - 1 row (latest) per slug
 ========================= */
 
 function computeGrowth(points: { value: number }[]) {
@@ -229,10 +261,6 @@ function computeGrowth(points: { value: number }[]) {
   return ((last - first) / first) * 100;
 }
 
-/**
- * ✅ Récupère les vrais points de trafic depuis Supabase
- * ⚠️ À appeler côté serveur (Server Component / route handler)
- */
 export async function getMarketplaceTraffic(
   slug: string
 ): Promise<{ points: TrafficPoint[]; growthRate?: number }> {
@@ -259,11 +287,10 @@ export async function getMarketplaceTraffic(
 
   const points: TrafficPoint[] = (Array.isArray(rawTraffic) ? rawTraffic : [])
     .map((p: any): TrafficPoint | null => {
-      const ym = String(p?.label ?? "").slice(0, 7); // "2025-11"
+      const ym = String(p?.label ?? "").slice(0, 7);
       const v = Number(p?.value);
       if (!ym || !Number.isFinite(v) || v <= 0) return null;
 
-      // affiche "Oct" etc mais garde fullLabel pour tri/tooltip
       const [, m] = ym.split("-").map(Number);
       const monthFR = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
       const label = monthFR[(m ?? 1) - 1] ?? ym;
@@ -272,9 +299,7 @@ export async function getMarketplaceTraffic(
     })
     .filter((x): x is TrafficPoint => x !== null);
 
-  points.sort((a, b) =>
-    String(a.fullLabel ?? "").localeCompare(String(b.fullLabel ?? ""))
-  );
+  points.sort((a, b) => String(a.fullLabel ?? "").localeCompare(String(b.fullLabel ?? "")));
 
   const growthRate = points.length >= 2 ? computeGrowth(points) : undefined;
   return { points, growthRate };

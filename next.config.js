@@ -15,11 +15,17 @@ function loadGeneratedRedirects() {
     if (!Array.isArray(arr)) return [];
 
     return arr
-      .filter((r) => r && typeof r.from === "string" && typeof r.to === "string")
+      .filter(
+        (r) =>
+          r &&
+          r.status === 301 &&
+          typeof r.from === "string" &&
+          typeof r.to === "string"
+      )
       .map((r) => ({
         source: r.from,
         destination: r.to,
-        permanent: true, // ✅ 301
+        permanent: true,
       }));
   } catch {
     return [];

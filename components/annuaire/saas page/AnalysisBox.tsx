@@ -1,46 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { Banknote, Layers3, ShieldCheck, Globe2, ArrowUpRight } from "lucide-react";
 import type { Listing } from "@/lib/marketplace";
 
-/* =======================
-   Types (UI)
-======================= */
-
-type Pillar = {
-  title: string;
-  description: string;
-  icon?: "bank" | "suite" | "security" | "global";
-};
-
-/* =======================
-   Utils
-======================= */
-
-function pickIcon(key?: Pillar["icon"]) {
-  switch (key) {
-    case "bank":
-      return Banknote;
-    case "suite":
-      return Layers3;
-    case "security":
-      return ShieldCheck;
-    case "global":
-      return Globe2;
-    default:
-      return Layers3;
-  }
-}
-
-function truncate(text: string, max = 220) {
-  if (!text) return "";
-  return text.length > max ? text.slice(0, max).trimEnd() + "…" : text;
-}
-
-/**
- * Supprime UNIQUEMENT une ligne markdown de type :
- * "# qonto.com"
- */
 function stripMarkdownTitleLine(text: string, name?: string) {
   if (!text || !name) return text;
 
@@ -50,174 +11,299 @@ function stripMarkdownTitleLine(text: string, name?: string) {
   return text.replace(regex, "").trim();
 }
 
-function derive(listing: Listing) {
-  const cleanedContent = listing.content
-    ? stripMarkdownTitleLine(listing.content, listing.name)
-    : "";
-
-  const summary = cleanedContent ? truncate(cleanedContent, 230) : "";
-
-  const pillars: Pillar[] =
-    listing.mvp_features && listing.mvp_features.length
-      ? listing.mvp_features.slice(0, 3).map((f, i) => ({
-        title: i === 0 ? "Point fort" : i === 1 ? "Cas d’usage" : "Bénéfice",
-        description: truncate(String(f), 90),
-        icon: i === 0 ? "suite" : i === 1 ? "bank" : "global",
-      }))
-      : [];
-
-  const facts = listing.facts ?? {};
-  return { summary, pillars, facts };
-}
-
-/* =======================
-   Small UI primitives
-======================= */
-
-function Row({
-  label,
-  value,
-}: {
-  label: React.ReactNode;
-  value: React.ReactNode;
-}) {
+function cleanForPlainText(markdown: string) {
   return (
-    <div className="flex items-start justify-between gap-4 py-2">
-      <div className="text-sm text-slate-600">{label}</div>
-      <div className="text-sm font-semibold text-slate-900 text-right break-words max-w-[60%]">
-        {value}
-      </div>
-    </div>
+    markdown
+      // images ![alt](url) -> alt
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+      // ⚠️ NE PAS supprimer les liens markdown ici : on les rend cliquables plus bas
+      // titres ### -> (ligne)
+      .replace(/^\s{0,3}#{1,6}\s+/gm, "")
+      // emphase ** **, * *
+      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/\*([^*]+)\*/g, "$1")
+      // code inline ``
+      .replace(/`([^`]+)`/g, "$1")
+      // blockquotes >
+      .replace(/^\s{0,3}>\s?/gm, "")
+      // horizontal rules --- / ***
+      .replace(/^\s{0,3}(-{3,}|\*{3,})\s*$/gm, "\n---\n")
+      .trim()
   );
 }
 
-/* =======================
-   Component
-======================= */
+type Block =
+  | { type: "lead"; text: string }
+  | { type: "p"; text: string }
+  | { type: "h"; text: string }
+  | { type: "hr" }
+  | { type: "ul"; items: string[] }
+  | { type: "ol"; items: string[] };
 
-export function ConceptOverview({ listing }: { listing: Listing }) {
-  const { summary, pillars, facts } = derive(listing);
+function isLikelyHeading(line: string) {
+  const t = line.trim();
+  if (!t) return false;
+  if (t.length < 8 || t.length > 72) return false;
+  if (/[.:;]$/.test(t)) return false;
+  return true;
+}
 
-  const hasFacts = !!facts.pricing || !!facts.coverage || !!facts.status || !!facts.note;
+function parseBlocks(text: string): Block[] {
+  const lines = text.split("\n").map((l) => l.replace(/\s+$/g, ""));
+  const blocks: Block[] = [];
 
-  // ✅ On enlève volontairement stack_guess de la “tech card”
-  const hasAnyTech =
-    hasFacts ||
-    !!listing.pricing_url ||
-    !!listing.login_url ||
-    !!listing.proof_of_saas ||
-    !!listing.niche_category ||
-    !!listing.discovered_at;
+  let i = 0;
+  const consumeBlank = () => {
+    while (i < lines.length && !lines[i].trim()) i++;
+  };
 
-  if (!summary && pillars.length === 0 && !hasAnyTech) return null;
+  consumeBlank();
 
-  return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
-            Technique
-          </h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Les infos essentielles, sans bruit.
-          </p>
-        </div>
+  // Lead = premier paragraphe
+  let leadLines: string[] = [];
+  while (i < lines.length && lines[i].trim() && lines[i].trim() !== "---") {
+    if (/^(\-|\*|•)\s+/.test(lines[i].trim()) || /^\d+\.\s+/.test(lines[i].trim())) break;
+    leadLines.push(lines[i].trim());
+    i++;
+  }
 
-        {listing.url && (
+  const lead = leadLines.join(" ").replace(/\s{2,}/g, " ").trim();
+  if (lead) blocks.push({ type: "lead", text: lead });
+
+  // Reste
+  while (i < lines.length) {
+    consumeBlank();
+    if (i >= lines.length) break;
+
+    const line = lines[i].trim();
+
+    if (line === "---") {
+      blocks.push({ type: "hr" });
+      i++;
+      continue;
+    }
+
+    // UL
+    if (/^(\-|\*|•)\s+/.test(line)) {
+      const items: string[] = [];
+      while (i < lines.length) {
+        const l = lines[i].trim();
+        if (!/^(\-|\*|•)\s+/.test(l)) break;
+        items.push(l.replace(/^(\-|\*|•)\s+/, "").trim());
+        i++;
+      }
+      if (items.length) blocks.push({ type: "ul", items });
+      continue;
+    }
+
+    // OL
+    if (/^\d+\.\s+/.test(line)) {
+      const items: string[] = [];
+      while (i < lines.length) {
+        const l = lines[i].trim();
+        if (!/^\d+\.\s+/.test(l)) break;
+        items.push(l.replace(/^\d+\.\s+/, "").trim());
+        i++;
+      }
+      if (items.length) blocks.push({ type: "ol", items });
+      continue;
+    }
+
+    // Heading heuristique
+    if (isLikelyHeading(line)) {
+      const next = lines[i + 1]?.trim() ?? "";
+      if (!next || next === "---") {
+        blocks.push({ type: "h", text: line });
+        i++;
+        continue;
+      }
+    }
+
+    // Paragraphe
+    const pLines: string[] = [];
+    while (i < lines.length) {
+      const l = lines[i].trim();
+      if (!l) break;
+      if (l === "---") break;
+      if (/^(\-|\*|•)\s+/.test(l) || /^\d+\.\s+/.test(l)) break;
+      pLines.push(l);
+      i++;
+    }
+
+    const p = pLines.join(" ").replace(/\s{2,}/g, " ").trim();
+    if (p) blocks.push({ type: "p", text: p });
+  }
+
+  return blocks;
+}
+
+function isInternalHref(href: string) {
+  return href.startsWith("/") && !href.startsWith("//");
+}
+
+function trimTrailingPunct(s: string) {
+  // évite les liens qui embarquent ")" "." "," ":" ";" "!"
+  const m = s.match(/^(.*?)([)\].,;:!?]+)?$/);
+  return { core: (m?.[1] ?? s), trail: (m?.[2] ?? "") };
+}
+
+function renderInline(text: string) {
+  // 1) Liens Markdown: [label](href)
+  // 2) Liens internes nus: /articles/...
+  // 3) URLs externes: https://...
+  const parts: React.ReactNode[] = [];
+  let cursor = 0;
+
+  const pattern =
+    /\[([^\]]+)\]\(([^)]+)\)|\bhttps?:\/\/[^\s]+|\/[a-zA-Z0-9\-/_]+/g;
+
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(text)) !== null) {
+    const start = match.index;
+    const end = pattern.lastIndex;
+
+    if (start > cursor) parts.push(text.slice(cursor, start));
+
+    // Markdown link
+    if (match[1] && match[2]) {
+      const label = match[1];
+      const hrefRaw = match[2];
+      const { core: href, trail } = trimTrailingPunct(hrefRaw);
+
+      if (isInternalHref(href)) {
+        parts.push(
           <Link
-            href={listing.url}
+            key={`${start}-${end}`}
+            href={href}
+            className="font-medium text-indigo-700 underline underline-offset-4 hover:text-indigo-900"
+          >
+            {label}
+          </Link>
+        );
+      } else {
+        parts.push(
+          <a
+            key={`${start}-${end}`}
+            href={href}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+            className="font-medium text-indigo-700 underline underline-offset-4 hover:text-indigo-900"
           >
-            Fiche
-            <ArrowUpRight className="h-4 w-4 text-slate-500" />
-          </Link>
-        )}
-      </div>
+            {label}
+          </a>
+        );
+      }
 
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* Gauche */}
-        <div className="lg:col-span-7">
-          {summary && (
-            <p className="text-base leading-relaxed text-slate-700">{summary}</p>
-          )}
+      if (trail) parts.push(trail);
+      cursor = end;
+      continue;
+    }
 
-          {pillars.length > 0 && (
-            <div className="mt-6 grid gap-4">
-              {pillars.map((p, i) => {
-                const Icon = pickIcon(p.icon);
-                return (
-                  <div
-                    key={i}
-                    className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-slate-50 ring-1 ring-slate-200">
-                        <Icon className="h-5 w-5 text-indigo-600" />
-                      </div>
-                      <div className="min-w-0">
-                        <div className="text-sm font-extrabold text-slate-900">
-                          {p.title}
-                        </div>
-                        <div className="mt-1 text-sm text-slate-600">
-                          {p.description}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+    // Bare url or bare internal path
+    const raw = match[0];
+    const { core, trail } = trimTrailingPunct(raw);
 
-        {/* Droite */}
-        <div className="lg:col-span-5">
-          <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-            <div className="flex items-center justify-between">
-              <div className="text-xs font-extrabold uppercase tracking-widest text-slate-500">
-                Fiche technique
-              </div>
-              {/* ❌ Mature supprimé */}
-            </div>
+    if (isInternalHref(core)) {
+      parts.push(
+        <Link
+          key={`${start}-${end}`}
+          href={core}
+          className="font-medium text-indigo-700 underline underline-offset-4 hover:text-indigo-900"
+        >
+          {core}
+        </Link>
+      );
+    } else {
+      parts.push(
+        <a
+          key={`${start}-${end}`}
+          href={core}
+          target="_blank"
+          rel="noreferrer"
+          className="font-medium text-indigo-700 underline underline-offset-4 hover:text-indigo-900"
+        >
+          {core}
+        </a>
+      );
+    }
 
-            <div className="mt-4 divide-y divide-slate-200">
-              {/* ✅ Prix (info clé) */}
-              {facts.pricing ? (
-                <Row
-                  label={<span className="font-medium text-slate-700">Prix</span>}
-                  value={
-                    <span className="rounded-md bg-indigo-50 px-2 py-1 text-sm font-bold text-indigo-700">
-                      {facts.pricing}
-                    </span>
-                  }
-                />
-              ) : null}
+    if (trail) parts.push(trail);
+    cursor = end;
+  }
 
-              {facts.coverage ? <Row label="Couverture" value={facts.coverage} /> : null}
+  if (cursor < text.length) parts.push(text.slice(cursor));
+  return parts;
+}
 
-              {/* ✅ Fallbacks propres */}
-              {listing.login_url ? <Row label="Login" value="Oui" /> : null}
-              {listing.pricing_url ? <Row label="Page pricing" value="Oui" /> : null}
-            </div>
+export function ConceptOverview({ listing }: { listing: Listing }) {
+  const raw = listing.content ? stripMarkdownTitleLine(listing.content, listing.name) : "";
+  const fullText = raw ? cleanForPlainText(raw) : "";
+  if (!fullText) return null;
 
-            {/* Note en footer soft */}
-            {facts.note ? (
-              <div className="mt-4 flex gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
-                <span className="font-semibold text-slate-700">Note</span>
-                <span>{facts.note}</span>
-              </div>
-            ) : null}
+  const blocks = parseBlocks(fullText);
 
-            {/* Si vraiment rien */}
-            {!hasFacts && !listing.login_url && !listing.pricing_url ? (
-              <div className="mt-4 text-sm text-slate-500">
-                Aucune donnée technique disponible pour ce produit.
-              </div>
-            ) : null}
-          </div>
+  return (
+    <section className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm">
+      <h2 className="text-xl font-extrabold tracking-tight text-slate-900">
+        Analyse complète
+      </h2>
+
+      <div className="mx-auto mt-6 max-w-[68ch]">
+        <div className="space-y-4">
+          {blocks.map((b, idx) => {
+            if (b.type === "hr") {
+              return <hr key={idx} className="my-6 border-slate-200" />;
+            }
+
+            if (b.type === "h") {
+              return (
+                <h3 key={idx} className="mt-10 text-xl font-bold tracking-tight text-slate-900">
+                  {renderInline(b.text)}
+                </h3>
+              );
+            }
+
+            if (b.type === "lead") {
+              return (
+                <p
+                  key={idx}
+                  className="text-xl font-medium leading-relaxed tracking-tight text-slate-900"
+                >
+                  {renderInline(b.text)}
+                </p>
+              );
+            }
+
+            if (b.type === "ul") {
+              return (
+                <ul key={idx} className="space-y-2 pl-5">
+                  {b.items.map((it, j) => (
+                    <li key={j} className="list-disc text-[17px] leading-8 text-slate-800">
+                      {renderInline(it)}
+                    </li>
+                  ))}
+                </ul>
+              );
+            }
+
+            if (b.type === "ol") {
+              return (
+                <ol key={idx} className="space-y-2 pl-5">
+                  {b.items.map((it, j) => (
+                    <li key={j} className="list-decimal text-[17px] leading-8 text-slate-800">
+                      {renderInline(it)}
+                    </li>
+                  ))}
+                </ol>
+              );
+            }
+
+            return (
+              <p key={idx} className="text-[17px] leading-8 text-slate-800">
+                {renderInline(b.text)}
+              </p>
+            );
+          })}
         </div>
       </div>
     </section>
