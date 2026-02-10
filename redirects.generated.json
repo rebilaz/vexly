@@ -1,38 +1,67 @@
 [
   {
     "from": "/articles/6-crite-res-savoir-si-2025-12-12",
-    "to": "/articles/comment-valider-ide-e-business-2026-01-08"
+    "to": "/articles/comment-valider-ide-e-business-2026-01-08",
+    "status": 301
   },
   {
     "from": "/articles/7-erreurs-vous-font-croire-2026-01-23",
-    "to": "/articles/ide-e-business-rentable-argent-2025-12-25"
+    "to": "/articles/ide-e-business-rentable-argent-2025-12-25",
+    "status": 301
   },
   {
     "from": "/articles/checklist-signes-qu-proble-me-2026-01-11",
-    "to": "/articles/comment-identifier-proble-me-rentable-2025-12-28"
+    "to": "/articles/comment-identifier-proble-me-rentable-2025-12-28",
+    "status": 301
   },
   {
     "from": "/articles/comment-e-crire-promesse-ta-2025-12-31",
-    "to": "/articles/landing-page-validation-saas-plan-2025-12-17"
+    "to": "/articles/landing-page-validation-saas-plan-2025-12-17",
+    "status": 301
   },
   {
     "from": "/articles/comment-savoir-si-ton-ide-2026-01-15",
-    "to": "/articles/comment-valider-ide-e-business-2026-01-08"
+    "to": "/articles/comment-valider-ide-e-business-2026-01-08",
+    "status": 301
   },
   {
     "from": "/articles/mvp-rapide-tester-ide-e-2025-12-16",
-    "to": "/articles/test-marche-rapide-7-jours-2025-12-30"
+    "to": "/articles/test-marche-rapide-7-jours-2025-12-30",
+    "status": 301
   },
   {
     "from": "/articles/signes-qu-ide-e-saas-2025-12-26",
-    "to": "/articles/landing-page-validation-saas-plan-2025-12-17"
+    "to": "/articles/landing-page-validation-saas-plan-2025-12-17",
+    "status": 301
   },
   {
     "from": "/articles/test-marche-rapide-ton-saas-2026-01-21",
-    "to": "/articles/test-marche-rapide-7-jours-2025-12-30"
+    "to": "/articles/test-marche-rapide-7-jours-2025-12-30",
+    "status": 301
   },
   {
     "from": "/articles/tester-prix-landing-page-3-2026-01-14",
-    "to": "/articles/comment-tester-prix-votre-futur-2026-01-13"
+    "to": "/articles/comment-tester-prix-votre-futur-2026-01-13",
+    "status": 301
+  },
+  {
+    "from": "/marketplace/noota-io",
+    "to": "/marketplace/woosmap-com",
+    "status": 301
+  },
+  {
+    "from": "/marketplace/prismic-io",
+    "to": "/marketplace/woosmap-com",
+    "status": 301
+  },
+  {
+    "from": "/marketplace/stonly-com",
+    "to": "/marketplace/klaxoon-com",
+    "status": 301
+  },
+  {
+    "from": "/marketplace/voilanorbert-com",
+    "to": "/marketplace/mention-com",
+    "status": 301
   }
 ]
