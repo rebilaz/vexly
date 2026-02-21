@@ -9,6 +9,19 @@ type ArticleIntroProps = {
   readingTime?: string;
   tags: string[];
   coverImageUrl?: string;
+
+  /**
+   * Ajuste le point de focus du crop si une image est "décalée"
+   * Exemple: "70% 40%" (plus à droite + un peu plus haut)
+   * Par défaut: "50% 50%" (centré, marche pour la majorité)
+   */
+  coverFocus?: string;
+
+  /**
+   * Par défaut on fait "cover" (crop propre).
+   * Si tu veux absolument éviter le crop pour certaines images, passe "contain".
+   */
+  fit?: "cover" | "contain";
 };
 
 export const ArticleIntro: React.FC<ArticleIntroProps> = ({
@@ -18,7 +31,11 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
   readingTime,
   tags,
   coverImageUrl,
+  coverFocus = "50% 50%",
+  fit = "cover",
 }) => {
+  const isContain = fit === "contain";
+
   return (
     <section className="mb-12 space-y-6">
       <div className="space-y-3">
@@ -80,7 +97,10 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
             alt={title}
             fill
             priority
-            className="object-cover"
+            className={isContain ? "object-contain" : "object-cover"}
+            style={{
+              objectPosition: coverFocus,
+            }}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px"
           />
         </div>
