@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import { Calendar, Clock, Tag } from "lucide-react";
@@ -39,7 +37,6 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
         ) : null}
       </div>
 
-      {/* meta */}
       <div className="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-500">
         {date ? (
           <div className="inline-flex items-center gap-1.5">
@@ -76,7 +73,6 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
         ) : null}
       </div>
 
-      {/* cover */}
       {coverImageUrl ? (
         <div className="relative mt-4 overflow-hidden rounded-3xl border border-slate-200/70 bg-slate-100/60 h-[220px] sm:h-[280px] lg:h-[320px]">
           <Image
