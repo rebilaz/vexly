@@ -234,17 +234,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/genymotion-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/harvestr-io</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/imaios-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -254,12 +244,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/kaspr-io</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/keap-keap-com</loc>
+    <loc>https://www.vexly.fr/marketplace/keap-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -284,11 +269,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/noota-io</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/obat-fr</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -299,42 +279,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/prismic-io</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/qonto-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/scrapingbee-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/shine-fr</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/sociabble-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/stonly-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/treelyapp-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/voilanorbert-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
