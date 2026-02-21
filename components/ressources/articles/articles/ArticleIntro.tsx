@@ -1,16 +1,13 @@
 "use client";
 
 import React from "react";
-import { motion } from "motion/react";
+import Image from "next/image";
 import { Calendar, Clock, Tag } from "lucide-react";
 
 type ArticleIntroProps = {
   title: string;
   subtitle?: string;
-
-  // ✅ date optionnelle (sinon ça casse quand c’est undefined)
   date?: string;
-
   readingTime?: string;
   tags: string[];
   coverImageUrl?: string;
@@ -25,12 +22,7 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
   coverImageUrl,
 }) => {
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      className="mb-12 space-y-6"
-    >
+    <section className="mb-12 space-y-6">
       <div className="space-y-3">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-indigo-600">
           Article
@@ -40,11 +32,11 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
           {title}
         </h1>
 
-        {subtitle && (
+        {subtitle ? (
           <p className="max-w-3xl text-base sm:text-lg leading-relaxed text-slate-600">
             {subtitle}
           </p>
-        )}
+        ) : null}
       </div>
 
       {/* meta */}
@@ -66,7 +58,7 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
           </>
         ) : null}
 
-        {tags.length > 0 ? (
+        {tags?.length ? (
           <>
             <span className="hidden sm:inline h-1 w-1 rounded-full bg-slate-300" />
             <div className="flex flex-wrap items-center gap-2">
@@ -84,15 +76,19 @@ export const ArticleIntro: React.FC<ArticleIntroProps> = ({
         ) : null}
       </div>
 
+      {/* cover */}
       {coverImageUrl ? (
-        <div className="mt-4 overflow-hidden rounded-3xl border border-slate-200/70 bg-slate-100/60">
-          <img
+        <div className="relative mt-4 overflow-hidden rounded-3xl border border-slate-200/70 bg-slate-100/60 h-[220px] sm:h-[280px] lg:h-[320px]">
+          <Image
             src={coverImageUrl}
             alt={title}
-            className="h-[220px] w-full object-cover sm:h-[280px] lg:h-[320px]"
+            fill
+            priority
+            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 768px"
           />
         </div>
       ) : null}
-    </motion.section>
+    </section>
   );
 };

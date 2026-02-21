@@ -1,23 +1,16 @@
-"use client";
-
 import React from "react";
-import { motion } from "motion/react";
 import ReactMarkdown from "react-markdown";
 import Link from "next/link";
-import { ArticleSection } from "./ArticleLayout";
-
-type ArticleSectionsProps = {
-  sections: ArticleSection[];
-  sectionRefs: React.MutableRefObject<(HTMLElement | null)[]>;
-};
+import type { ArticleSection } from "./ArticleLayout";
 
 // marker utilisé par le système d'internal linking auto
 const AUTO_MARKER = "<!--il:auto-->";
 
-export const ArticleSections: React.FC<ArticleSectionsProps> = ({
-  sections,
-  sectionRefs,
-}) => {
+type ArticleSectionsProps = {
+  sections: ArticleSection[];
+};
+
+export const ArticleSections: React.FC<ArticleSectionsProps> = ({ sections }) => {
   return (
     <section className="space-y-20">
       {sections.map((section, index) => {
@@ -25,27 +18,16 @@ export const ArticleSections: React.FC<ArticleSectionsProps> = ({
         const cleanBody = section.body.replaceAll(AUTO_MARKER, "");
 
         return (
-          <motion.article
+          <article
             key={section.id ?? `${index}-${section.heading ?? "section"}`}
             id={section.id}
-            ref={(el) => {
-              sectionRefs.current[index] = el;
-            }}
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{
-              duration: 0.4,
-              delay: index * 0.04,
-              ease: [0.22, 1, 0.36, 1],
-            }}
             className="max-w-3xl"
           >
-            {section.heading && (
+            {section.heading ? (
               <h2 className="mb-4 text-2xl sm:text-3xl font-bold leading-tight tracking-tight text-slate-900">
                 {section.heading}
               </h2>
-            )}
+            ) : null}
 
             <ReactMarkdown
               components={{
@@ -103,7 +85,7 @@ export const ArticleSections: React.FC<ArticleSectionsProps> = ({
             >
               {cleanBody}
             </ReactMarkdown>
-          </motion.article>
+          </article>
         );
       })}
     </section>

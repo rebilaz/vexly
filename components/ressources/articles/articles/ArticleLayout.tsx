@@ -1,14 +1,8 @@
-"use client";
-
 import React from "react";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight, BookOpen } from "lucide-react";
-import { ArticleCTA } from "@/components/ressources/articles/articles/ArticleCTA";
-import {
-  ArticleProgressBar,
-  TimelineItem,
-} from "@/components/ressources/articles/articles/ArticleProgressBar";
 
+import { ArticleCTA } from "@/components/ressources/articles/articles/ArticleCTA";
 import { ArticleIntro } from "./ArticleIntro";
 import { ArticleSections } from "./ArticleSections";
 
@@ -55,62 +49,6 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
   backHref = "/",
   pillar,
 }) => {
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const [scrollProgress, setScrollProgress] = React.useState(0);
-
-  const sectionRefs = React.useRef<(HTMLElement | null)[]>([]);
-
-  const timelineItems: TimelineItem[] = React.useMemo(
-    () =>
-      sections.map((section) => ({
-        id: section.id,
-        label: section.heading ?? "",
-      })),
-    [sections]
-  );
-
-  React.useEffect(() => {
-    const handleScroll = () => {
-      const elements = sectionRefs.current;
-      if (!elements.length) return;
-
-      const targetY = window.innerHeight * 0.3;
-      let closestIndex = 0;
-      let minDistance = Infinity;
-
-      elements.forEach((el, index) => {
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        const distance = Math.abs(rect.top - targetY);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestIndex = index;
-        }
-      });
-
-      setActiveIndex(closestIndex);
-
-      const scrollTop =
-        window.scrollY || document.documentElement.scrollTop || 0;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-
-      const progress =
-        docHeight > 0 ? Math.min(1, Math.max(0, scrollTop / docHeight)) : 0;
-
-      setScrollProgress(progress);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
-  }, []);
-
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Header interne */}
@@ -155,14 +93,6 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
         </div>
       </header>
 
-      {sections.length > 0 ? (
-        <ArticleProgressBar
-          items={timelineItems}
-          activeIndex={activeIndex}
-          progress={scrollProgress}
-        />
-      ) : null}
-
       <main className="mx-auto max-w-5xl px-8 lg:px-16 py-10 lg:py-14 md:pl-28">
         {/* ✅ Petit bloc "fait partie du guide" au-dessus du H1 */}
         {pillar?.href ? (
@@ -188,7 +118,8 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
           coverImageUrl={coverImageUrl}
         />
 
-        <ArticleSections sections={sections} sectionRefs={sectionRefs} />
+        {/* ✅ Plus de refs, plus de scroll tracking */}
+        <ArticleSections sections={sections} />
 
         {/* ✅ Retour au guide en bas */}
         {pillar?.href ? (
