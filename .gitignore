@@ -40,3 +40,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 starlit-verve-458814-u9-c0de05312025.json
+noindex
