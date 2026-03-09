@@ -174,37 +174,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/harvestr-io</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/indy-fr</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/marketplace/keap-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/klaxoon-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/mention-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/marketplace/n2f-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/namsor-app</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
