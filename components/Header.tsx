@@ -61,19 +61,19 @@ export default function Header() {
           {/* Navigation (desktop) */}
           <nav className="hidden items-center gap-6 text-xs font-medium text-slate-600 md:flex">
             <Link
-              href="/marketplace"
-              onClick={forceClose}
-              className="transition-colors hover:text-slate-900"
-            >
-              Marketplace
-            </Link>
-
-            <Link
               href="/tarifs"
               onClick={forceClose}
               className="transition-colors hover:text-slate-900"
             >
               Tarifs
+            </Link>
+
+            <Link
+              href="/articles"
+              onClick={forceClose}
+              className="transition-colors hover:text-slate-900"
+            >
+              Articles
             </Link>
 
             {/* RESSOURCES (desktop hover) */}
@@ -118,15 +118,6 @@ export default function Header() {
                   >
                     <div className="font-semibold">Articles</div>
                     <div className="text-[10px] text-slate-500">Explorer</div>
-                  </Link>
-
-                  <Link
-                    href="/parcours"
-                    onClick={forceClose}
-                    className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                  >
-                    <div className="font-semibold">Parcours</div>
-                    <div className="text-[10px] text-slate-500">Étape par étape</div>
                   </Link>
                 </div>
               </div>
@@ -205,22 +196,21 @@ export default function Header() {
             </div>
 
             <div className="px-6 py-8">
-              {/* links centered + underlined */}
               <div className="flex flex-col items-center gap-5">
-                <Link
-                  href="/marketplace"
-                  onClick={forceClose}
-                  className="text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
-                >
-                  Marketplace
-                </Link>
-
                 <Link
                   href="/tarifs"
                   onClick={forceClose}
                   className="text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
                 >
                   Tarifs
+                </Link>
+
+                <Link
+                  href="/articles"
+                  onClick={forceClose}
+                  className="text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
+                >
+                  Articles
                 </Link>
 
                 <details className="group w-full">
@@ -244,13 +234,6 @@ export default function Header() {
                     >
                       Articles
                     </Link>
-                    <Link
-                      href="/parcours"
-                      onClick={forceClose}
-                      className="text-sm font-medium text-slate-700 underline decoration-slate-200 underline-offset-8 hover:text-slate-900"
-                    >
-                      Parcours
-                    </Link>
                   </div>
                 </details>
 
@@ -263,7 +246,6 @@ export default function Header() {
                 </Link>
               </div>
 
-              {/* CTA only here */}
               <div className="mt-10">
                 <button
                   onClick={() => {

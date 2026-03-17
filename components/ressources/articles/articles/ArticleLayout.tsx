@@ -4,36 +4,25 @@ import { ArrowLeft, ChevronRight, BookOpen } from "lucide-react";
 
 import { ArticleCTA } from "@/components/ressources/articles/articles/ArticleCTA";
 import { ArticleIntro } from "./ArticleIntro";
-import { ArticleSections } from "./ArticleSections";
-
-export type ArticleSection = {
-  id?: string;
-  heading?: string;
-  body: string; // MARKDOWN
-};
+import { ArticlePortableContent } from "./ArticlePortableContent";
 
 type PillarNav = {
   title: string;
   slug: string;
-  href: string; // ex: "/trouver-une-idee-rentable"
-  breadcrumbBase?: string; // ex: "/articles"
+  href: string;
+  breadcrumbBase?: string;
 };
 
 type ArticleLayoutProps = {
   title: string;
   subtitle?: string;
-
-  // ✅ date optionnelle (cohérent avec ArticleIntro)
   date?: string;
-
   readingTime?: string;
   tags?: string[];
   niche?: string;
   coverImageUrl?: string;
-  sections: ArticleSection[];
+  content: any[];
   backHref?: string;
-
-  // ✅ NEW
   pillar?: PillarNav;
 };
 
@@ -45,13 +34,12 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
   tags = [],
   niche,
   coverImageUrl,
-  sections,
+  content,
   backHref = "/",
   pillar,
 }) => {
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-50">
-      {/* Header interne */}
       <header className="mt-2 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 lg:px-8 py-3">
           <div className="flex items-center gap-3">
@@ -63,7 +51,6 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
               Retour
             </Link>
 
-            {/* ✅ Breadcrumb style /articles/pillar/article */}
             {pillar?.href ? (
               <nav className="hidden sm:flex items-center gap-2 text-xs text-slate-500">
                 <span className="h-4 w-px bg-slate-200" />
@@ -94,7 +81,6 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
       </header>
 
       <main className="mx-auto max-w-5xl px-8 lg:px-16 py-10 lg:py-14 md:pl-28">
-        {/* ✅ Petit bloc "fait partie du guide" au-dessus du H1 */}
         {pillar?.href ? (
           <div className="mb-6 max-w-3xl">
             <Link
@@ -118,18 +104,15 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
           coverImageUrl={coverImageUrl}
         />
 
-        {/* ✅ Plus de refs, plus de scroll tracking */}
-        <ArticleSections sections={sections} />
+        <ArticlePortableContent content={content} />
 
-        {/* ✅ Retour au guide en bas */}
         {pillar?.href ? (
           <section className="mt-14 max-w-3xl rounded-3xl border border-slate-200 bg-white p-6 sm:p-7">
             <h3 className="text-lg sm:text-xl font-semibold text-slate-900">
               Retour au guide central
             </h3>
             <p className="mt-2 text-sm sm:text-base text-slate-600">
-              Si tu veux la vue d’ensemble (et les autres articles du parcours),
-              reviens sur le hub :
+              Si tu veux la vue d’ensemble, reviens sur le hub :
             </p>
             <div className="mt-4">
               <Link

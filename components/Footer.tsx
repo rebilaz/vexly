@@ -16,7 +16,6 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
     <footer className="bg-slate-950 text-slate-400">
       {/* ----- Contenu principal ----- */}
       <div className="mx-auto max-w-6xl px-6 pt-14 pb-10">
-        {/* Mobile-first grid: stack, puis 3 colonnes */}
         <div className="grid gap-10 md:grid-cols-[1fr_1fr_1.2fr] md:gap-12">
           {/* ----- Logo + contact ----- */}
           <div className="space-y-5">
@@ -38,7 +37,7 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
             </a>
           </div>
 
-          {/* ----- Navigation (mobile: 2 petites colonnes) ----- */}
+          {/* ----- Navigation ----- */}
           <div className="grid grid-cols-2 gap-10 sm:max-w-md md:max-w-none">
             <div className="space-y-4">
               <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
@@ -47,18 +46,18 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
               <ul className="space-y-3 text-sm">
                 <li>
                   <Link
-                    href="/marketplace"
-                    className="transition hover:text-indigo-400"
-                  >
-                    Marketplace
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     href="/tarifs"
                     className="transition hover:text-indigo-400"
                   >
                     Tarifs
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/articles"
+                    className="transition hover:text-indigo-400"
+                  >
+                    Articles
                   </Link>
                 </li>
               </ul>
@@ -71,10 +70,10 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
               <ul className="space-y-3 text-sm">
                 <li>
                   <Link
-                    href="/articles"
+                    href="/ressources"
                     className="transition hover:text-indigo-400"
                   >
-                    Articles
+                    Ressources
                   </Link>
                 </li>
                 <li>
@@ -97,7 +96,6 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
               l’automatisation.
             </p>
 
-            {/* Mobile: stack plein width, sm+: inline */}
             <form
               className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]"
               onSubmit={(e) => e.preventDefault()}
@@ -132,7 +130,6 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
       {/* ----- Bas de page ----- */}
       <div className="border-t border-slate-800">
         <div className="mx-auto max-w-6xl px-6 py-5">
-          {/* Mobile: centered + wrap clean, md: row */}
           <div className="flex flex-col items-center gap-3 text-center text-xs text-slate-500 md:flex-row md:justify-between md:text-left">
             <span>© {currentYear} VEXLY — Tous droits réservés.</span>
 

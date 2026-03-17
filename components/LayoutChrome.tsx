@@ -7,7 +7,9 @@ import Footer from "@/components/Footer";
 
 export default function LayoutChrome({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+
     const isMindmap = pathname?.startsWith("/saas/seo-mindmap");
+    const isStudio = pathname?.startsWith("/studio");
 
     React.useEffect(() => {
         if (!isMindmap) return;
@@ -24,8 +26,18 @@ export default function LayoutChrome({ children }: { children: React.ReactNode }
         };
     }, [isMindmap]);
 
+    // ❌ Pas de header/footer pour studio
+    if (isStudio) {
+        return <>{children}</>;
+    }
+
+    // Mode plein écran pour la mindmap
     if (isMindmap) {
-        return <div className="h-[100dvh] w-[100vw] overflow-hidden bg-slate-50">{children}</div>;
+        return (
+            <div className="h-[100dvh] w-[100vw] overflow-hidden bg-slate-50">
+                {children}
+            </div>
+        );
     }
 
     return (
