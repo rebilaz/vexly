@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
-import { getArticleBySlug, getAllArticles } from "@/lib/articles";
+import { getArticleBySlug, getAllArticleSlugs } from "@/lib/articles";
 
 type Params = { slug: string };
 
 export async function generateStaticParams() {
-  const articles = await getAllArticles();
+  const slugs = await getAllArticleSlugs();
 
-  return articles.map((article) => ({
-    slug: article.slug,
+  return slugs.map((slug) => ({
+    slug,
   }));
 }
 

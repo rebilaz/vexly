@@ -36,6 +36,10 @@ export type Article = {
   content?: any[];
 };
 
+function hasSanityImageAsset(image: any) {
+  return !!image?.asset?._ref || !!image?.asset?._id;
+}
+
 function extractPlainText(block: any): string {
   if (!block?.children || !Array.isArray(block.children)) return "";
   return block.children.map((child: any) => child?.text || "").join("");
@@ -104,17 +108,12 @@ function portableTextToSections(content: any[] = []): ArticleSection[] {
         continue;
       }
 
-      if (style === "normal") {
-        currentSection.body += `${text}\n\n`;
-        continue;
-      }
-
       currentSection.body += `${text}\n\n`;
       continue;
     }
 
-    if (block._type === "image") {
-      const imageUrl = urlFor(block)?.width(1400).url();
+    if (block._type === "image" && hasSanityImageAsset(block)) {
+      const imageUrl = urlFor(block).width(1400).url();
       if (imageUrl) {
         const alt = block?.alt || "";
         currentSection.body += `![${alt}](${imageUrl})\n\n`;
@@ -128,9 +127,10 @@ function portableTextToSections(content: any[] = []): ArticleSection[] {
 }
 
 function mapSanityArticle(doc: any): Article {
-  const coverImageUrl = doc?.coverImage
-    ? urlFor(doc.coverImage).width(1600).height(900).url()
-    : undefined;
+  const coverImageUrl =
+    hasSanityImageAsset(doc?.coverImage)
+      ? urlFor(doc.coverImage).width(1600).height(900).url()
+      : undefined;
 
   return {
     slug: doc.slug,
@@ -157,10 +157,18 @@ function mapSanityArticle(doc: any): Article {
   };
 }
 
+export async function getAllArticleSlugs(): Promise<string[]> {
+  const slugs = await client.fetch(
+    `*[_type == "article" && defined(slug.current)].slug.current`
+  );
+
+  return slugs || [];
+}
+
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   const article = await client.fetch(
     `
-    *[_type == "article" && slug.current == $slug][0]{
+    *[_type == "article" && defined(slug.current) && slug.current == $slug][0]{
       title,
       subtitle,
       description,
@@ -192,7 +200,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 export async function getAllArticles(): Promise<Article[]> {
   const articles = await client.fetch(
     `
-    *[_type == "article"] | order(coalesce(date, _updatedAt) desc){
+    *[_type == "article" && defined(slug.current)] | order(coalesce(date, _updatedAt) desc){
       title,
       subtitle,
       description,
