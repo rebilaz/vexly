@@ -4,23 +4,18 @@ import { urlFor } from "@/sanity/lib/image";
 export type ArticleFrontmatter = {
   title: string;
   subtitle?: string;
-  slug?: string;
   description?: string;
   date?: string;
-  updated_at?: string;
+  updatedAt?: string;
   readingTime?: string;
   tags?: string[];
   niche?: string;
   coverImageUrl?: string;
   cluster?: string;
-  type?: string;
-  pillar?: string | boolean;
-  main_keyword?: string;
-  search_intent?: string;
-  angle?: string;
+  pillar?: boolean;
+  mainKeyword?: string;
+  searchIntent?: string;
   priority?: number;
-  canonical_url?: string;
-  clusters_count?: number;
 };
 
 export type ArticleSection = {
@@ -114,6 +109,7 @@ function portableTextToSections(content: any[] = []): ArticleSection[] {
 
     if (block._type === "image" && hasSanityImageAsset(block)) {
       const imageUrl = urlFor(block).width(1400).url();
+
       if (imageUrl) {
         const alt = block?.alt || "";
         currentSection.body += `![${alt}](${imageUrl})\n\n`;
@@ -127,10 +123,9 @@ function portableTextToSections(content: any[] = []): ArticleSection[] {
 }
 
 function mapSanityArticle(doc: any): Article {
-  const coverImageUrl =
-    hasSanityImageAsset(doc?.coverImage)
-      ? urlFor(doc.coverImage).width(1600).height(900).url()
-      : undefined;
+  const coverImageUrl = hasSanityImageAsset(doc?.coverImage)
+    ? urlFor(doc.coverImage).width(1600).height(900).url()
+    : undefined;
 
   return {
     slug: doc.slug,
@@ -139,18 +134,16 @@ function mapSanityArticle(doc: any): Article {
       subtitle: doc.subtitle,
       description: doc.description,
       date: doc.date,
-      updated_at: doc._updatedAt,
+      updatedAt: doc._updatedAt,
       readingTime: doc.readingTime,
       tags: doc.tags || [],
       niche: doc.niche,
       coverImageUrl,
       cluster: doc.cluster,
       pillar: doc.pillar,
-      main_keyword: doc.mainKeyword,
-      search_intent: doc.searchIntent,
+      mainKeyword: doc.mainKeyword,
+      searchIntent: doc.searchIntent,
       priority: doc.priority,
-      canonical_url: doc.canonicalUrl,
-      type: doc.type,
     },
     sections: portableTextToSections(doc.content || []),
     content: doc.content || [],
@@ -181,8 +174,6 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
       mainKeyword,
       searchIntent,
       priority,
-      canonicalUrl,
-      type,
       coverImage,
       content,
       "slug": slug.current,
@@ -213,8 +204,6 @@ export async function getAllArticles(): Promise<Article[]> {
       mainKeyword,
       searchIntent,
       priority,
-      canonicalUrl,
-      type,
       coverImage,
       content,
       "slug": slug.current,

@@ -26,14 +26,7 @@ export async function generateMetadata(
   }
 
   const fm = article.frontmatter;
-
-  const canonical =
-    (fm.canonical_url && fm.canonical_url.trim()) || `/articles/${article.slug}`;
-
-  const canonicalAbs =
-    typeof canonical === "string" && canonical.startsWith("http")
-      ? canonical
-      : `https://www.vexly.fr${canonical}`;
+  const canonicalAbs = `https://www.vexly.fr/articles/${article.slug}`;
 
   const ogImageAbs = fm.coverImageUrl
     ? fm.coverImageUrl.startsWith("http")
@@ -44,7 +37,9 @@ export async function generateMetadata(
   return {
     title: fm.title,
     description: fm.description,
-    alternates: { canonical },
+    alternates: {
+      canonical: canonicalAbs,
+    },
     openGraph: {
       title: fm.title,
       description: fm.description,
@@ -80,7 +75,7 @@ export default async function ArticlePage({
     <ArticleLayout
       title={fm.title}
       subtitle={fm.subtitle}
-      date={fm.date ?? fm.updated_at}
+      date={fm.date ?? fm.updatedAt}
       readingTime={fm.readingTime}
       tags={fm.tags || []}
       niche={fm.niche}

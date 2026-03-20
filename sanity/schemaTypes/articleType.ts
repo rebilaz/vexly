@@ -74,12 +74,6 @@ export const articleType = defineType({
         }),
 
         defineField({
-            name: 'canonicalUrl',
-            title: 'Canonical URL',
-            type: 'url',
-        }),
-
-        defineField({
             name: 'tags',
             title: 'Tags',
             type: 'array',
@@ -89,20 +83,6 @@ export const articleType = defineType({
         defineField({
             name: 'coverImage',
             title: 'Cover image',
-            type: 'image',
-            options: { hotspot: true },
-            fields: [
-                defineField({
-                    name: 'alt',
-                    title: 'Alt text',
-                    type: 'string',
-                }),
-            ],
-        }),
-
-        defineField({
-            name: 'ogImage',
-            title: 'OG image',
             type: 'image',
             options: { hotspot: true },
             fields: [
