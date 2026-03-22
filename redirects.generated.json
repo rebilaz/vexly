@@ -5,8 +5,18 @@
     "status": 301
   },
   {
+    "from": "/articles/7-erreurs-identifier-proble-me-2026-01-19",
+    "to": "/articles/comment-identifier-proble-me-rentable-2025-12-28",
+    "status": 301
+  },
+  {
     "from": "/articles/7-erreurs-vous-font-croire-2026-01-23",
     "to": "/articles/ide-e-business-rentable-argent-2025-12-25",
+    "status": 301
+  },
+  {
+    "from": "/articles/7-outils-gratuits-comprendre-besoins-2025-12-14",
+    "to": "/articles/comment-identifier-proble-me-rentable-2025-12-28",
     "status": 301
   },
   {
@@ -43,10 +53,6 @@
     "from": "/articles/tester-prix-landing-page-3-2026-01-14",
     "to": "/articles/comment-tester-prix-votre-futur-2026-01-13",
     "status": 301
-  },
-  {
-    "from": "/marketplace/indy-fr",
-    "status": 410
   },
   {
     "from": "/marketplace/noota-io",
