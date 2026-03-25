@@ -32,7 +32,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/ia-generative-saas-mvp-cas-usage</loc>
+    <loc>https://www.vexly.fr/articles/timeline-lancement-saas-4-semaines</loc>
     <lastmod>2026-02-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -45,18 +45,6 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/articles/brief-prestataire-saas-mvp-complet</loc>
-    <lastmod>2026-02-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/articles/timeline-lancement-saas-4-semaines</loc>
-    <lastmod>2026-02-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/articles/concevoir-experience-utilisateur-saas-mvp</loc>
     <lastmod>2026-02-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -82,12 +70,6 @@
   <url>
     <loc>https://www.vexly.fr/articles/exemple-mvp-re-ussi-prototype-2026-01-25</loc>
     <lastmod>2026-01-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/articles/7-erreurs-identifier-proble-me-2026-01-19</loc>
-    <lastmod>2026-01-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -140,12 +122,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/articles/7-outils-gratuits-comprendre-besoins-2025-12-14</loc>
-    <lastmod>2025-12-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/articles/micro-saas-rentable-comment-valider-2025-12-10</loc>
     <lastmod>2025-12-10</lastmod>
     <changefreq>weekly</changefreq>
@@ -160,51 +136,6 @@
   <url>
     <loc>https://www.vexly.fr/articles/choisir-prestataire-saas-2025-12-02</loc>
     <lastmod>2025-12-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/axonaut-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/bailfacile-fr</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/indy-fr</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/n2f-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/obat-fr</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/pennylane-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/qonto-com</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/shine-fr</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace/woosmap-com</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
