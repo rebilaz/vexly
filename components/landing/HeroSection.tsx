@@ -34,15 +34,6 @@ export default function HeroSection({
                 {titleHighlight}
               </span>
             </h1>
-
-            <div className="mt-10 flex flex-wrap items-center gap-6">
-              <Link
-                href="/form"
-                className="inline-flex items-center rounded-xl bg-slate-900 px-7 py-4 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.03] active:scale-[0.98]"
-              >
-                {primaryCtaLabel}
-              </Link>
-            </div>
           </div>
 
           {/* RIGHT */}

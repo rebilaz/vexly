@@ -7,6 +7,7 @@ import FinalCTASection from "./FinalCTASection";
 import RevenueProjectionSection from "./RevenueProjectionSection";
 import ExecutionMethodSection from "./ExecutionMethodSection";
 import LandingTracking from "./LandingTracking";
+import Form from "../Form/Form";
 
 export type LandingSection = {
   id?: string;
@@ -37,6 +38,12 @@ export default function LandingLayout(props: LandingLayoutProps) {
             primaryCtaLabel="Vérifier la faisabilité →"
             secondaryCtaLabel="Comprendre le modèle"
           />
+        </div>
+      </section>
+
+      <section className="relative z-10 mx-auto mt-8 w-full max-w-7xl px-6 sm:px-10 lg:px-20">
+        <div className="flex justify-center">
+          <Form />
         </div>
       </section>
 
