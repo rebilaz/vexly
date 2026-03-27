@@ -3,14 +3,12 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AuthSection } from "@/components/AuthSection";
 
 type MenuId = "ressources" | null;
 
 const CLOSE_DELAY_MS = 220;
 
 export default function Header() {
-  const [authOpen, setAuthOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<MenuId>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -131,7 +129,7 @@ export default function Header() {
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Ouvrir le menu"
-              className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition hover:bg-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition hover:bg-white md:hidden"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M4 7h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -149,20 +147,21 @@ export default function Header() {
               Connexion
             </Link>
 
-            {/* Desktop only: CTA */}
-            <button
-              onClick={() => setAuthOpen(true)}
+            {/* Desktop only: CTA -> vers le formulaire */}
+            <Link
+              href="/#formulaire"
+              onClick={forceClose}
               className="hidden md:inline-flex rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-2.5 text-xs font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.55)] transition hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.65)] active:scale-[0.97]"
             >
               <span className="flex items-center gap-2">
                 Créer mon SaaS <span className="text-sm">→</span>
               </span>
-            </button>
+            </Link>
           </div>
         </div>
       </header>
 
-      {/* MOBILE SIDE PANEL (minimal) */}
+      {/* MOBILE SIDE PANEL */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[9998] md:hidden">
           {/* overlay */}
@@ -247,34 +246,17 @@ export default function Header() {
               </div>
 
               <div className="mt-10">
-                <button
-                  onClick={() => {
-                    forceClose();
-                    setAuthOpen(true);
-                  }}
-                  className="w-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-3 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.45)] transition hover:brightness-110 active:scale-[0.98]"
+                <Link
+                  href="/#formulaire"
+                  onClick={forceClose}
+                  className="block w-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-3 text-center text-sm font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.45)] transition hover:brightness-110 active:scale-[0.98]"
                 >
                   <span className="flex items-center justify-center gap-2">
                     Créer mon SaaS <span className="text-base">→</span>
                   </span>
-                </button>
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal Auth */}
-      {authOpen && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/40 backdrop-blur-sm">
-          <div className="relative w-full max-w-lg rounded-2xl bg-white p-5 shadow-xl">
-            <button
-              onClick={() => setAuthOpen(false)}
-              className="absolute right-3 top-3 text-sm text-slate-400 transition hover:text-slate-600"
-            >
-              ✕
-            </button>
-            <AuthSection variant="modal" />
           </div>
         </div>
       )}

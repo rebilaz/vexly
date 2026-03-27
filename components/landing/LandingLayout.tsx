@@ -34,7 +34,7 @@ export default function LandingLayout(props: LandingLayoutProps) {
           <HeroSection
             eyebrow="Ne lancez pas juste un produit."
             titleLine1="Construisez un"
-            titleHighlight="actif rentable."
+            titleHighlight="Saas rentable."
             primaryCtaLabel="Vérifier la faisabilité →"
             secondaryCtaLabel="Comprendre le modèle"
           />

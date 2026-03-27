@@ -21,7 +21,7 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
           <div className="space-y-5">
             <div className="flex items-center gap-2">
               <Image
-                src="/vexly-logo-2-full-gradient.svg"
+                src="/vexly-logo-2-full-white.svg"
                 alt="VEXLY"
                 width={32}
                 height={32}

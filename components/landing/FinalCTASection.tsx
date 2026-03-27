@@ -25,12 +25,12 @@ const FinalCTASection: React.FC<FinalCTASectionProps> = ({
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             {title}
           </h2>
-          <p className="text-sm sm:text-base text-slate-200">{subtitle}</p>
+          <p className="text-sm text-slate-200 sm:text-base">{subtitle}</p>
         </div>
 
         <div className="flex-shrink-0">
           <Link
-            href="/form"
+            href="/#formulaire"
             className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-lg shadow-slate-900/40 transition hover:scale-[1.03] active:scale-[0.97]"
           >
             {primaryCtaLabel}
