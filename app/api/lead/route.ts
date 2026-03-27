@@ -16,7 +16,7 @@ export async function POST(req: Request) {
         }
 
         const { error } = await resend.emails.send({
-            from: "Site <onboarding@ton-domaine.com>", // remplace par ton domaine vérifié
+            from: "Site <onboarding@vexly.fr>", // remplace par ton domaine vérifié
             to: [process.env.LEAD_TO_EMAIL || "toi@email.com"],
             subject: "Nouveau formulaire rempli",
             replyTo: email,
