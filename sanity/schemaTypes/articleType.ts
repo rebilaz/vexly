@@ -22,11 +22,13 @@ export const articleType = defineType({
 
         defineField({
             name: 'subtitle',
+            title: 'Subtitle',
             type: 'string',
         }),
 
         defineField({
             name: 'description',
+            title: 'Description',
             type: 'text',
         }),
 
@@ -37,47 +39,15 @@ export const articleType = defineType({
         }),
 
         defineField({
-            name: 'niche',
-            title: 'Niche',
-            type: 'string',
-        }),
-
-        defineField({
             name: 'cluster',
-            type: 'string',
-        }),
-
-        defineField({
-            name: 'pillar',
-            type: 'boolean',
-        }),
-
-        defineField({
-            name: 'mainKeyword',
-            title: 'Main keyword',
+            title: 'Cluster',
             type: 'string',
         }),
 
         defineField({
             name: 'searchIntent',
+            title: 'Search intent',
             type: 'string',
-        }),
-
-        defineField({
-            name: 'priority',
-            type: 'number',
-        }),
-
-        defineField({
-            name: 'readingTime',
-            type: 'string',
-        }),
-
-        defineField({
-            name: 'tags',
-            title: 'Tags',
-            type: 'array',
-            of: [{ type: 'string' }],
         }),
 
         defineField({
