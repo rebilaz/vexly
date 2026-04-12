@@ -1,5 +1,5 @@
 // components/landing/PartnerFitSection.tsx
-import React from "react";
+
 import { Check, X } from "lucide-react";
 
 type Props = {

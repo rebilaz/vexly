@@ -1,21 +1,20 @@
-import React from "react";
-import Link from "next/link";
+//components/landing/HeroSection
+
 import SaasPreview from "./SaasPreview";
 
 type HeroSectionProps = {
   eyebrow: string;
-  titleLine1: string;
-  titleHighlight: string;
-  primaryCtaLabel: string;
-  secondaryCtaLabel?: string;
+  titleline1: string;
+  titlehighlight: string;
+  description: string;
 };
 
 export default function HeroSection({
   eyebrow,
-  titleLine1,
-  titleHighlight,
-  primaryCtaLabel,
-  secondaryCtaLabel,
+  titleline1,
+  titlehighlight,
+  description,
+
 }: HeroSectionProps) {
   return (
     <section className="w-full">
@@ -27,13 +26,16 @@ export default function HeroSection({
 
             <h1 className="leading-[1.05] tracking-tight font-bold">
               <span className="block text-5xl sm:text-6xl lg:text-7xl text-slate-900">
-                {titleLine1}
+                {titleline1}
               </span>
 
               <span className="block text-6xl sm:text-7xl lg:text-8xl bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
-                {titleHighlight}
+                {titlehighlight}
               </span>
             </h1>
+            <p className="text-lg text-slate-600 mb-10 max-w-lg leading-relaxed">
+              {description}
+            </p>
           </div>
 
           {/* RIGHT */}
@@ -56,6 +58,6 @@ export default function HeroSection({
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

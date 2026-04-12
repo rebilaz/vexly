@@ -1,33 +1,35 @@
-import React from "react";
-import Link from "next/link";
+//components/landing/RevenueProjectionSection.ts
+
 import Reveal from "./Reveal.client";
 
 type Props = {
+  title: string;
+  description?: string;
   clients: number;
   pricePerMonth: number;
   mrr: number;
-  ctaLabel: string;
 };
 
 export default function RevenueProjectionSection({
+  title,
+  description,
   clients,
   pricePerMonth,
   mrr,
-  ctaLabel,
 }: Props) {
   return (
     <Reveal className="mx-auto max-w-5xl text-center">
       <section>
-        {/* TITRE GROS / IMPACT */}
         <h2 className="font-geist text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 text-center">
-
-          À quoi ça peut{" "}
-          <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-            ressembler financièrement
-          </span>
+          {title}
         </h2>
 
-        {/* BLOC CHIFFRES */}
+        {description ? (
+          <p className="mx-auto mt-4 max-w-3xl text-center text-base leading-relaxed text-slate-600">
+            {description}
+          </p>
+        ) : null}
+
         <div
           className="
           mt-14 

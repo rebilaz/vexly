@@ -1,3 +1,5 @@
+//components/landing/reveal.client.tsx
+
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -8,15 +10,8 @@ type RevealProps = {
     delay?: number;
 };
 
-/**
- * Progressive enhancement wrapper for scroll animations.
- * SSR + first client render are identical (no inline style).
- * Animation is applied only after hydration to avoid hydration mismatch.
- */
 export default function Reveal({ children, className = "", delay = 0 }: RevealProps) {
     const ref = useRef<HTMLDivElement>(null);
-
-    // IMPORTANT: false on first client render => matches SSR
     const [hydrated, setHydrated] = useState(false);
     const [hasAnimated, setHasAnimated] = useState(false);
 
@@ -34,7 +29,6 @@ export default function Reveal({ children, className = "", delay = 0 }: RevealPr
 
         if (prefersReduced) return;
 
-        // Set initial hidden state AFTER hydration only
         el.style.opacity = "0";
         el.style.transform = "translateY(16px)";
         el.style.transition = "opacity 0.35s ease-out, transform 0.35s ease-out";
@@ -64,7 +58,6 @@ export default function Reveal({ children, className = "", delay = 0 }: RevealPr
         return () => observer.disconnect();
     }, [hydrated, hasAnimated, delay]);
 
-    // SSR + first client render => NO inline styles at all
     return (
         <div ref={ref} className={className}>
             {children}

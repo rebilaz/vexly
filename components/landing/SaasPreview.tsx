@@ -1,4 +1,4 @@
-// components/hero/SaasPreview.tsx
+// components/landing/SaasPreview.tsx
 import React from "react";
 
 function Icon({ name }: { name: "home" | "users" | "chart" }) {

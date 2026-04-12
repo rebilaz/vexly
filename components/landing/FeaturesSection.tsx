@@ -1,4 +1,5 @@
-import React from "react";
+//components\landing\FeaturesSection.tsx
+
 import {
   Rocket,
   Target,
@@ -24,16 +25,17 @@ type Item = {
   label: string;
 };
 
-export default function FeaturesSection() {
-  const items: Item[] = [
-    { icon: "Rocket", label: "MVP vendable" },
-    { icon: "Target", label: "Positionnement clair" },
-    { icon: "CreditCard", label: "Paiements intégrés" },
-    { icon: "Settings", label: "Back-office administrateur" },
-    { icon: "MonitorSmartphone", label: "Interface Web & Mobile" },
-    { icon: "Server", label: "Déploiement scalable" },
-  ];
+type FeatureSectionProps = {
+  title: String;
+  description?: string;
+  items: readonly Item[];
+}
 
+export default function FeaturesSection({
+  title,
+  description,
+  items,
+}: FeatureSectionProps) {
   return (
     <section className="mx-auto max-w-6xl">
       {/* TITRE CENTRÉ DÉGRADÉ */}
@@ -54,8 +56,14 @@ export default function FeaturesSection() {
           text-transparent
         "
       >
-        INCLUS
+        {title}
       </h2>
+
+      {description ? (
+        <p className="mx-auto mt-4 max-w-2xl text-center text-base leading-relaxed text-slate-600">
+          {description}
+        </p>
+      ) : null}
 
       {/* GRID */}
       <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
