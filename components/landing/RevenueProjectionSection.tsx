@@ -73,33 +73,6 @@ export default function RevenueProjectionSection({
               </span>
             </span>
           </div>
-
-          {/* CTA */}
-          <div className="mt-10 flex justify-center">
-            <Link
-              href="/form"
-              className="
-              inline-flex 
-              items-center 
-              gap-2 
-              rounded-full 
-              bg-slate-900 
-              px-8 
-              py-4 
-              font-geist 
-              text-sm 
-              font-semibold 
-              text-white 
-              shadow-lg 
-              transition 
-              hover:scale-[1.04] 
-              active:scale-[0.97]
-            "
-            >
-              {ctaLabel}
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
         </div>
       </section>
     </Reveal>

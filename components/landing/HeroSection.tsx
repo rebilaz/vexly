@@ -34,15 +34,6 @@ export default function HeroSection({
                 {titleHighlight}
               </span>
             </h1>
-
-            <div className="mt-10 flex flex-wrap items-center gap-6">
-              <Link
-                href="/form"
-                className="inline-flex items-center rounded-xl bg-slate-900 px-7 py-4 text-sm font-semibold text-white shadow-lg transition hover:scale-[1.03] active:scale-[0.98]"
-              >
-                {primaryCtaLabel}
-              </Link>
-            </div>
           </div>
 
           {/* RIGHT */}
@@ -50,11 +41,8 @@ export default function HeroSection({
             <div className="relative mx-auto w-full max-w-[620px] lg:max-w-[720px]">
               <div className="pointer-events-none absolute -inset-12 rounded-[40px] bg-gradient-to-tr from-indigo-300/25 via-sky-200/15 to-violet-300/20 blur-2xl transform-gpu will-change-transform" />
 
-              {/* keep the luxe transform ONCE */}
               <div className="relative transform-gpu rotate-[-6deg] [transform:rotate(-6deg)_rotateY(-10deg)]">
-                <div
-                  className="relative w-[820px] max-w-none h-[440px] lg:h-[480px] -mr-[220px] lg:-mr-[260px] rounded-[28px] overflow-hidden border border-slate-200 bg-white shadow-2xl will-change-transform [contain:layout_paint_style] [content-visibility:auto]"
-                >
+                <div className="relative w-[820px] max-w-none h-[440px] lg:h-[480px] -mr-[220px] lg:-mr-[260px] rounded-[28px] overflow-hidden border border-slate-200 bg-white shadow-2xl will-change-transform [contain:layout_paint_style] [content-visibility:auto]">
                   <div className="relative -translate-y-[46px] lg:-translate-y-[60px]">
                     <SaasPreview />
                   </div>
