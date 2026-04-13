@@ -7,8 +7,8 @@ export const landingcontent = {
     hero: {
         eyebrow: "Vexly",
         titleline1: "L'agence de création de SaaS",
-        titlehighlight: "de création de SaaS",
-        description: "Monétisez votre audience en lançant votre SaaS"
+        titlehighlight: "pour les créateurs.",
+        description: "Monétisez votre audience et stabilisez vos revenus en lançant votre SaaS."
     },
     projection: {
         title: "Simulez votre potentiel de revenus",
