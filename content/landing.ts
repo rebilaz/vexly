@@ -5,10 +5,10 @@ export const landingcontent = {
         description: "Transformez votre audience en revenus récurrents en lançant votre SaaS. Vexly est votre agence de création sur-mesure. Bâtissez votre actif dès aujourd'hui."
     },
     hero: {
-        eyebrow: "Vexly : l'agence de création de SaaS",
-        titleline1: "qui monétise votre audience.",
-        titlehighlight: "en lançant votre propre SaaS.",
-        description: "Nous créons votre SAAS pour stabiliser vos revenus"
+        eyebrow: "Vexly",
+        titleline1: "L'agence de création de SaaS",
+        titlehighlight: "de création de SaaS",
+        description: "Monétisez votre audience en lançant votre SaaS"
     },
     projection: {
         title: "Simulez votre potentiel de revenus",
