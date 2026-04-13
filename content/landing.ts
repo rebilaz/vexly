@@ -8,11 +8,11 @@ export const landingcontent = {
         eyebrow: "Vexly",
         titleline1: "L'agence de création de SaaS",
         titlehighlight: "pour les créateurs.",
-        description: "Monétisez votre audience et stabilisez vos revenus en lançant votre SaaS."
+        description: "Vexly accompagne les créateurs dans la création de leur SaaS pour générer des revenus récurrents et bâtir un actif digital durable."
     },
     projection: {
         title: "Simulez votre potentiel de revenus",
-        description: "Un SaaS est le seul moyen de transformer vos abonnés en revenus réguliers. Contrairement à un placement de produit qui ne paye qu'une fois, votre SaaS vous rapporte de l'argent chaque mois de façon prévisible.",
+        description: "Le SaaS est le business model le plus puissant pour un créateur. Contrairement aux placements de produits ou à l'affiliation qui sont ponctuels et incertains, un logiciel transforme votre audience en une source de revenus mensuels récurrents (MRR). Utilisez ce simulateur pour visualiser la rentabilité immédiate de votre futur actif digital.",
         clients: 100,
         price: 49,
     },
@@ -45,12 +45,12 @@ export const landingcontent = {
         ] as const,
     },
     features: {
-        title: "Un Saas livré clé en main",
-        description: "Nous bâtissons une infrastructure robuste et scalable. Votre plateforme est livrée prête à l'emploi, de la gestion des membres au système de paiment.",
+        title: "Un SaaS livré clé en main",
+        description: "Nous bâtissons une infrastructure robuste et scalable. Votre plateforme est livrée prête à l'emploi, de la gestion des membres au système de paiement.",
         items: [
             { icon: "Rocket", label: "MVP optimisé pour la vente" },
             { icon: "Target", label: "Design Premium & Pro" },
-            { icon: "CreditCard", label: "Paiement Stripe intégrés" },
+            { icon: "CreditCard", label: "Paiement Stripe intégré" },
             { icon: "Settings", label: "Console d'administration" },
             { icon: "MonitorSmartphone", label: "Accès Mobile & Ordinateur" },
             { icon: "Server", label: "Hébergement & Protection" },
@@ -59,45 +59,57 @@ export const landingcontent = {
     },
     method: {
         title: "Votre plateforme en 21 jours",
-        description: "Notre processus élimine la complexité technique pour se concentrer sur votre lancement et votre rentabilité",
+        description: "Notre méthode de développement agile élimine la complexité technique pour se concentrer sur l'essentiel : votre lancement, la rétention de vos utilisateurs et votre rentabilité.",
         steps: [
             {
                 week: "Semaine 1",
                 title: "Design & UX",
-                description: "Architecture des fonctionnalités et création de l'identité visuelle de votre logiciel."
+                description: "Nous définissons l'architecture de votre logiciel et créons une identité visuelle unique. Cette phase de prototypage garantit une expérience utilisateur fluide, pensée pour convertir votre audience en clients fidèles."
             },
             {
                 week: "Semaine 2",
                 title: "Développement",
-                description: "Codage du cœur de l'application et mise en place de la base de données sécurisée."
+                description: "Nos développeurs codent le cœur de votre application SaaS. Nous mettons en place une base de données sécurisée et une infrastructure robuste capable de supporter une montée en charge (scalabilité) sans interruption."
             },
             {
                 week: "Semaine 3",
                 title: "Déploiement",
-                description: "Tests finaux, intégration des paiements et mise en production sur nos serveurs."
+                description: "Après une phase de tests rigoureux, nous intégrons le système de paiement et procédons à la mise en production. Votre actif digital est déployé sur nos serveurs sécurisés, prêt à générer vos premiers revenus récurrents."
             }
         ]
     },
     faq: {
-        title: "Questions fréquentes",
+        title: "Questions fréquentes sur notre agence SaaS",
         items: [
             {
-                q: "Je dois héberger mon site ?",
-                a: "Vexly s'occupe de tout. Nous conservons la gestion du code et de l'infrastructure pour garantir la sécurité, la rapidité et les mises à jour de votre SaaS. Pour vous, c'est zéro gestion technique : vous vous concentrez uniquement sur votre audience."
+                q: "Pourquoi déléguer la création de mon SaaS à une agence ?",
+                a: "Passer par une agence de création de SaaS comme Vexly vous permet de bénéficier d'une expertise technique de haut niveau sans avoir à recruter ou gérer des développeurs. Nous vous livrons une solution clé en main, testée et sécurisée. Cela réduit considérablement les risques d'erreurs techniques et accélère votre mise sur le marché (Time-to-Market) pour commencer à générer des revenus rapidement."
             },
             {
-                q: "Pourquoi choisir le sur-mesure plutôt que le No-code ?",
-                a: "Le sur-mesure vous offre une liberté totale, une meilleure rapidité et des coûts d'infrastructure bien plus bas à l'échelle."
+                q: "À qui appartient réellement la plateforme ?",
+                a: "À vous. Vous êtes le propriétaire exclusif de votre marque, de votre base de données clients et de 100 % de vos revenus. Vexly fonctionne sur un modèle de plateforme gérée : nous agissons comme votre partenaire technique pour maintenir le moteur de votre SaaS en parfait état de marche, vous permettant ainsi de bâtir un patrimoine numérique réel et valorisable."
             },
             {
-                q: "Combien coûte l'hébergement mensuel ?",
-                a: "Nous utilisons des technologies modernes qui permettent de maintenir vos frais fixes proches de 0€ lors du lancement."
+                q: "Comment garantissez-vous la stabilité de mon SaaS ?",
+                a: "Exactement comme sur Shopify ou Stripe, nous gérons l'intégralité de la couche technique pour vous offrir une tranquillité totale. Nous nous occupons des mises à jour critiques et de l'optimisation des performances en arrière-plan. Cela garantit que votre plateforme reste rapide, sécurisée et toujours disponible pour vos utilisateurs, sans que vous n'ayez à toucher à une seule ligne de code."
+            },
+            {
+                q: "Comment est gérée la maintenance et l'hébergement ?",
+                a: "Vexly s'occupe de toute l'infrastructure Cloud. Votre SaaS est déployé sur des serveurs sécurisés et performants. Nous assurons la maintenance proactive, les sauvegardes quotidiennes et la surveillance des serveurs. Pour vous, c'est zéro gestion technique : vous restez concentré uniquement sur votre audience, votre marketing et vos ventes."
+            },
+            {
+                q: "Le développement sur-mesure est-il adapté pour une grande audience ?",
+                a: "Oui, c'est sa force principale. Le sur-mesure offre une rapidité d'exécution et une scalabilité bien supérieures au No-code. Les coûts d'infrastructure restent fixes et extrêmement bas, même avec des milliers d'utilisateurs simultanés. C'est l'option privilégiée pour les créateurs qui souhaitent une plateforme robuste capable de croître sans limites techniques."
+            },
+            {
+                q: "Est-il possible de faire évoluer le logiciel après le lancement ?",
+                a: "Bien sûr. Notre agence vous accompagne dans la durée. Une fois votre solution lancée en 21 jours, nous pouvons définir ensemble les prochaines étapes de développement. Que ce soit pour ajouter de nouvelles fonctionnalités ou optimiser l'expérience utilisateur, nous faisons évoluer votre SaaS au rythme de votre communauté."
             }
         ]
     },
     finalCta: {
         title: "Prêt à générer des revenus ?",
-        subtitle: "Réservez votre appel. On analyse votre audience et on définit les fonctionnalités de votre SaaS .",
+        subtitle: "Réservez votre appel. On analyse votre audience et on définit les fonctionnalités de votre SaaS.",
         primaryCtaLabel: "Parler de mon projet"
     }
 }
