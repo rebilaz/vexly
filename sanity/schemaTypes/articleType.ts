@@ -7,7 +7,7 @@ export const articleType = defineType({
     fields: [
         defineField({
             name: 'title',
-            title: 'Title',
+            title: 'Titre',
             type: 'string',
             validation: (Rule) => Rule.required(),
         }),
@@ -22,7 +22,7 @@ export const articleType = defineType({
 
         defineField({
             name: 'subtitle',
-            title: 'Subtitle',
+            title: 'Sous-titre',
             type: 'string',
         }),
 
@@ -51,6 +51,14 @@ export const articleType = defineType({
         }),
 
         defineField({
+            name: 'category',
+            title: 'Catégorie',
+            type: 'reference',
+            to: [{ type: 'category' }],
+            validation: (Rule) => Rule.required(),
+        }),
+
+        defineField({
             name: 'coverImage',
             title: 'Cover image',
             type: 'image',
@@ -71,6 +79,16 @@ export const articleType = defineType({
             of: [
                 {
                     type: 'block',
+                    styles: [
+                        { title: 'Normal', value: 'normal' },
+                        { title: 'H2', value: 'h2' },
+                        { title: 'H3', value: 'h3' },
+                        { title: 'H4', value: 'h4' },
+                    ],
+                    lists: [
+                        { title: 'Bullet', value: 'bullet' },
+                        { title: 'Number', value: 'number' },
+                    ],
                     marks: {
                         annotations: [
                             {
@@ -107,4 +125,11 @@ export const articleType = defineType({
             ],
         }),
     ],
+    preview: {
+        select: {
+            title: 'title',
+            subtitle: 'category.title',
+            media: 'coverImage',
+        },
+    },
 })
