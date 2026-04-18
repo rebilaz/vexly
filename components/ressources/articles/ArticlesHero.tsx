@@ -37,17 +37,6 @@ export default function ArticlesHeroClient({
         <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
           {hero.description}
         </p>
-
-        <div className="relative mt-10 max-w-md mx-auto">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => onQueryChange(e.target.value)}
-            placeholder="Rechercher un article…"
-            className="w-full rounded-full bg-white py-3 pl-11 pr-4 text-sm text-slate-900 placeholder:text-slate-400 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
-          />
-        </div>
       </div>
     </header>
   );
