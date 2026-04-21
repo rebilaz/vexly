@@ -85,6 +85,11 @@
     "status": 301
   },
   {
+    "from": "/comment-valider-ide-e-business-2026-01-08",
+    "to": "/idee-saas",
+    "status": 301
+  },
+  {
     "from": "/erreurs-construction-saas-mvp-mortel",
     "to": "/idee-saas",
     "status": 301
