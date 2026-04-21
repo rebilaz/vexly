@@ -70,6 +70,31 @@
     "status": 301
   },
   {
+    "from": "/choisir-prestataire-saas",
+    "to": "/idee-saas",
+    "status": 301
+  },
+  {
+    "from": "/comment-identifier-proble-me-rentable-2025-12-28",
+    "to": "/idee-saas",
+    "status": 301
+  },
+  {
+    "from": "/comment-tester-prix-votre-futur-2026-01-13",
+    "to": "/idee-saas",
+    "status": 301
+  },
+  {
+    "from": "/erreurs-construction-saas-mvp-mortel",
+    "to": "/idee-saas",
+    "status": 301
+  },
+  {
+    "from": "/landing-page-validation-saas-plan-2025-12-17",
+    "to": "/idee-saas",
+    "status": 301
+  },
+  {
     "from": "/marketplace/noota-io",
     "to": "/marketplace/woosmap-com",
     "status": 301
