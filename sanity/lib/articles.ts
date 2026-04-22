@@ -21,7 +21,6 @@ type SanityArticle = {
     subtitle?: string
     description?: string
     date?: string
-    cluster?: string
     searchIntent?: string
     coverImage?: SanityImage
     content?: any[]
@@ -72,7 +71,6 @@ export async function getArticleBySlug(slug: string) {
       subtitle,
       description,
       date,
-      cluster,
       searchIntent,
       coverImage,
       content,

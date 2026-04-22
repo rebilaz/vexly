@@ -1,5 +1,11 @@
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
+
+export type ArticleCategory = {
+  title: string;
+  slug: string;
+};
 
 export type ArticleFrontmatter = {
   title: string;
@@ -7,15 +13,10 @@ export type ArticleFrontmatter = {
   description?: string;
   date?: string;
   updatedAt?: string;
-  readingTime?: string;
-  tags?: string[];
-  niche?: string;
-  coverImageUrl?: string;
-  cluster?: string;
-  pillar?: boolean;
-  mainKeyword?: string;
   searchIntent?: string;
-  priority?: number;
+  category?: ArticleCategory | null;
+  coverImageUrl?: string;
+  coverImageAlt?: string;
 };
 
 export type ArticleSection = {
@@ -31,8 +32,30 @@ export type Article = {
   content?: any[];
 };
 
-function hasSanityImageAsset(image: any) {
-  return !!image?.asset?._ref || !!image?.asset?._id;
+type SanityImage = SanityImageSource & {
+  alt?: string;
+};
+
+type SanityArticle = {
+  title: string;
+  subtitle?: string;
+  description?: string;
+  date?: string;
+  searchIntent?: string;
+  coverImage?: SanityImage;
+  content?: any[];
+  slug: string;
+  _updatedAt?: string;
+  category?: {
+    title?: string;
+    slug?: string;
+  } | null;
+};
+
+function hasSanityImageAsset(
+  image: SanityImage | null | undefined
+): image is SanityImage {
+  return !!(image as any)?.asset?._ref || !!(image as any)?.asset?._id;
 }
 
 function extractPlainText(block: any): string {
@@ -88,8 +111,8 @@ function portableTextToSections(content: any[] = []): ArticleSection[] {
         continue;
       }
 
-      if (style === "blockquote") {
-        currentSection.body += `\n> ${text}\n\n`;
+      if (style === "h4") {
+        currentSection.body += `\n#### ${text}\n\n`;
         continue;
       }
 
@@ -107,8 +130,8 @@ function portableTextToSections(content: any[] = []): ArticleSection[] {
       continue;
     }
 
-    if (block._type === "image" && hasSanityImageAsset(block)) {
-      const imageUrl = urlFor(block).width(1400).url();
+    if (block._type === "image" && hasSanityImageAsset(block as SanityImage)) {
+      const imageUrl = urlFor(block as SanityImage).width(1400).url();
 
       if (imageUrl) {
         const alt = block?.alt || "";
@@ -122,28 +145,31 @@ function portableTextToSections(content: any[] = []): ArticleSection[] {
   return sections;
 }
 
-function mapSanityArticle(doc: any): Article {
-  const coverImageUrl = hasSanityImageAsset(doc?.coverImage)
-    ? urlFor(doc.coverImage).width(1600).height(900).url()
-    : undefined;
+function mapSanityArticle(doc: SanityArticle): Article {
+  const coverImage = doc.coverImage;
+
+  const coverImageUrl =
+    coverImage && hasSanityImageAsset(coverImage)
+      ? urlFor(coverImage).width(1600).height(900).url()
+      : undefined;
 
   return {
     slug: doc.slug,
     frontmatter: {
       title: doc.title,
-      subtitle: doc.subtitle,
-      description: doc.description,
-      date: doc.date,
+      subtitle: doc.subtitle ?? "",
+      description: doc.description ?? "",
+      date: doc.date ?? "",
       updatedAt: doc._updatedAt,
-      readingTime: doc.readingTime,
-      tags: doc.tags || [],
-      niche: doc.niche,
+      searchIntent: doc.searchIntent ?? "",
+      category: doc.category
+        ? {
+          title: doc.category.title ?? "",
+          slug: doc.category.slug ?? "",
+        }
+        : null,
       coverImageUrl,
-      cluster: doc.cluster,
-      pillar: doc.pillar,
-      mainKeyword: doc.mainKeyword,
-      searchIntent: doc.searchIntent,
-      priority: doc.priority,
+      coverImageAlt: doc.coverImage?.alt ?? "",
     },
     sections: portableTextToSections(doc.content || []),
     content: doc.content || [],
@@ -151,7 +177,7 @@ function mapSanityArticle(doc: any): Article {
 }
 
 export async function getAllArticleSlugs(): Promise<string[]> {
-  const slugs = await client.fetch(
+  const slugs = await client.fetch<string[]>(
     `*[_type == "article" && defined(slug.current)].slug.current`
   );
 
@@ -159,25 +185,25 @@ export async function getAllArticleSlugs(): Promise<string[]> {
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  const article = await client.fetch(
+  const article = await client.fetch<SanityArticle | null>(
     `
     *[_type == "article" && defined(slug.current) && slug.current == $slug][0]{
       title,
       subtitle,
       description,
       date,
-      readingTime,
-      tags,
-      niche,
-      cluster,
-      pillar,
-      mainKeyword,
       searchIntent,
-      priority,
-      coverImage,
+      coverImage{
+        asset,
+        alt
+      },
       content,
       "slug": slug.current,
-      _updatedAt
+      _updatedAt,
+      category->{
+        title,
+        "slug": slug.current
+      }
     }
     `,
     { slug }
@@ -189,25 +215,25 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 }
 
 export async function getAllArticles(): Promise<Article[]> {
-  const articles = await client.fetch(
+  const articles = await client.fetch<SanityArticle[]>(
     `
     *[_type == "article" && defined(slug.current)] | order(coalesce(date, _updatedAt) desc){
       title,
       subtitle,
       description,
       date,
-      readingTime,
-      tags,
-      niche,
-      cluster,
-      pillar,
-      mainKeyword,
       searchIntent,
-      priority,
-      coverImage,
+      coverImage{
+        asset,
+        alt
+      },
       content,
       "slug": slug.current,
-      _updatedAt
+      _updatedAt,
+      category->{
+        title,
+        "slug": slug.current
+      }
     }
     `
   );
