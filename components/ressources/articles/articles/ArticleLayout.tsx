@@ -29,8 +29,6 @@ type ArticleLayoutProps = {
 export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
   title,
   subtitle,
-  date,
-  readingTime,
   tags = [],
   niche,
   coverImageUrl,
@@ -98,8 +96,6 @@ export const ArticleLayout: React.FC<ArticleLayoutProps> = ({
         <ArticleIntro
           title={title}
           subtitle={subtitle}
-          date={date}
-          readingTime={readingTime}
           tags={tags}
           coverImageUrl={coverImageUrl}
         />
