@@ -116,6 +116,7 @@ export const articleType = defineType({
                         }),
                     ],
                 },
+                { type: 'table' }, // 👈 AJOUTÉ ICI !
             ],
         }),
     ],
