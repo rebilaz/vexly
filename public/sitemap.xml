@@ -17,21 +17,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.vexly.fr/parcours</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/marketplace</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/parcours/youtube-revenus-instables</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://www.vexly.fr/articles/idee-saas</loc>
     <lastmod>2026-05-02</lastmod>
     <changefreq>weekly</changefreq>
