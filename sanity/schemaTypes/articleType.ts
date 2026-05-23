@@ -39,12 +39,6 @@ export const articleType = defineType({
         }),
 
         defineField({
-            name: 'cluster',
-            title: 'Cluster',
-            type: 'string',
-        }),
-
-        defineField({
             name: 'searchIntent',
             title: 'Search intent',
             type: 'string',
@@ -122,6 +116,7 @@ export const articleType = defineType({
                         }),
                     ],
                 },
+                { type: 'table' }, // 👈 AJOUTÉ ICI !
             ],
         }),
     ],

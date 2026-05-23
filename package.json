@@ -16,6 +16,7 @@
     "@react-three/fiber": "^9.4.0",
     "@sanity/client": "^7.17.0",
     "@sanity/image-url": "^1.2.0",
+    "@sanity/table": "^2.0.1",
     "@sanity/vision": "^4.22.0",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.103.0",

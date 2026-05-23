@@ -76,9 +76,6 @@ export default async function ArticlePage({
       title={fm.title}
       subtitle={fm.subtitle}
       date={fm.date ?? fm.updatedAt}
-      readingTime={fm.readingTime}
-      tags={fm.tags || []}
-      niche={fm.niche}
       coverImageUrl={fm.coverImageUrl}
       backHref="/articles"
       content={article.content || []}

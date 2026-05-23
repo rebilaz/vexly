@@ -1,16 +1,22 @@
 // app/articles/page.tsx
 import { getAllArticles } from "@/lib/articles";
 import ArticlesIndexClient from "@/components/ressources/articles/ArticlesLayout";
+import { articlesContent } from "@/content/article";
 
 export const revalidate = 1800;
 
 export const metadata = {
-  title: "Articles – Vexly",
-  description: "Tous les articles SaaS, automatisation, IA et business.",
+  title: articlesContent.seo.title,
+  description: articlesContent.seo.desc,
   alternates: { canonical: "/" },
 };
 
 export default async function ArticlesIndexPage() {
   const articles = await getAllArticles();
-  return <ArticlesIndexClient articles={articles} />;
+  return (
+    <ArticlesIndexClient
+      articles={articles}
+      content={articlesContent}
+    />
+  );
 }
