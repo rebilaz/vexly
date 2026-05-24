@@ -1,6 +1,3 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-
 import { FeatureHero } from "./FeatureHero";
 import { FeatureAdvantages } from "./FeatureAdvantages";
 import FinalCTASection from "@/components/landing/FinalCTASection";
@@ -59,22 +56,24 @@ export function FeaturesLayout({ data }: FeaturesLayoutProps) {
     const advantages = data.advantages || [];
 
     return (
-        <div className="relative isolate min-h-screen overflow-hidden bg-black text-white">
-            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_0%,rgba(250,204,21,0.12),transparent_32%),radial-gradient(circle_at_80%_10%,rgba(255,255,255,0.06),transparent_28%)]" />
-            <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-yellow-300/40 to-transparent" />
-
-            <div className="relative z-10">
-                <Header />
-
-                <main>
-                    <FeatureHero data={data} />
-                    <FeatureAdvantages advantages={advantages} />
-                    <FeatureSeoContent data={data.seoContent} />
-                    <FeatureFAQ data={data.faq} />
-                </main>
-
-                <Footer />
-            </div>
+        <div className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900">
+            <main className="space-y-16 py-10 sm:space-y-24 sm:py-16 lg:space-y-32">
+                <FeatureHero data={data} />
+                
+                <FeatureAdvantages advantages={advantages} />
+                
+                <FeatureSeoContent data={data.seoContent} />
+                
+                <FeatureFAQ data={data.faq} />
+                
+                <div className="mx-auto w-full max-w-7xl px-6 pb-16 sm:px-8 lg:px-10">
+                    <FinalCTASection 
+                        title={data.title ? `Lancez votre projet : ${data.title}` : "Prêt à générer des revenus récurrents ?"}
+                        subtitle={data.description || "Transformez votre idée de SaaS en un actif digital durable et rentable en 21 jours."}
+                        primaryCtaLabel={data.ctaLabel || "Créer mon SaaS →"}
+                    />
+                </div>
+            </main>
         </div>
     );
-}
+}

@@ -1,9 +1,10 @@
 import {
     BarChart3,
-    Car,
-    CircleDollarSign,
-    Gauge,
+    Rocket,
+    Target,
+    Settings,
     ShieldCheck,
+    LucideIcon
 } from "lucide-react";
 
 type Advantage = {
@@ -23,16 +24,8 @@ type FeatureAdvantagesProps = {
     advantages?: Advantage[];
 };
 
-const BRAND = {
-    yellow: "#d6b25e",
-    yellowSoft: "rgba(214, 178, 94, 0.1)",
-    yellowBorder: "rgba(214, 178, 94, 0.28)",
-    yellowGlow: "rgba(214, 178, 94, 0.12)",
-};
-
-function getAdvantageIcon(index: number) {
-    const icons = [Car, CircleDollarSign, Gauge, BarChart3, ShieldCheck];
-
+function getAdvantageIcon(index: number): LucideIcon {
+    const icons = [Rocket, Target, Settings, BarChart3, ShieldCheck];
     return icons[index % icons.length];
 }
 
@@ -45,24 +38,19 @@ export function FeatureAdvantages({ advantages }: FeatureAdvantagesProps) {
 
     return (
         <section
-            id="noxal-avantages"
-            style={{
-                paddingBottom: "12rem",
-            }}
-            className="mx-auto w-full max-w-7xl px-6 pt-16 sm:px-8 lg:px-10"
+            id="vexly-avantages"
+            className="mx-auto w-full max-w-7xl px-6 py-10 sm:px-8 lg:px-10"
         >
             <div className="mx-auto max-w-5xl text-center">
-                <h2 className="text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">
-                    Des fonctionnalités pensées pour piloter ton activité.
+                <h2 className="text-4xl font-bold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+                    Des fonctionnalités pensées pour propulser votre activité.
                 </h2>
+                <p className="mx-auto mt-4 max-w-2xl text-base text-slate-500">
+                    Découvrez en détail les avantages clés de cette expertise et comment elle s'intègre à votre futur SaaS.
+                </p>
             </div>
 
-            <div
-                style={{
-                    marginTop: "9rem",
-                }}
-                className="flex flex-col"
-            >
+            <div className="mt-16 flex flex-col gap-12 sm:mt-24 lg:mt-32">
                 {advantages.map((advantage, index) => {
                     const Icon = getAdvantageIcon(index);
                     const imageUrl = advantage.image?.asset?.url;
@@ -76,14 +64,18 @@ export function FeatureAdvantages({ advantages }: FeatureAdvantagesProps) {
                     const textBlock = (
                         <div
                             key="text"
-                            className="flex min-h-[360px] flex-col justify-center p-8 sm:p-10 lg:min-h-[420px] lg:p-14"
+                            className="flex flex-col justify-center p-8 sm:p-10 lg:p-14"
                         >
-                            <h3 className="max-w-xl text-3xl font-semibold leading-tight tracking-[-0.035em] text-white sm:text-4xl">
+                            <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 mb-6 border border-indigo-100">
+                                <Icon className="size-6" />
+                            </div>
+
+                            <h3 className="max-w-xl text-2xl font-bold leading-snug tracking-tight text-slate-900 sm:text-3xl">
                                 {advantage.title}
                             </h3>
 
                             {advantage.description ? (
-                                <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">
+                                <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-600">
                                     {advantage.description}
                                 </p>
                             ) : null}
@@ -93,10 +85,10 @@ export function FeatureAdvantages({ advantages }: FeatureAdvantagesProps) {
                                     href={linkHref}
                                     target={isExternal ? "_blank" : undefined}
                                     rel={isExternal ? "noopener noreferrer" : undefined}
-                                    className="mt-8 inline-flex w-fit items-center justify-center rounded-full border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white transition hover:border-yellow-300/40 hover:bg-white/[0.08]"
+                                    className="mt-8 inline-flex w-fit items-center justify-center rounded-full border border-slate-200 bg-slate-50 px-5 py-3 text-sm font-semibold text-slate-800 transition hover:border-indigo-200 hover:bg-indigo-50/50 hover:text-indigo-700"
                                 >
                                     {linkLabel}
-                                    <span className="ml-2 text-yellow-300">
+                                    <span className="ml-2 text-indigo-600">
                                         →
                                     </span>
                                 </a>
@@ -107,73 +99,31 @@ export function FeatureAdvantages({ advantages }: FeatureAdvantagesProps) {
                     const imageBlock = (
                         <div
                             key="image"
-                            className={`relative min-h-[320px] overflow-hidden border-t border-white/10 bg-black/40 md:min-h-[360px] md:border-t-0 lg:min-h-[420px] ${
-                                imageOnRight ? "md:border-l" : "md:border-r"
+                            className={`relative min-h-[300px] overflow-hidden bg-slate-50 md:min-h-[360px] lg:min-h-[400px] ${
+                                imageOnRight ? "md:border-l border-slate-100" : "md:border-r border-slate-100"
                             }`}
                         >
                             {imageUrl ? (
                                 <img
                                     src={imageUrl}
                                     alt={advantage.image?.alt || advantage.title}
-                                    className="h-full w-full object-cover opacity-90"
+                                    className="h-full w-full object-cover"
                                 />
                             ) : (
-                                <div
-                                    className="flex h-full w-full items-center justify-center"
-                                    style={{
-                                        background:
-                                            "radial-gradient(circle at center, rgba(214,178,94,0.2), transparent 42%)",
-                                    }}
-                                >
-                                    <div
-                                        className="flex size-28 items-center justify-center rounded-[2rem] border"
-                                        style={{
-                                            backgroundColor: BRAND.yellowSoft,
-                                            borderColor: BRAND.yellowBorder,
-                                        }}
-                                    >
-                                        <Icon
-                                            className="size-12"
-                                            style={{ color: BRAND.yellow }}
-                                        />
+                                <div className="flex h-full w-full items-center justify-center">
+                                    <div className="flex size-24 items-center justify-center rounded-3xl border border-indigo-100 bg-indigo-50/40">
+                                        <Icon className="size-10 text-indigo-500" />
                                     </div>
                                 </div>
                             )}
-
-                            <div
-                                className={`absolute inset-0 ${
-                                    imageOnRight
-                                        ? "bg-gradient-to-l from-transparent via-black/10 to-black/30"
-                                        : "bg-gradient-to-r from-transparent via-black/10 to-black/30"
-                                }`}
-                            />
                         </div>
                     );
 
                     return (
                         <article
                             key={`${advantage.title}-${index}`}
-                            style={{
-                                marginTop: index === 0 ? 0 : "9rem",
-                                boxShadow: `0 35px 120px ${BRAND.yellowGlow}`,
-                            }}
-                            className="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/[0.04] transition duration-300 hover:bg-white/[0.065]"
+                            className="group relative overflow-hidden rounded-[2.5rem] border-2 border-slate-200/80 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
                         >
-                            <div
-                                className="absolute inset-x-0 top-0 h-px opacity-0 transition group-hover:opacity-100"
-                                style={{
-                                    background:
-                                        "linear-gradient(to right, transparent, rgba(214,178,94,0.45), transparent)",
-                                }}
-                            />
-
-                            <div
-                                className="absolute right-0 top-0 h-80 w-80 translate-x-32 -translate-y-32 rounded-full blur-3xl"
-                                style={{
-                                    backgroundColor: BRAND.yellowSoft,
-                                }}
-                            />
-
                             <div className="relative grid overflow-hidden rounded-[2.5rem] md:grid-cols-2">
                                 {imageOnRight ? (
                                     <>

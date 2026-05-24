@@ -1,256 +1,111 @@
-"use client";
-
 import Link from "next/link";
-import { CheckCircle2, XCircle, Rocket, MessageSquare, ArrowRight, Shield } from "lucide-react";
-import type { PricingPlan } from "./PricingClient";
-
-function cx(...classes: Array<string | false | null | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import type { PricingHeroContent, PricingPlan } from "./pricing.types";
 
 function euro(n: number) {
   return `${n}€`;
 }
 
-type FeatureRow = {
-  label: string;
-  enabled: boolean;
-  tone?: "indigo" | "emerald" | "muted";
+type PricingPlansProps = {
+  hero: PricingHeroContent;
+  offer: PricingPlan;
 };
 
-export function PricingPlans({
-  plans,
-  withMaintenance,
-}: {
-  plans: PricingPlan[];
-  withMaintenance: boolean;
-  onToggleMaintenance: (v: boolean) => void; // compat, non utilisé ici
-}) {
+export function PricingPlans({ hero, offer }: PricingPlansProps) {
   return (
-    <section className="mx-auto mt-10">
-      {/* même largeur et même “respiration” que Gemini */}
-      <div className="grid gap-7 md:grid-cols-3 md:gap-8 md:items-stretch">
-        {plans.map((plan) => {
-          const featured = Boolean(plan.featured);
+    <section
+      id="offre"
+      className="relative isolate overflow-hidden bg-[#F8FAFC] px-6 py-20 lg:px-8 lg:py-28"
+    >
+      <div className="pointer-events-none absolute -left-40 bottom-[-22rem] h-[38rem] w-[38rem] rounded-full border border-indigo-100" />
+      <div className="pointer-events-none absolute -left-28 bottom-[-18rem] h-[32rem] w-[32rem] rounded-full border border-indigo-100" />
+      <div className="pointer-events-none absolute -left-16 bottom-[-14rem] h-[26rem] w-[26rem] rounded-full border border-indigo-100" />
 
-          // Base features depuis tes données
-          let features: FeatureRow[] = plan.features.map((f) => ({
-            label: f,
-            enabled: true,
-            tone: "indigo",
-          }));
+      <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-bl-[7rem] bg-indigo-100/50 blur-3xl" />
+      <div className="pointer-events-none absolute right-16 top-20 hidden h-32 w-32 bg-[radial-gradient(circle,_#6366f1_1px,_transparent_1px)] [background-size:18px_18px] opacity-20 lg:block" />
 
-          // Starter : ligne barrée branding (comme Gemini)
-          if (plan.name === "Starter") {
-            features = [
-              ...features.slice(0, 3),
-              { label: "Personnalisation Branding", enabled: false, tone: "muted" },
-              ...features.slice(3),
-            ];
-          }
+      <div className="mx-auto max-w-7xl">
+        <div className="grid items-center gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+          <div className="relative z-10">
+            <h2 className="max-w-2xl text-4xl font-black leading-[0.98] tracking-[-0.05em] text-slate-950 sm:text-5xl lg:text-6xl">
+              {hero.title}
+            </h2>
 
-          // Maintenance : items “sécurité/support”
-          if (withMaintenance && plan.name === "Starter") {
-            features = [
-              ...features,
-              { label: "Mises à jour sécurité (Mensuel)", enabled: true, tone: "emerald" },
-            ];
-          }
+            <div className="mt-8 h-1 w-20 rounded-full bg-indigo-600" />
 
-          if (withMaintenance && plan.name === "Growth") {
-            const already = features.some((x) => x.label === "Support prioritaire 24/7");
-            if (!already) {
-              features = [
-                ...features,
-                { label: "Support prioritaire 24/7", enabled: true, tone: "emerald" },
-              ];
-            }
-          }
+            <p className="mt-8 max-w-xl text-base leading-8 text-slate-600 sm:text-lg">
+              {hero.description}
+            </p>
+          </div>
 
-          // Dédupe (sécurité)
-          const seen = new Set<string>();
-          features = features.filter((f) => {
-            if (seen.has(f.label)) return false;
-            seen.add(f.label);
-            return true;
-          });
+          <div className="relative z-10">
+            <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-indigo-200/70 via-white to-cyan-200/70 blur-3xl" />
 
-          const showMaint =
-            withMaintenance && typeof plan.maintenanceMonthly === "number" && plan.basePrice !== null;
+            <article className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white/95 p-6 shadow-[0_30px_80px_rgba(15,23,42,0.10)] backdrop-blur sm:p-8 lg:p-10">
+              <div className="absolute right-0 top-0 h-44 w-44 rounded-bl-full bg-indigo-50" />
+              <div className="absolute right-10 top-10 h-20 w-20 rounded-full bg-white/60 blur-xl" />
 
-          // Wrapper Growth : contour violet uniquement
-          const OuterWrapper = ({ children }: { children: React.ReactNode }) => {
-            if (!featured) return <>{children}</>;
+              <div className="relative">
+                <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-start">
+                  <div>
+                    <h3 className="text-3xl font-black tracking-[-0.03em] text-slate-950 sm:text-4xl">
+                      {offer.name}
+                    </h3>
 
-            return (
-              <div className="relative overflow-visible md:-translate-y-4">
-                {/* glow externe léger */}
-                <div className="pointer-events-none absolute -inset-8 rounded-[32px] bg-[radial-gradient(closest-side,rgba(99,102,241,0.22),transparent_65%)] blur-2xl" />
-                {/* border gradient 1px */}
-                <div className="relative rounded-[28px] bg-[linear-gradient(90deg,rgba(99,102,241,0.9),rgba(168,85,247,0.75),rgba(99,102,241,0.9))] p-[1px]">
-                  <div className="rounded-[27px] ring-1 ring-indigo-300/20">{children}</div>
+                    <p className="mt-3 max-w-md text-sm leading-6 text-slate-600 sm:text-base">
+                      {offer.highlight}
+                    </p>
+                  </div>
+
+                  <div className="shrink-0 rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-slate-950/10">
+                    {offer.limitedLabel}
+                  </div>
                 </div>
-              </div>
-            );
-          };
 
-          // Card (contenu) — FIX DIMENSIONS: même silhouette sur les 3
-          const CardInner = (
-            <div
-              className={cx(
-                "relative overflow-visible rounded-[27px] border backdrop-blur-xl",
-                "shadow-[0_22px_90px_rgba(0,0,0,0.55)]",
-                "transition-colors duration-300",
-                featured ? "bg-[#070E22] border-transparent" : "bg-white/[0.035] border-white/12 hover:border-white/18",
-              )}
-            >
-              {/* Badge — dégradé + nowrap + centré au-dessus */}
-              {featured && (
-                <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
-                  <span className="
-                    inline-flex items-center justify-center whitespace-nowrap
-                    rounded-full px-4 py-1.5
-                    text-[11px] font-black uppercase tracking-[0.16em] text-white
-                    bg-gradient-to-r from-indigo-500/80 via-indigo-500 to-violet-500
-                    shadow-lg shadow-indigo-900/40
-                    shadow-[inset_-12px_0_20px_rgba(255,255,255,0.12)]
-                  ">
-                    LE PLUS POPULAIRE
+                <div className="mt-10 flex flex-wrap items-end gap-3">
+                  {offer.oldPrice && (
+                    <span className="pb-3 text-xl font-bold text-slate-400 line-through sm:text-2xl">
+                      {euro(offer.oldPrice)}
+                    </span>
+                  )}
+
+                  <span className="text-6xl font-black leading-none tracking-[-0.07em] text-slate-950 sm:text-7xl">
+                    {euro(offer.basePrice)}
+                  </span>
+
+                  <span className="pb-4 text-sm font-bold text-slate-500">
+                    {offer.priceSuffix}
                   </span>
                 </div>
-              )}
 
-              {/* highlights internes (propre, léger) */}
-              <div className="pointer-events-none absolute inset-0 rounded-[27px]">
-                <div className="absolute inset-0 rounded-[27px] bg-[radial-gradient(1200px_420px_at_50%_-55%,rgba(255,255,255,0.10),transparent_55%)]" />
-                <div className="absolute inset-0 rounded-[27px] bg-[linear-gradient(to_bottom,rgba(255,255,255,0.06),transparent_35%)]" />
-                {featured && <div className="absolute inset-0 rounded-[27px] bg-indigo-500/5" />}
-              </div>
+                <Link
+                  href={offer.ctaHref}
+                  className="group mt-10 inline-flex h-16 w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 text-sm font-black text-white shadow-2xl shadow-indigo-600/25 transition duration-300 hover:-translate-y-0.5 hover:bg-slate-950 hover:shadow-slate-950/20"
+                >
+                  {offer.ctaLabel}
+                  <ArrowRight className="h-4 w-4 transition duration-300 group-hover:translate-x-1" />
+                </Link>
 
-              {/* FIX DIMENSIONS */}
-              <div
-                className={cx(
-                  "relative flex h-full min-h-[560px] flex-col", // <- même taille globale
-                  "p-7 md:p-8",
-                  featured && "pt-10",
-                )}
-              >
-                {/* Header */}
-                <div>
-                  <h3 className="text-lg font-bold text-white">{plan.name}</h3>
-                  <p className="mt-1 text-sm text-white/55">{plan.highlight}</p>
-                </div>
-
-                {/* Price */}
-                <div className="mt-6">
-                  {plan.basePrice === null ? (
-                    <div className="text-4xl font-black tracking-tight text-white">Sur devis</div>
-                  ) : (
-                    <div className="flex items-end gap-2">
-                      <span className={cx("font-black tracking-tight text-white", featured ? "text-5xl" : "text-4xl")}>
-                        {euro(plan.basePrice)}
+                <div className="mt-10 grid gap-4">
+                  {offer.features.map((feature) => (
+                    <div
+                      key={feature}
+                      className="flex items-center gap-4 rounded-2xl border border-transparent px-1 py-1 transition hover:border-slate-100 hover:bg-slate-50"
+                    >
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-50">
+                        <CheckCircle2 className="h-5 w-5 text-indigo-600" />
                       </span>
-                      <span className="pb-1 text-sm font-semibold text-white/45">/ projet</span>
+
+                      <span className="text-sm font-semibold leading-6 text-slate-700 sm:text-base">
+                        {feature}
+                      </span>
                     </div>
-                  )}
-
-                  {showMaint && (
-                    <div className="mt-2 text-sm font-semibold text-indigo-200">
-                      + {euro(plan.maintenanceMonthly!)} <span className="text-white/45">/ mois</span>
-                    </div>
-                  )}
-
-                  <p className="mt-2 text-xs text-white/40">
-                    {plan.name === "Growth"
-                      ? "Tout inclus, pas de frais cachés"
-                      : plan.name === "Custom"
-                        ? "Facturation flexible"
-                        : "Paiement unique au démarrage"}
-                  </p>
+                  ))}
                 </div>
-
-                {/* CTA (mêmes dimensions) */}
-                <div className="mt-6">
-                  {plan.ctaHref ? (
-                    <Link
-                      href={plan.ctaHref}
-                      className={cx(
-                        "inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-semibold transition",
-                        featured
-                          ? "bg-white text-slate-900 hover:bg-white/90 shadow-lg shadow-indigo-900/20"
-                          : "border border-white/12 bg-white/[0.06] text-white hover:bg-white/[0.09]",
-                      )}
-                    >
-                      <MessageSquare className="h-4 w-4" />
-                      {plan.ctaLabel}
-                      <ArrowRight className="h-4 w-4 opacity-70" />
-                    </Link>
-                  ) : (
-                    <button
-                      type="button"
-                      className={cx(
-                        "inline-flex h-12 w-full items-center justify-center gap-2 rounded-2xl text-sm font-semibold transition active:scale-[0.99]",
-                        featured
-                          ? "bg-white text-slate-900 hover:bg-white/90 shadow-lg shadow-indigo-900/20"
-                          : "border border-white/12 bg-white/[0.06] text-white hover:bg-white/[0.09]",
-                      )}
-                    >
-                      {featured ? <Rocket className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}
-                      {plan.ctaLabel}
-                    </button>
-                  )}
-                </div>
-
-                {/* Features (flex-1 => égalise les hauteurs) */}
-                <div className="mt-7 flex-1 space-y-3">
-                  {features.map((f, idx) => {
-                    const Icon = f.enabled ? CheckCircle2 : XCircle;
-
-                    const iconClass =
-                      f.tone === "emerald"
-                        ? "text-emerald-300"
-                        : f.enabled
-                          ? featured
-                            ? "text-indigo-200"
-                            : "text-indigo-300"
-                          : "text-white/25";
-
-                    const textClass = f.enabled
-                      ? featured
-                        ? "text-white/80"
-                        : "text-white/70"
-                      : "text-white/35 line-through";
-
-                    return (
-                      <div
-                        key={`${plan.name}-${f.label}-${idx}`}
-                        className={cx("flex items-start gap-3", !f.enabled && "opacity-70")}
-                      >
-                        <Icon className={cx("mt-0.5 h-5 w-5 shrink-0", iconClass)} />
-                        <span className={cx("text-sm leading-relaxed", textClass)}>{f.label}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Bottom line (SLA) — collé en bas, comme Gemini */}
-                {plan.name === "Custom" && withMaintenance && (
-                  <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-indigo-200">
-                    <Shield className="h-4 w-4 text-emerald-300" />
-                    Contrat de maintenance SLA
-                  </div>
-                )}
               </div>
-            </div>
-          );
-
-          // Render
-          return (
-            <div key={plan.name} className="relative">
-              {featured ? <OuterWrapper>{CardInner}</OuterWrapper> : CardInner}
-            </div>
-          );
-        })}
+            </article>
+          </div>
+        </div>
       </div>
     </section>
   );

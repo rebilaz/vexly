@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, ImageIcon, PlayCircle, Video } from "lucide-react";
 
+
 type HeroMedia = {
     type?: "youtube" | "video" | "image";
     youtubeUrl?: string;
@@ -95,19 +96,8 @@ function isExternalLink(href?: string) {
     return href?.startsWith("http");
 }
 
-const ctaStyle = {
-    display: "inline-flex",
-    visibility: "visible",
-    opacity: 1,
-    backgroundColor: "#facc15",
-    color: "#050505",
-    boxShadow:
-        "0 0 22px rgba(250, 204, 21, 0.85), 0 0 80px rgba(250, 204, 21, 0.42)",
-    border: "1px solid rgba(254, 240, 138, 0.95)",
-} as const;
-
 const ctaClassName =
-    "relative z-30 min-w-[230px] items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-extrabold transition duration-300 hover:-translate-y-0.5 hover:brightness-110";
+    "relative z-30 inline-flex min-w-[230px] items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-8 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_22px_55px_rgba(88,80,236,0.45)] hover:brightness-110 active:scale-[0.98]";
 
 function HeroMediaRenderer({
     media,
@@ -125,11 +115,11 @@ function HeroMediaRenderer({
 
     if (media?.type === "image" && media.imageFile?.asset?.url) {
         return (
-            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+            <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-2 shadow-xl">
                 <img
                     src={media.imageFile.asset.url}
                     alt={media.imageFile.alt || title}
-                    className="aspect-video w-full object-cover"
+                    className="aspect-video w-full rounded-[1.6rem] object-cover"
                 />
             </div>
         );
@@ -137,12 +127,12 @@ function HeroMediaRenderer({
 
     if (media?.type === "video" && media.videoFile?.asset?.url) {
         return (
-            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+            <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-2 shadow-xl">
                 <video
                     src={media.videoFile.asset.url}
                     controls
                     playsInline
-                    className="aspect-video w-full object-cover"
+                    className="aspect-video w-full rounded-[1.6rem] object-cover"
                 />
             </div>
         );
@@ -150,11 +140,11 @@ function HeroMediaRenderer({
 
     if (embedUrl) {
         return (
-            <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-black">
+            <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-2 shadow-xl">
                 <iframe
                     src={embedUrl}
                     title={title}
-                    className="aspect-video w-full"
+                    className="aspect-video w-full rounded-[1.6rem]"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                 />
@@ -163,21 +153,21 @@ function HeroMediaRenderer({
     }
 
     return (
-        <div className="flex aspect-video items-center justify-center rounded-[2rem] border border-white/10 bg-neutral-950 px-6 text-center">
+        <div className="flex aspect-video items-center justify-center rounded-[2rem] border border-slate-200 bg-slate-50 px-6 text-center shadow-sm">
             <div>
                 {media?.type === "video" ? (
-                    <Video className="mx-auto mb-4 size-11 text-[#facc15] drop-shadow-[0_0_18px_rgba(250,204,21,0.85)]" />
+                    <Video className="mx-auto mb-4 size-11 text-indigo-500 filter drop-shadow-[0_4px_10px_rgba(99,102,241,0.2)]" />
                 ) : media?.type === "image" ? (
-                    <ImageIcon className="mx-auto mb-4 size-11 text-[#facc15] drop-shadow-[0_0_18px_rgba(250,204,21,0.85)]" />
+                    <ImageIcon className="mx-auto mb-4 size-11 text-indigo-500 filter drop-shadow-[0_4px_10px_rgba(99,102,241,0.2)]" />
                 ) : (
-                    <PlayCircle className="mx-auto mb-4 size-11 text-[#facc15] drop-shadow-[0_0_18px_rgba(250,204,21,0.85)]" />
+                    <PlayCircle className="mx-auto mb-4 size-11 text-indigo-500 filter drop-shadow-[0_4px_10px_rgba(99,102,241,0.2)]" />
                 )}
 
-                <p className="text-sm font-medium text-white">
-                    Ajoute un média dans Sanity
+                <p className="text-sm font-semibold text-slate-800">
+                    Média de l'expertise
                 </p>
-                <p className="mt-2 text-sm text-neutral-400">
-                    YouTube, vidéo fichier ou image fichier.
+                <p className="mt-2 text-xs text-slate-500">
+                    Ajoutez une vidéo YouTube, un fichier MP4 ou une image dans Sanity.
                 </p>
             </div>
         </div>
@@ -185,22 +175,24 @@ function HeroMediaRenderer({
 }
 
 export function FeatureHero({ data }: FeatureHeroProps) {
-    const ctaLabel = data.ctaLabel || "Accéder au dashboard";
-    const ctaHref = data.ctaHref || "/login";
+    const ctaLabel = data.ctaLabel || "Parler de mon projet";
+    const ctaHref = data.ctaHref || "/#formulaire";
 
     return (
         <section
             id={data.slug}
-            className="relative z-20 mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 lg:px-10 lg:py-24"
+            className="relative z-20 mx-auto w-full max-w-7xl px-6 py-10 sm:px-8 lg:px-10 lg:py-16"
         >
             <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
                 <div className="relative z-20">
-                    <h1 className="max-w-2xl text-4xl font-semibold leading-[1.02] tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">
-                        {data.title}
+                    <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+                        <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-clip-text text-transparent">
+                            {data.title}
+                        </span>
                     </h1>
 
                     {data.description ? (
-                        <p className="mt-6 max-w-xl text-base leading-8 text-neutral-300">
+                        <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600">
                             {data.description}
                         </p>
                     ) : null}
@@ -212,7 +204,6 @@ export function FeatureHero({ data }: FeatureHeroProps) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className={ctaClassName}
-                                style={ctaStyle}
                             >
                                 {ctaLabel}
                                 <ArrowRight className="size-4" />
@@ -221,7 +212,6 @@ export function FeatureHero({ data }: FeatureHeroProps) {
                             <Link
                                 href={ctaHref}
                                 className={ctaClassName}
-                                style={ctaStyle}
                             >
                                 {ctaLabel}
                                 <ArrowRight className="size-4" />

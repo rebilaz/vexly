@@ -2,36 +2,35 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
     ArrowRight,
+    Rocket,
+    Target,
+    Settings,
     BarChart3,
-    Car,
-    CircleDollarSign,
-    ClipboardCheck,
-    FileText,
-    FolderKanban,
-    Gauge,
-    Receipt,
     ShieldCheck,
-    Smartphone,
-    TrendingUp,
-    Wrench,
+    CreditCard,
+    MonitorSmartphone,
+    Server,
+    Layers,
+    Cpu,
+    Zap,
+    Users,
+    LucideIcon
 } from "lucide-react";
 
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { getAllFeaturesSections } from "@/sanity/lib/features";
 
 export const metadata: Metadata = {
-    title: "Fonctionnalités | Noxal",
+    title: "Expertises & Solutions SaaS | Vexly",
     description:
-        "Découvrez les fonctionnalités Noxal pour gérer votre stock automobile, suivre vos véhicules, vos frais, vos documents et vos marges.",
+        "Découvrez nos expertises techniques et fonctionnelles pour concevoir, développer et lancer votre projet SaaS clé en main en 21 jours.",
     alternates: {
-        canonical: "https://www.noxal.fr/fonctionnalites",
+        canonical: "https://www.vexly.fr/expertises",
     },
     openGraph: {
-        title: "Fonctionnalités | Noxal",
+        title: "Expertises & Solutions SaaS | Vexly",
         description:
-            "Découvrez les fonctionnalités Noxal pour gérer votre stock automobile, suivre vos véhicules, vos frais, vos documents et vos marges.",
-        url: "https://www.noxal.fr/fonctionnalites",
+            "Découvrez nos expertises techniques et fonctionnelles pour concevoir, développer et lancer votre projet SaaS clé en main en 21 jours.",
+        url: "https://www.vexly.fr/expertises",
         type: "website",
     },
 };
@@ -51,43 +50,32 @@ type FeatureHubItem = {
     };
 };
 
-const BRAND = {
-    yellow: "#d6b25e",
-    yellowSoft: "rgba(214, 178, 94, 0.1)",
-    yellowBorder: "rgba(214, 178, 94, 0.28)",
-    yellowGlow: "rgba(214, 178, 94, 0.14)",
-};
-
 const iconMap = [
-    Car,
-    Gauge,
-    FolderKanban,
-    CircleDollarSign,
-    Receipt,
-    TrendingUp,
-    FileText,
-    ClipboardCheck,
-    Smartphone,
-    Wrench,
+    Rocket,
+    Target,
+    Settings,
+    CreditCard,
+    MonitorSmartphone,
+    Server,
+    Layers,
+    Cpu,
+    Zap,
+    Users,
     BarChart3,
     ShieldCheck,
 ];
 
-function getFeatureIcon(index: number) {
+function getFeatureIcon(index: number): LucideIcon {
     return iconMap[index % iconMap.length];
 }
 
 function PrimaryButton() {
     return (
         <Link
-            href="/login"
-            style={{
-                backgroundColor: BRAND.yellow,
-                color: "#070707",
-            }}
-            className="inline-flex min-w-48 items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold shadow-sm transition hover:brightness-110"
+            href="/#formulaire"
+            className="inline-flex min-w-48 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.35)] transition hover:scale-[1.02] hover:brightness-110 active:scale-[0.98]"
         >
-            Accéder au dashboard
+            Créer mon SaaS
             <ArrowRight className="size-4" />
         </Link>
     );
@@ -96,10 +84,10 @@ function PrimaryButton() {
 function SecondaryButton() {
     return (
         <Link
-            href="/formation"
-            className="inline-flex min-w-44 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
+            href="/tarifs"
+            className="inline-flex min-w-44 items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50 hover:scale-[1.02] active:scale-[0.98]"
         >
-            Voir la formation
+            Découvrir nos tarifs
         </Link>
     );
 }
@@ -112,90 +100,82 @@ function FeatureCard({
     index: number;
 }) {
     const Icon = getFeatureIcon(index);
-    const href = `/fonctionnalites/${feature.slug}`;
+    const href = `/expertises/${feature.slug}`;
     const imageUrl = feature.heroMedia?.imageFile?.asset?.url;
 
     return (
         <Link
             href={href}
-            className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.07]"
-            style={{
-                boxShadow: `0 35px 120px ${BRAND.yellowGlow}`,
-            }}
+            className="group relative overflow-hidden rounded-[2rem] border-2 border-slate-200/80 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg"
         >
             <div
-                className="pointer-events-none absolute inset-x-8 top-0 h-px opacity-0 transition group-hover:opacity-100"
-                style={{
-                    background:
-                        "linear-gradient(to right, transparent, rgba(214,178,94,0.55), transparent)",
-                }}
+                className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent opacity-0 transition group-hover:opacity-100"
             />
 
             {imageUrl ? (
-                <div className="mb-6 overflow-hidden rounded-2xl border border-white/10 bg-black">
+                <div className="mb-6 overflow-hidden rounded-2xl border border-slate-100 bg-slate-50">
                     <img
                         src={imageUrl}
                         alt={
                             feature.heroMedia?.imageFile?.alt ||
                             feature.title
                         }
-                        className="aspect-video w-full object-cover opacity-90"
+                        className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                 </div>
             ) : (
                 <div
-                    style={{
-                        backgroundColor: BRAND.yellowSoft,
-                        borderColor: BRAND.yellowBorder,
-                    }}
-                    className="mb-6 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border"
+                    className="mb-6 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-indigo-100 bg-indigo-50 text-indigo-600"
                 >
                     <Icon
-                        style={{ color: BRAND.yellow }}
                         className="size-6"
                     />
                 </div>
             )}
 
-            <h3 className="text-2xl font-semibold tracking-tight text-white">
+            <h3 className="text-2xl font-bold tracking-tight text-slate-900">
                 {feature.title}
             </h3>
 
             {feature.description ? (
-                <p className="mt-4 line-clamp-4 text-sm leading-7 text-slate-300">
+                <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-slate-600">
                     {feature.description}
                 </p>
             ) : null}
 
             <div
-                style={{ color: BRAND.yellow }}
-                className="mt-8 inline-flex items-center gap-2 text-sm font-semibold"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600"
             >
-                Découvrir
+                Découvrir l'expertise
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
             </div>
         </Link>
     );
 }
 
-export default async function FonctionnalitesPage() {
+export default async function ExpertisesPage() {
     const features = await getAllFeaturesSections();
 
     return (
-        <div className="min-h-screen overflow-x-hidden bg-neutral-950 text-white">
-            <Header />
-
-            <main>
-                <section className="mx-auto max-w-7xl px-6 pb-16 pt-24 sm:pt-28 lg:px-8 lg:pt-32">
+        <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900">
+            <main className="space-y-16 py-10 sm:space-y-24 sm:py-16 lg:space-y-32">
+                <section className="mx-auto max-w-7xl px-6 pt-12 sm:pt-16 lg:px-8">
                     <div className="mx-auto max-w-4xl text-center">
-                        <h1 className="text-5xl font-semibold leading-[0.95] tracking-[-0.055em] text-white sm:text-6xl lg:text-7xl">
-                            Toutes les fonctionnalités pour piloter votre activité d’achat-revente auto.
+                        <span className="inline-flex rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.15em] text-indigo-700 border border-indigo-100/80 mb-6">
+                            Nos Spécifications
+                        </span>
+                        
+                        <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
+                            Nos expertises pour donner vie à{" "}
+                            <span className="bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent">
+                                votre futur SaaS.
+                            </span>
                         </h1>
 
-                        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-                            Retrouvez les pages fonctionnalités Noxal : suivi des véhicules,
-                            gestion du stock, frais, marges, documents et pilotage de votre
-                            activité automobile.
+                        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
+                            De l'ergonomie UX/UI au paiement Stripe en passant par une infrastructure
+                            Cloud scalable, nous maîtrisons toutes les couches techniques pour lancer
+                            votre logiciel en 21 jours.
                         </p>
 
                         <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
@@ -205,21 +185,20 @@ export default async function FonctionnalitesPage() {
                     </div>
                 </section>
 
-                <section className="mx-auto max-w-7xl px-6 pb-28 lg:px-8">
-                    <div className="border-t border-white/10 pt-20 sm:pt-24">
-                        <div className="mx-auto max-w-3xl text-center">
-                            <h2 className="text-4xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl">
-                                Explorez les fonctionnalités Noxal.
+                <section className="mx-auto max-w-7xl px-6 lg:px-8">
+                    <div className="border-t border-slate-200 pt-16 sm:pt-24">
+                        <div className="mx-auto max-w-3xl text-center mb-14">
+                            <h2 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
+                                Explorez nos solutions sur-mesure
                             </h2>
 
-                            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-slate-300">
-                                Chaque fonctionnalité dispose de sa propre page détaillée,
-                                alimentée depuis Sanity.
+                            <p className="mx-auto mt-4 max-w-2xl text-base text-slate-500">
+                                Chaque pilier technique dispose de sa propre étude détaillée et de spécifications gérées en temps réel depuis notre CMS Sanity.
                             </p>
                         </div>
 
                         {features?.length ? (
-                            <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+                            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                                 {features.map(
                                     (
                                         feature: FeatureHubItem,
@@ -234,13 +213,13 @@ export default async function FonctionnalitesPage() {
                                 )}
                             </div>
                         ) : (
-                            <div className="mx-auto mt-14 max-w-2xl rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center">
-                                <h3 className="text-xl font-semibold text-white">
-                                    Aucune fonctionnalité publiée pour le moment.
+                            <div className="mx-auto max-w-2xl rounded-2xl border-2 border-slate-200/80 bg-white p-8 text-center shadow-sm">
+                                <h3 className="text-xl font-bold text-slate-900">
+                                    Aucune expertise publiée pour le moment.
                                 </h3>
 
-                                <p className="mt-3 text-sm leading-7 text-slate-300">
-                                    Ajoute des documents de type fonctionnalité dans Sanity
+                                <p className="mt-3 text-sm leading-relaxed text-slate-500">
+                                    Ajoutez des documents de type "featuresSection" dans votre interface Sanity Studio
                                     pour les afficher automatiquement ici.
                                 </p>
                             </div>
@@ -248,15 +227,15 @@ export default async function FonctionnalitesPage() {
                     </div>
                 </section>
 
-                <section className="mx-auto max-w-7xl px-6 pb-24 lg:px-8">
-                    <div className="border-t border-white/10 pt-20 text-center sm:pt-24">
-                        <h2 className="mx-auto max-w-4xl text-4xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
-                            Gérez mieux votre stock. Suivez mieux vos marges. Vendez avec plus de clarté.
+                <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-10">
+                    <div className="border-t border-slate-200 pt-16 text-center sm:pt-24">
+                        <h2 className="mx-auto max-w-4xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+                            Transformez votre audience en revenus récurrents.
                         </h2>
 
-                        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-300">
-                            Noxal aide les marchands auto à gagner du temps, mieux structurer
-                            leur activité et prendre de meilleures décisions.
+                        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-slate-600">
+                            Vexly est l'agence de création de SaaS par excellence pour les créateurs de contenu.
+                            Générez de la valeur dès aujourd'hui.
                         </p>
 
                         <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
@@ -266,8 +245,6 @@ export default async function FonctionnalitesPage() {
                     </div>
                 </section>
             </main>
-
-            <Footer />
         </div>
     );
 }

@@ -1,11 +1,11 @@
-// app/fonctionnalites/[slug]/page.tsx
+// app/expertises/[slug]/page.tsx
 
 import type { Metadata } from "next";
 import { getFeaturesSection } from "@/sanity/lib/features";
 import { FeaturesLayout } from "@/components/features/FeaturesLayout";
 
-const SITE_URL = "https://www.noxal.fr";
-const FEATURES_BASE_PATH = "/fonctionnalites";
+const SITE_URL = "https://www.vexly.fr";
+const FEATURES_BASE_PATH = "/expertises";
 
 function buildCanonicalUrl(slug?: string) {
     const cleanSlug = slug?.trim().replace(/^\/+|\/+$/g, "");
@@ -14,7 +14,7 @@ function buildCanonicalUrl(slug?: string) {
         return `${SITE_URL}${FEATURES_BASE_PATH}`;
     }
 
-    if (cleanSlug.startsWith("fonctionnalites/")) {
+    if (cleanSlug.startsWith("expertises/")) {
         return `${SITE_URL}/${cleanSlug}`;
     }
 

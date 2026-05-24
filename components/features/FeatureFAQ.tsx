@@ -17,43 +17,40 @@ export function FeatureFAQ({ data }: FeatureFAQProps) {
     }
 
     return (
-        <section className="mx-auto w-full max-w-7xl px-6 pb-44 sm:px-8 lg:px-10 lg:pb-56">
-            <div className="border-t border-white/10 pt-24">
+        <section className="mx-auto w-full max-w-4xl px-6 py-10 sm:px-8 lg:px-10">
+            <div className="border-t border-slate-200 pt-16 sm:pt-24">
                 <div className="mx-auto max-w-3xl text-center">
                     {data?.title && (
-                        <h2 className="text-4xl font-semibold leading-[1.05] tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">
+                        <h2 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
                             {data.title}
                         </h2>
                     )}
 
                     {data?.description && (
-                        <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-neutral-300 sm:text-lg">
+                        <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-500">
                             {data.description}
                         </p>
                     )}
                 </div>
 
                 {faqs.length > 0 && (
-                    <div className="mx-auto mt-14 grid max-w-5xl gap-4">
+                    <div className="mx-auto mt-12 grid gap-4">
                         {faqs.map((faq) => (
                             <details
                                 key={faq.question}
-                                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition hover:border-white/20 hover:bg-white/[0.07]"
+                                className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-200 hover:border-indigo-100 hover:shadow-md"
                             >
-                                <div
-                                    className="pointer-events-none absolute inset-x-8 top-0 h-px opacity-0 transition group-hover:opacity-100"
-                                    style={{
-                                        background:
-                                            "linear-gradient(to right, transparent, rgba(214,178,94,0.5), transparent)",
-                                    }}
-                                />
-
-                                <summary className="cursor-pointer list-none text-left text-lg font-semibold text-white">
-                                    {faq.question}
+                                <summary className="cursor-pointer list-none text-left text-lg font-semibold text-slate-900 select-none">
+                                    <div className="flex items-center justify-between gap-4">
+                                        <span>{faq.question}</span>
+                                        <span className="text-slate-400 transition-transform duration-200 group-open:rotate-45">
+                                            +
+                                        </span>
+                                    </div>
                                 </summary>
 
                                 {faq.answer && (
-                                    <p className="mt-4 max-w-4xl text-sm leading-7 text-neutral-300">
+                                    <p className="mt-4 max-w-4xl text-sm leading-relaxed text-slate-600">
                                         {faq.answer}
                                     </p>
                                 )}
