@@ -1,63 +1,184 @@
-// app/expertises/[slug]/page.tsx
-
 import type { Metadata } from "next";
-import { getFeaturesSection } from "@/sanity/lib/features";
+import { notFound } from "next/navigation";
+
+import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
 import { FeaturesLayout } from "@/components/features/FeaturesLayout";
+import ComparisonLayout from "@/components/comparison/ComparisonLayout";
+import {
+  getHubItemByHubAndSlug,
+  getHubItemSlugsByHubSlug,
+} from "@/sanity/lib/hubItems";
 
 const SITE_URL = "https://www.vexly.fr";
-const FEATURES_BASE_PATH = "/expertises";
+const HUB_SLUG = "/expertises";
 
-function buildCanonicalUrl(slug?: string) {
-    const cleanSlug = slug?.trim().replace(/^\/+|\/+$/g, "");
-
-    if (!cleanSlug) {
-        return `${SITE_URL}${FEATURES_BASE_PATH}`;
-    }
-
-    if (cleanSlug.startsWith("expertises/")) {
-        return `${SITE_URL}/${cleanSlug}`;
-    }
-
-    return `${SITE_URL}${FEATURES_BASE_PATH}/${cleanSlug}`;
-}
-
-// Typage des props de la page pour Next.js 15 (où params est une Promesse)
-type Props = {
-    params: Promise<{ slug: string }>;
+type Params = {
+  slug: string;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const { slug } = await params; // Récupération dynamique du slug de l'URL
-    const featuresSection = await getFeaturesSection(slug); // On passe le slug à Sanity
-
-    const title = featuresSection?.title || "Noxal";
-    const description = featuresSection?.description || undefined;
-    const canonicalUrl = buildCanonicalUrl(featuresSection?.slug || slug);
-
-    return {
-        metadataBase: new URL(SITE_URL),
-        title,
-        description,
-        alternates: {
-            canonical: canonicalUrl,
-        },
-        openGraph: {
-            title,
-            description,
-            url: canonicalUrl,
-            type: "website",
-        },
-        twitter: {
-            title,
-            description,
-            card: "summary_large_image",
-        },
-    };
+function buildCanonical(slug: string) {
+  return `${SITE_URL}${HUB_SLUG}/${slug}`;
 }
 
-export default async function HomePage({ params }: Props) {
-    const { slug } = await params; // Récupération dynamique du slug de l'URL
-    const featuresSection = await getFeaturesSection(slug); // On passe le slug à Sanity
+function toAbsoluteUrl(url?: string | null) {
+  if (!url) return undefined;
+  if (url.startsWith("http")) return url;
+  return `${SITE_URL}${url.startsWith("/") ? url : `/${url}`}`;
+}
 
-    return <FeaturesLayout data={featuresSection} />;
+export async function generateStaticParams() {
+  const slugs = await getHubItemSlugsByHubSlug(HUB_SLUG);
+
+  return slugs.map((slug) => ({
+    slug,
+  }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const item = await getHubItemByHubAndSlug({
+    hubSlug: HUB_SLUG,
+    slug,
+  });
+
+  if (!item) {
+    return {
+      title: "Page introuvable",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  if (item.type === "article") {
+    const fm = item.data.frontmatter;
+    const canonical = buildCanonical(item.data.slug);
+    const ogImage = toAbsoluteUrl(fm.coverImageUrl);
+
+    return {
+      title: fm.title,
+      description: fm.description,
+      alternates: {
+        canonical,
+      },
+      openGraph: {
+        title: fm.title,
+        description: fm.description,
+        type: "article",
+        url: canonical,
+        images: ogImage
+          ? [
+              {
+                url: ogImage,
+                alt: fm.coverImageAlt || fm.title,
+              },
+            ]
+          : [],
+      },
+    };
+  }
+
+  if (item.type === "comparisonPage") {
+    const page = item.data;
+
+    const title =
+      page.seo?.title ?? page.hero?.title ?? page.title ?? "Comparaison";
+
+    const description =
+      page.seo?.description ?? page.hero?.description ?? undefined;
+
+    const canonical =
+      toAbsoluteUrl(page.seo?.canonical) ?? buildCanonical(page.slug);
+
+    const ogImage = toAbsoluteUrl(page.seo?.ogImageUrl);
+
+    return {
+      title,
+      description,
+      alternates: {
+        canonical,
+      },
+      robots: page.seo?.noIndex
+        ? {
+            index: false,
+            follow: false,
+          }
+        : undefined,
+      openGraph: {
+        title: page.seo?.ogTitle ?? title,
+        description: page.seo?.ogDescription ?? description,
+        type: "website",
+        url: canonical,
+        images: ogImage
+          ? [
+              {
+                url: ogImage,
+                alt: page.seo?.ogTitle ?? title,
+              },
+            ]
+          : [],
+      },
+    };
+  }
+
+  const feature = item.data;
+  const canonical = buildCanonical(feature.slug);
+
+  return {
+    title: feature.title,
+    description: feature.description ?? undefined,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: feature.title,
+      description: feature.description ?? undefined,
+      type: "website",
+      url: canonical,
+    },
+  };
+}
+
+export default async function ExpertisesSlugPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { slug } = await params;
+
+  const item = await getHubItemByHubAndSlug({
+    hubSlug: HUB_SLUG,
+    slug,
+  });
+
+  if (!item) {
+    notFound();
+  }
+
+  if (item.type === "article") {
+    const fm = item.data.frontmatter;
+
+    return (
+      <ArticleLayout
+        title={fm.title}
+        subtitle={fm.subtitle}
+        date={fm.date ?? fm.updatedAt}
+        coverImageUrl={fm.coverImageUrl}
+        backHref="/expertises"
+        content={item.data.content || []}
+      />
+    );
+  }
+
+  if (item.type === "comparisonPage") {
+    return <ComparisonLayout page={item.data} backHref="/expertises" />;
+  }
+
+  return <FeaturesLayout data={item.data as any} />;
 }

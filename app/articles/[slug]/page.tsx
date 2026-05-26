@@ -1,84 +1,82 @@
 import type { Metadata } from "next";
+import HubLayout from "@/components/ressources/articles/HubLayout";
+import {
+  getHubPageBySlug,
+  type HubPageContent,
+} from "@/sanity/lib/hubPage";
+import { getHubItemsByHubSlug } from "@/sanity/lib/hubItems";
 
-import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
-import { getArticleBySlug, getAllArticleSlugs } from "@/lib/articles";
+const EXPERTISES_HUB_SLUG = "/expertises";
 
-type Params = { slug: string };
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
-export async function generateStaticParams() {
-  const slugs = await getAllArticleSlugs();
-
-  return slugs.map((slug) => ({
-    slug,
-  }));
-}
-
-export async function generateMetadata(
-  { params }: { params: Promise<Params> }
-): Promise<Metadata> {
-  const { slug } = await params;
-  const article = await getArticleBySlug(slug);
-
-  if (!article) {
-    return {
-      title: "Article introuvable",
-    };
-  }
-
-  const fm = article.frontmatter;
-  const canonicalAbs = `https://www.vexly.fr/articles/${article.slug}`;
-
-  const ogImageAbs = fm.coverImageUrl
-    ? fm.coverImageUrl.startsWith("http")
-      ? fm.coverImageUrl
-      : `https://www.vexly.fr${fm.coverImageUrl}`
-    : undefined;
-
+function getFallbackExpertisesHub(): HubPageContent {
   return {
-    title: fm.title,
-    description: fm.description,
-    alternates: {
-      canonical: canonicalAbs,
+    _id: "fallback-expertises-hub",
+    title: "Expertises",
+    slug: EXPERTISES_HUB_SLUG,
+    hubType: "solutions",
+    hero: {
+      titleline1: "Nos expertises",
+      titlehighlight: "pour accélérer votre business",
+      description:
+        "Découvrez les solutions et expertises que nous pouvons construire pour vous.",
+      backgroundImageUrl: "/Gemini_Generated_Image_vdi976vdi976vdi9.webp",
+      backgroundImageAlt: "",
     },
-    openGraph: {
-      title: fm.title,
-      description: fm.description,
-      type: "article",
-      url: canonicalAbs,
-      images: ogImageAbs
-        ? [
-          {
-            url: ogImageAbs,
-            alt: fm.title,
-          },
-        ]
-        : [],
+    seo: {
+      title: "Expertises",
+      description:
+        "Découvrez nos expertises pour créateurs, SaaS et business digitaux.",
+      canonical: EXPERTISES_HUB_SLUG,
+      ogImageUrl: null,
     },
   };
 }
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: Promise<Params>;
-}) {
-  const { slug } = await params;
-  const article = await getArticleBySlug(slug);
+async function getExpertisesHub() {
+  const hub = await getHubPageBySlug(EXPERTISES_HUB_SLUG);
+  return hub ?? getFallbackExpertisesHub();
+}
 
-  if (!article) {
-    return <div>Article introuvable</div>;
-  }
+export async function generateMetadata(): Promise<Metadata> {
+  const hub = await getExpertisesHub();
 
-  const fm = article.frontmatter;
+  const title = hub.seo?.title ?? "Expertises";
+  const description = hub.seo?.description ?? "";
+  const canonical = hub.seo?.canonical ?? EXPERTISES_HUB_SLUG;
+  const ogImage = hub.seo?.ogImageUrl ?? undefined;
 
-  return (
-    <ArticleLayout
-      title={fm.title}
-      subtitle={fm.subtitle}
-      date={fm.date ?? fm.updatedAt}
-      coverImageUrl={fm.coverImageUrl}
-      backHref="/articles"
-      content={article.content || []}
-    />
-  );
+  return {
+    title,
+    description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      images: ogImage
+        ? [
+            {
+              url: ogImage,
+              width: 1200,
+              height: 630,
+              alt: title,
+            },
+          ]
+        : undefined,
+    },
+  };
+}
+
+export default async function ExpertisesPage() {
+  const [hub, items] = await Promise.all([
+    getExpertisesHub(),
+    getHubItemsByHubSlug(EXPERTISES_HUB_SLUG),
+  ]);
+
+  return <HubLayout articles={items} content={hub} basePath="/expertises" />;
 }

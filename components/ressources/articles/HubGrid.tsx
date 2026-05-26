@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
-import type { Article } from "@/lib/articles";
+import type { Article } from "@/sanity/lib/articles";
 
 export type EnrichedArticle = Article & {
   _categoryId: string;
@@ -32,7 +32,13 @@ function resolveCover(article: EnrichedArticle): string | null {
 
 function resolveCoverAlt(article: EnrichedArticle): string {
   const fm = article.frontmatter as any;
-  return fm?.coverImage?.alt || fm?.title || "Illustration de l’article";
+
+  return (
+    fm?.coverImageAlt ||
+    fm?.coverImage?.alt ||
+    fm?.title ||
+    "Illustration de l’article"
+  );
 }
 
 function formatDateFr(value: string) {
@@ -46,6 +52,18 @@ function formatDateFr(value: string) {
   }).format(d);
 }
 
+function normalizeBasePath(basePath: string) {
+  if (!basePath || basePath === "/") return "";
+  return basePath.replace(/\/$/, "");
+}
+
+function buildHref(basePath: string, slug: string) {
+  const path = normalizeBasePath(basePath);
+  const cleanSlug = String(slug || "").replace(/^\/+/, "");
+
+  return `${path}/${cleanSlug}`;
+}
+
 function Badge({ children }: { children: React.ReactNode }) {
   return (
     <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-700 ring-1 ring-slate-200/70">
@@ -54,7 +72,13 @@ function Badge({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ArticleCard({ article }: { article: EnrichedArticle }) {
+function ArticleCard({
+  article,
+  basePath,
+}: {
+  article: EnrichedArticle;
+  basePath: string;
+}) {
   const fm = article.frontmatter as any;
 
   const title = fm?.title ?? article.slug;
@@ -66,7 +90,7 @@ function ArticleCard({ article }: { article: EnrichedArticle }) {
 
   return (
     <Link
-      href={`/articles/${article.slug}`}
+      href={buildHref(basePath, article.slug)}
       className="group block h-full overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-slate-200/70 transition-all hover:shadow-lg hover:shadow-slate-200/50 hover:ring-slate-300"
     >
       <div className="relative h-[200px] overflow-hidden rounded-t-3xl bg-slate-100">
@@ -112,14 +136,16 @@ function ArticleCard({ article }: { article: EnrichedArticle }) {
   );
 }
 
-export default function ArticlesGrid({
+export default function HubGrid({
   articles,
   query = "",
   onClearQuery,
+  basePath = "/articles",
 }: {
   articles: EnrichedArticle[];
   query?: string;
   onClearQuery?: () => void;
+  basePath?: string;
 }) {
   if (articles.length === 0) {
     return (
@@ -151,8 +177,8 @@ export default function ArticlesGrid({
   return (
     <section className="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {articles.map((article) => (
-        <div key={article.slug}>
-          <ArticleCard article={article} />
+        <div key={`${article._id ?? article.slug}-${article.slug}`}>
+          <ArticleCard article={article} basePath={basePath} />
         </div>
       ))}
     </section>
