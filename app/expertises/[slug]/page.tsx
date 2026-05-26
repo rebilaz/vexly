@@ -11,6 +11,10 @@ import {
 
 const SITE_URL = "https://www.vexly.fr";
 const HUB_SLUG = "/expertises";
+const BACK_HREF = "/expertises";
+
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 type Params = {
   slug: string;
@@ -170,14 +174,14 @@ export default async function ExpertisesSlugPage({
         subtitle={fm.subtitle}
         date={fm.date ?? fm.updatedAt}
         coverImageUrl={fm.coverImageUrl}
-        backHref="/expertises"
+        backHref={BACK_HREF}
         content={item.data.content || []}
       />
     );
   }
 
   if (item.type === "comparisonPage") {
-    return <ComparisonLayout page={item.data} backHref="/expertises" />;
+    return <ComparisonLayout page={item.data} backHref={BACK_HREF} />;
   }
 
   return <FeaturesLayout data={item.data as any} />;

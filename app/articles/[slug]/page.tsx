@@ -1,82 +1,188 @@
 import type { Metadata } from "next";
-import HubLayout from "@/components/ressources/articles/HubLayout";
-import {
-  getHubPageBySlug,
-  type HubPageContent,
-} from "@/sanity/lib/hubPage";
-import { getHubItemsByHubSlug } from "@/sanity/lib/hubItems";
+import { notFound } from "next/navigation";
 
-const EXPERTISES_HUB_SLUG = "/expertises";
+import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
+import { FeaturesLayout } from "@/components/features/FeaturesLayout";
+import ComparisonLayout from "@/components/comparison/ComparisonLayout";
+import {
+  getHubItemByHubAndSlug,
+  getHubItemSlugsByHubSlug,
+} from "@/sanity/lib/hubItems";
+
+const SITE_URL = "https://www.vexly.fr";
+const HUB_SLUG = "/articles";
+const BACK_HREF = "/articles";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
 
-function getFallbackExpertisesHub(): HubPageContent {
-  return {
-    _id: "fallback-expertises-hub",
-    title: "Expertises",
-    slug: EXPERTISES_HUB_SLUG,
-    hubType: "solutions",
-    hero: {
-      titleline1: "Nos expertises",
-      titlehighlight: "pour accélérer votre business",
-      description:
-        "Découvrez les solutions et expertises que nous pouvons construire pour vous.",
-      backgroundImageUrl: "/Gemini_Generated_Image_vdi976vdi976vdi9.webp",
-      backgroundImageAlt: "",
-    },
-    seo: {
-      title: "Expertises",
-      description:
-        "Découvrez nos expertises pour créateurs, SaaS et business digitaux.",
-      canonical: EXPERTISES_HUB_SLUG,
-      ogImageUrl: null,
-    },
-  };
+type Params = {
+  slug: string;
+};
+
+function buildCanonical(slug: string) {
+  return `${SITE_URL}${HUB_SLUG}/${slug}`;
 }
 
-async function getExpertisesHub() {
-  const hub = await getHubPageBySlug(EXPERTISES_HUB_SLUG);
-  return hub ?? getFallbackExpertisesHub();
+function toAbsoluteUrl(url?: string | null) {
+  if (!url) return undefined;
+  if (url.startsWith("http")) return url;
+  return `${SITE_URL}${url.startsWith("/") ? url : `/${url}`}`;
 }
 
-export async function generateMetadata(): Promise<Metadata> {
-  const hub = await getExpertisesHub();
+export async function generateStaticParams() {
+  const slugs = await getHubItemSlugsByHubSlug(HUB_SLUG);
 
-  const title = hub.seo?.title ?? "Expertises";
-  const description = hub.seo?.description ?? "";
-  const canonical = hub.seo?.canonical ?? EXPERTISES_HUB_SLUG;
-  const ogImage = hub.seo?.ogImageUrl ?? undefined;
+  return slugs.map((slug) => ({
+    slug,
+  }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const item = await getHubItemByHubAndSlug({
+    hubSlug: HUB_SLUG,
+    slug,
+  });
+
+  if (!item) {
+    return {
+      title: "Page introuvable",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+
+  if (item.type === "article") {
+    const fm = item.data.frontmatter;
+    const canonical = buildCanonical(item.data.slug);
+    const ogImage = toAbsoluteUrl(fm.coverImageUrl);
+
+    return {
+      title: fm.title,
+      description: fm.description,
+      alternates: {
+        canonical,
+      },
+      openGraph: {
+        title: fm.title,
+        description: fm.description,
+        type: "article",
+        url: canonical,
+        images: ogImage
+          ? [
+              {
+                url: ogImage,
+                alt: fm.coverImageAlt || fm.title,
+              },
+            ]
+          : [],
+      },
+    };
+  }
+
+  if (item.type === "comparisonPage") {
+    const page = item.data;
+
+    const title =
+      page.seo?.title ?? page.hero?.title ?? page.title ?? "Comparaison";
+
+    const description =
+      page.seo?.description ?? page.hero?.description ?? undefined;
+
+    const canonical =
+      toAbsoluteUrl(page.seo?.canonical) ?? buildCanonical(page.slug);
+
+    const ogImage = toAbsoluteUrl(page.seo?.ogImageUrl);
+
+    return {
+      title,
+      description,
+      alternates: {
+        canonical,
+      },
+      robots: page.seo?.noIndex
+        ? {
+            index: false,
+            follow: false,
+          }
+        : undefined,
+      openGraph: {
+        title: page.seo?.ogTitle ?? title,
+        description: page.seo?.ogDescription ?? description,
+        type: "website",
+        url: canonical,
+        images: ogImage
+          ? [
+              {
+                url: ogImage,
+                alt: page.seo?.ogTitle ?? title,
+              },
+            ]
+          : [],
+      },
+    };
+  }
+
+  const feature = item.data;
+  const canonical = buildCanonical(feature.slug);
 
   return {
-    title,
-    description,
+    title: feature.title,
+    description: feature.description ?? undefined,
     alternates: {
       canonical,
     },
     openGraph: {
-      title,
-      description,
+      title: feature.title,
+      description: feature.description ?? undefined,
+      type: "website",
       url: canonical,
-      images: ogImage
-        ? [
-            {
-              url: ogImage,
-              width: 1200,
-              height: 630,
-              alt: title,
-            },
-          ]
-        : undefined,
     },
   };
 }
 
-export default async function ExpertisesPage() {
-  const [hub, items] = await Promise.all([
-    getExpertisesHub(),
-    getHubItemsByHubSlug(EXPERTISES_HUB_SLUG),
-  ]);
+export default async function ArticlesSlugPage({
+  params,
+}: {
+  params: Promise<Params>;
+}) {
+  const { slug } = await params;
 
-  return <HubLayout articles={items} content={hub} basePath="/expertises" />;
+  const item = await getHubItemByHubAndSlug({
+    hubSlug: HUB_SLUG,
+    slug,
+  });
+
+  if (!item) {
+    notFound();
+  }
+
+  if (item.type === "article") {
+    const fm = item.data.frontmatter;
+
+    return (
+      <ArticleLayout
+        title={fm.title}
+        subtitle={fm.subtitle}
+        date={fm.date ?? fm.updatedAt}
+        coverImageUrl={fm.coverImageUrl}
+        backHref={BACK_HREF}
+        content={item.data.content || []}
+      />
+    );
+  }
+
+  if (item.type === "comparisonPage") {
+    return <ComparisonLayout page={item.data} backHref={BACK_HREF} />;
+  }
+
+  return <FeaturesLayout data={item.data as any} />;
 }

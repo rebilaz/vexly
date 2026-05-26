@@ -21,7 +21,6 @@ export type FeatureSectionContent = {
   hubs?: {
     _id: string;
     title?: string;
-    slug?: string;
     hubType?: string;
   }[];
   ctaLabel?: string;
@@ -46,13 +45,19 @@ export type HubItemDetail =
       data: FeatureSectionContent;
     };
 
-function normalizeHubSlug(slug: string) {
-  const value = String(slug || "").trim();
+function getHubTypeFromPath(value: string) {
+  const clean = String(value || "")
+    .trim()
+    .replace(/^\/+/, "")
+    .replace(/\/+$/, "");
 
-  if (!value) return "/";
-  if (!value.startsWith("/")) return `/${value}`;
+  if (clean === "articles") return "resources";
+  if (clean === "ressources") return "resources";
+  if (clean === "resources") return "resources";
+  if (clean === "expertises") return "expertises";
+  if (clean === "solutions") return "solutions";
 
-  return value.length > 1 ? value.replace(/\/$/, "") : value;
+  return clean;
 }
 
 function normalizeChildSlug(slug: string) {
@@ -64,22 +69,13 @@ function normalizeChildSlug(slug: string) {
 
 const hubMatchFilter = `
   defined(hubs) &&
-  (
-    $normalizedHubSlug in hubs[]->slug ||
-    $cleanHubSlug in hubs[]->slug ||
-    $normalizedHubSlug in hubs[]->slug.current ||
-    $cleanHubSlug in hubs[]->slug.current
-  )
+  $hubType in hubs[]->hubType
 `;
 
 const hubProjection = `
   hubs[]->{
     _id,
     title,
-    "slug": select(
-      defined(slug.current) => slug.current,
-      defined(slug) => slug
-    ),
     hubType
   }
 `;
@@ -101,10 +97,6 @@ const articleDetailFields = `
     "hubs": hubs[]->{
       _id,
       title,
-      "slug": select(
-        defined(slug.current) => slug.current,
-        defined(slug) => slug
-      ),
       hubType
     },
     "coverImageUrl": coverImage.asset->url,
@@ -123,8 +115,7 @@ const comparisonDetailFields = `
   ${hubProjection},
 
   "fullPath": select(
-    defined(hubs[0]->slug.current) && defined(slug.current) => hubs[0]->slug.current + "/" + slug.current,
-    defined(hubs[0]->slug) && defined(slug.current) => hubs[0]->slug + "/" + slug.current,
+    defined(slug.current) => "/" + slug.current,
     null
   ),
 
@@ -285,8 +276,7 @@ function sortHubItems(items: HubItemCard[]) {
 export async function getHubItemsByHubSlug(
   hubSlug: string
 ): Promise<HubItemCard[]> {
-  const normalizedHubSlug = normalizeHubSlug(hubSlug);
-  const cleanHubSlug = normalizedHubSlug.replace(/^\//, "");
+  const hubType = getHubTypeFromPath(hubSlug);
 
   const result = await client.withConfig({ useCdn: false }).fetch<{
     articles: HubItemCard[];
@@ -318,10 +308,6 @@ export async function getHubItemsByHubSlug(
           "hubs": hubs[]->{
             _id,
             title,
-            "slug": select(
-              defined(slug.current) => slug.current,
-              defined(slug) => slug
-            ),
             hubType
           },
           "coverImageUrl": coverImage.asset->url,
@@ -354,10 +340,6 @@ export async function getHubItemsByHubSlug(
           "hubs": hubs[]->{
             _id,
             title,
-            "slug": select(
-              defined(slug.current) => slug.current,
-              defined(slug) => slug
-            ),
             hubType
           },
           "coverImageUrl": seo.ogImage.asset->url,
@@ -390,10 +372,6 @@ export async function getHubItemsByHubSlug(
           "hubs": hubs[]->{
             _id,
             title,
-            "slug": select(
-              defined(slug.current) => slug.current,
-              defined(slug) => slug
-            ),
             hubType
           },
           "coverImageUrl": heroMedia.imageFile.asset->url,
@@ -405,8 +383,7 @@ export async function getHubItemsByHubSlug(
     }
     `,
     {
-      normalizedHubSlug,
-      cleanHubSlug,
+      hubType,
     }
   );
 
@@ -434,8 +411,7 @@ export async function getHubItemByHubAndSlug({
   hubSlug: string;
   slug: string;
 }): Promise<HubItemDetail | null> {
-  const normalizedHubSlug = normalizeHubSlug(hubSlug);
-  const cleanHubSlug = normalizedHubSlug.replace(/^\//, "");
+  const hubType = getHubTypeFromPath(hubSlug);
   const childSlug = normalizeChildSlug(slug);
 
   const result = await client.withConfig({ useCdn: false }).fetch<{
@@ -474,8 +450,7 @@ export async function getHubItemByHubAndSlug({
     }
     `,
     {
-      normalizedHubSlug,
-      cleanHubSlug,
+      hubType,
       slug: childSlug,
     }
   );
@@ -488,7 +463,7 @@ export async function getHubItemByHubAndSlug({
 
   if (matches.length > 1) {
     console.warn(
-      `[hubItems] Slug conflict on ${normalizedHubSlug}/${childSlug}: ${matches.join(
+      `[hubItems] Slug conflict on ${hubType}/${childSlug}: ${matches.join(
         ", "
       )}`
     );
