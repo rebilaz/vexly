@@ -14,12 +14,10 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
 
   return (
     <footer className="bg-slate-950 text-slate-400">
-      {/* ----- Contenu principal ----- */}
-      <div className="mx-auto max-w-6xl px-6 pt-14 pb-10">
-        <div className="grid gap-10 md:grid-cols-[1fr_1fr_1.2fr] md:gap-12">
-          {/* ----- Logo + contact ----- */}
+      <div className="mx-auto max-w-6xl px-6 pb-10 pt-14">
+        <div className="grid gap-10 md:grid-cols-[1.2fr_1fr_1fr] md:gap-12">
           <div className="space-y-5">
-            <div className="flex items-center gap-2">
+            <Link href="/" className="inline-flex items-center gap-2">
               <Image
                 src="/vexly-logo-2-full-white.svg"
                 alt="VEXLY"
@@ -27,7 +25,12 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
                 height={32}
                 className="h-7 w-auto"
               />
-            </div>
+            </Link>
+
+            <p className="max-w-sm text-sm leading-6 text-slate-400">
+              Vexly conçoit des SaaS, outils IA et automatisations pour aider les
+              créateurs et business digitaux à lancer plus vite.
+            </p>
 
             <a
               href="mailto:contact@vexly.fr"
@@ -37,97 +40,70 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
             </a>
           </div>
 
-          {/* ----- Navigation ----- */}
-          <div className="grid grid-cols-2 gap-10 sm:max-w-md md:max-w-none">
-            <div className="space-y-4">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Produit
-              </h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Link
-                    href="/tarifs"
-                    className="transition hover:text-indigo-400"
-                  >
-                    Tarifs
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/articles"
-                    className="transition hover:text-indigo-400"
-                  >
-                    Articles
-                  </Link>
-                </li>
-              </ul>
-            </div>
+          <div className="space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+              Navigation
+            </h3>
 
-            <div className="space-y-4">
-              <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
-                Ressources
-              </h3>
-              <ul className="space-y-3 text-sm">
-                <li>
-                  <Link
-                    href="/ressources"
-                    className="transition hover:text-indigo-400"
-                  >
-                    Ressources
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="transition hover:text-indigo-400"
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="/tarifs" className="transition hover:text-indigo-400">
+                  Tarifs
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/articles" className="transition hover:text-indigo-400">
+                  Articles
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/expertises"
+                  className="transition hover:text-indigo-400"
+                >
+                  Expertises
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/ressources"
+                  className="transition hover:text-indigo-400"
+                >
+                  Ressources
+                </Link>
+              </li>
+            </ul>
           </div>
 
-          {/* ----- Newsletter ----- */}
-          <div className="md:pl-6">
-            <h3 className="text-lg font-semibold text-white">Reste informé</h3>
-            <p className="mt-2 text-sm text-slate-400">
-              Une fois par semaine, un email sur les SaaS clés en main, l’IA &amp;
-              l’automatisation.
-            </p>
+          <div className="space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+              Informations
+            </h3>
 
-            <form
-              className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]"
-              onSubmit={(e) => e.preventDefault()}
-            >
-              <input
-                type="email"
-                placeholder="Votre email"
-                className="h-11 w-full rounded-xl border border-slate-700 bg-slate-900 px-4 text-sm text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="submit"
-                className="h-11 w-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-6 text-sm font-semibold text-white shadow-[0_14px_35px_rgba(99,102,241,0.35)] transition hover:brightness-110 sm:w-auto"
-              >
-                S&apos;inscrire
-              </button>
-            </form>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <Link href="/contact" className="transition hover:text-indigo-400">
+                  Contact
+                </Link>
+              </li>
 
-            <p className="mt-3 text-xs text-slate-500">
-              En vous inscrivant, vous acceptez notre{" "}
-              <Link
-                href="/politique-de-confidentialite"
-                className="underline underline-offset-4 hover:text-indigo-400"
-              >
-                politique de confidentialité
-              </Link>
-              .
-            </p>
+   
+              <li>
+                <Link
+                  href="/politique-de-confidentialite"
+                  className="transition hover:text-indigo-400"
+                >
+                  Politique de confidentialité
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
-      {/* ----- Bas de page ----- */}
       <div className="border-t border-slate-800">
         <div className="mx-auto max-w-6xl px-6 py-5">
           <div className="flex flex-col items-center gap-3 text-center text-xs text-slate-500 md:flex-row md:justify-between md:text-left">
@@ -140,6 +116,7 @@ const Footer: React.FC<FooterProps> = ({ year }) => {
               >
                 Mentions légales
               </Link>
+
               <Link
                 href="/conditions-generales"
                 className="transition hover:text-indigo-400"

@@ -18,14 +18,11 @@ export default function HubHero({ content }: { content: HubPageContent }) {
 
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.35),transparent_35%),linear-gradient(180deg,rgba(15,23,42,0.75),rgba(15,23,42,0.95))]" />
 
-      <div className="mx-auto max-w-6xl px-6 pb-24 pt-32 sm:pt-40 lg:px-8">
-        <div className="max-w-4xl">
-          <p className="mb-5 inline-flex rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 ring-1 ring-white/15">
-            {content.title}
-          </p>
-
-          <h1 className="text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
+      <div className="mx-auto flex max-w-6xl justify-center px-6 pb-24 pt-32 text-center sm:pt-40 lg:px-8">
+        <div className="mx-auto flex max-w-4xl flex-col items-center">
+          <h1 className="text-center text-4xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
             {hero?.titleline1}
+
             {hero?.titlehighlight ? (
               <>
                 <br />
@@ -37,7 +34,7 @@ export default function HubHero({ content }: { content: HubPageContent }) {
           </h1>
 
           {hero?.description ? (
-            <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-200">
+            <p className="mx-auto mt-8 max-w-2xl text-center text-lg leading-8 text-slate-200">
               {hero.description}
             </p>
           ) : null}

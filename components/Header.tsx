@@ -44,7 +44,6 @@ export default function Header() {
     <>
       <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 lg:px-6">
-          {/* Logo */}
           <Link href="/" className="flex items-center" onClick={forceClose}>
             <Image
               src="/vexly-logo-2-full-gradient.svg"
@@ -56,7 +55,6 @@ export default function Header() {
             />
           </Link>
 
-          {/* Navigation (desktop) */}
           <nav className="hidden items-center gap-6 text-xs font-medium text-slate-600 md:flex">
             <Link
               href="/tarifs"
@@ -74,7 +72,14 @@ export default function Header() {
               Articles
             </Link>
 
-            {/* RESSOURCES (desktop hover) */}
+            <Link
+              href="/expertises"
+              onClick={forceClose}
+              className="transition-colors hover:text-slate-900"
+            >
+              Expertises
+            </Link>
+
             <div className="relative inline-flex">
               <button
                 type="button"
@@ -106,7 +111,9 @@ export default function Header() {
                     className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                   >
                     <div className="font-semibold">Ressources</div>
-                    <div className="text-[10px] text-slate-500">Vue d’ensemble</div>
+                    <div className="text-[10px] text-slate-500">
+                      Vue d’ensemble
+                    </div>
                   </Link>
 
                   <Link
@@ -117,28 +124,57 @@ export default function Header() {
                     <div className="font-semibold">Articles</div>
                     <div className="text-[10px] text-slate-500">Explorer</div>
                   </Link>
+
+                  <Link
+                    href="/expertises"
+                    onClick={forceClose}
+                    className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                  >
+                    <div className="font-semibold">Expertises</div>
+                    <div className="text-[10px] text-slate-500">
+                      Solutions et savoir-faire
+                    </div>
+                  </Link>
                 </div>
               </div>
             </div>
           </nav>
 
-          {/* Right actions */}
           <div className="flex items-center gap-3">
-            {/* Mobile burger */}
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Ouvrir le menu"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white/80 text-slate-700 shadow-sm transition hover:bg-white md:hidden"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 7h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M4 12h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <path d="M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 7h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M4 12h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M4 17h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
 
-            {/* Desktop only: Connexion */}
             <Link
               href="/connexion"
               onClick={forceClose}
@@ -147,7 +183,6 @@ export default function Header() {
               Connexion
             </Link>
 
-            {/* Desktop only: CTA -> vers le formulaire */}
             <Link
               href="/#formulaire"
               onClick={forceClose}
@@ -161,17 +196,14 @@ export default function Header() {
         </div>
       </header>
 
-      {/* MOBILE SIDE PANEL */}
       {mobileOpen && (
         <div className="fixed inset-0 z-[9998] md:hidden">
-          {/* overlay */}
           <button
             aria-label="Fermer le menu"
             onClick={forceClose}
             className="absolute inset-0 bg-slate-950/25 backdrop-blur-sm"
           />
 
-          {/* panel */}
           <div className="absolute right-0 top-0 h-full w-[86%] max-w-[360px] bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
               <div className="flex items-center gap-2">
@@ -182,7 +214,9 @@ export default function Header() {
                   height={28}
                   className="h-6 w-auto"
                 />
-                <span className="text-sm font-semibold text-slate-900">Vexly</span>
+                <span className="text-sm font-semibold text-slate-900">
+                  Vexly
+                </span>
               </div>
 
               <button
@@ -212,10 +246,20 @@ export default function Header() {
                   Articles
                 </Link>
 
+                <Link
+                  href="/expertises"
+                  onClick={forceClose}
+                  className="text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
+                >
+                  Expertises
+                </Link>
+
                 <details className="group w-full">
                   <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400">
                     Ressources
-                    <span className="text-slate-400 transition group-open:rotate-180">▾</span>
+                    <span className="text-slate-400 transition group-open:rotate-180">
+                      ▾
+                    </span>
                   </summary>
 
                   <div className="mt-4 flex flex-col items-center gap-4">
@@ -226,12 +270,21 @@ export default function Header() {
                     >
                       Vue d’ensemble
                     </Link>
+
                     <Link
                       href="/articles"
                       onClick={forceClose}
                       className="text-sm font-medium text-slate-700 underline decoration-slate-200 underline-offset-8 hover:text-slate-900"
                     >
                       Articles
+                    </Link>
+
+                    <Link
+                      href="/expertises"
+                      onClick={forceClose}
+                      className="text-sm font-medium text-slate-700 underline decoration-slate-200 underline-offset-8 hover:text-slate-900"
+                    >
+                      Expertises
                     </Link>
                   </div>
                 </details>
