@@ -4,9 +4,32 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-type MenuId = "ressources" | null;
+type MenuId = "solutions" | "ressources" | null;
 
 const CLOSE_DELAY_MS = 220;
+
+const SOLUTION_LINKS = [
+  {
+    label: "Plateforme d’abonnement",
+    href: "/plateforme-abonnement-createurs",
+    description: "Monétiser votre audience avec un SaaS récurrent",
+  },
+  {
+    label: "MVP SaaS",
+    href: "/mvp-saas-createurs",
+    description: "Tester votre idée avant de construire trop gros",
+  },
+  {
+    label: "Outils IA",
+    href: "/outils-ia-createurs",
+    description: "Transformer votre expertise en outil intelligent",
+  },
+  {
+    label: "Transformer son offre en SaaS",
+    href: "/transformer-offre-en-saas",
+    description: "Productiser votre méthode, coaching ou service",
+  },
+];
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState<MenuId>(null);
@@ -56,6 +79,48 @@ export default function Header() {
           </Link>
 
           <nav className="hidden items-center gap-6 text-xs font-medium text-slate-600 md:flex">
+            <div className="relative inline-flex">
+              <button
+                type="button"
+                onMouseEnter={() => open("solutions")}
+                onMouseLeave={() => scheduleClose("solutions")}
+                aria-expanded={openMenu === "solutions"}
+                className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 transition-colors hover:text-slate-900"
+              >
+                Solutions <span className="text-[9px]">▾</span>
+              </button>
+
+              <div className="absolute left-0 top-full z-50 mt-2">
+                <div
+                  onMouseEnter={clearCloseTimer}
+                  onMouseLeave={() => scheduleClose("solutions")}
+                  className={[
+                    "relative w-[320px] rounded-xl border border-slate-200/80 bg-white/95 p-2 text-xs shadow-lg",
+                    "transition-all duration-150",
+                    openMenu === "solutions"
+                      ? "pointer-events-auto translate-y-0 opacity-100"
+                      : "pointer-events-none translate-y-1 opacity-0",
+                  ].join(" ")}
+                >
+                  <div className="absolute -top-2 left-0 h-2 w-full" />
+
+                  {SOLUTION_LINKS.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={forceClose}
+                      className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                    >
+                      <div className="font-semibold">{item.label}</div>
+                      <div className="mt-0.5 text-[10px] leading-snug text-slate-500">
+                        {item.description}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <Link
               href="/tarifs"
               onClick={forceClose}
@@ -70,14 +135,6 @@ export default function Header() {
               className="transition-colors hover:text-slate-900"
             >
               Articles
-            </Link>
-
-            <Link
-              href="/expertises"
-              onClick={forceClose}
-              className="transition-colors hover:text-slate-900"
-            >
-              Expertises
             </Link>
 
             <div className="relative inline-flex">
@@ -123,17 +180,6 @@ export default function Header() {
                   >
                     <div className="font-semibold">Articles</div>
                     <div className="text-[10px] text-slate-500">Explorer</div>
-                  </Link>
-
-                  <Link
-                    href="/expertises"
-                    onClick={forceClose}
-                    className="block rounded-lg px-3 py-2.5 text-[11px] text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                  >
-                    <div className="font-semibold">Expertises</div>
-                    <div className="text-[10px] text-slate-500">
-                      Solutions et savoir-faire
-                    </div>
                   </Link>
                 </div>
               </div>
@@ -186,7 +232,7 @@ export default function Header() {
             <Link
               href="/#formulaire"
               onClick={forceClose}
-              className="hidden md:inline-flex rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-2.5 text-xs font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.55)] transition hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.65)] active:scale-[0.97]"
+              className="hidden rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-2.5 text-xs font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.55)] transition hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.65)] active:scale-[0.97] md:inline-flex"
             >
               <span className="flex items-center gap-2">
                 Créer mon SaaS <span className="text-sm">→</span>
@@ -230,6 +276,28 @@ export default function Header() {
 
             <div className="px-6 py-8">
               <div className="flex flex-col items-center gap-5">
+                <details className="group w-full">
+                  <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400">
+                    Solutions
+                    <span className="text-slate-400 transition group-open:rotate-180">
+                      ▾
+                    </span>
+                  </summary>
+
+                  <div className="mt-4 flex flex-col items-center gap-4">
+                    {SOLUTION_LINKS.map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        onClick={forceClose}
+                        className="text-center text-sm font-medium text-slate-700 underline decoration-slate-200 underline-offset-8 hover:text-slate-900"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </div>
+                </details>
+
                 <Link
                   href="/tarifs"
                   onClick={forceClose}
@@ -244,14 +312,6 @@ export default function Header() {
                   className="text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
                 >
                   Articles
-                </Link>
-
-                <Link
-                  href="/expertises"
-                  onClick={forceClose}
-                  className="text-base font-medium text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
-                >
-                  Expertises
                 </Link>
 
                 <details className="group w-full">
@@ -277,14 +337,6 @@ export default function Header() {
                       className="text-sm font-medium text-slate-700 underline decoration-slate-200 underline-offset-8 hover:text-slate-900"
                     >
                       Articles
-                    </Link>
-
-                    <Link
-                      href="/expertises"
-                      onClick={forceClose}
-                      className="text-sm font-medium text-slate-700 underline decoration-slate-200 underline-offset-8 hover:text-slate-900"
-                    >
-                      Expertises
                     </Link>
                   </div>
                 </details>
