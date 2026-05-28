@@ -5,46 +5,54 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-export default function LayoutChrome({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
+import type { SiteSettings } from "@/sanity/lib/siteSettings";
 
-    const isMindmap = pathname?.startsWith("/saas/seo-mindmap");
-    const isStudio = pathname?.startsWith("/studio");
+type LayoutChromeProps = {
+  children: React.ReactNode;
+  siteSettings?: SiteSettings;
+};
 
-    React.useEffect(() => {
-        if (!isMindmap) return;
+export default function LayoutChrome({
+  children,
+  siteSettings,
+}: LayoutChromeProps) {
+  const pathname = usePathname();
 
-        const prevHtml = document.documentElement.style.overflow;
-        const prevBody = document.body.style.overflow;
+  const isMindmap = pathname?.startsWith("/saas/seo-mindmap");
+  const isStudio = pathname?.startsWith("/studio");
 
-        document.documentElement.style.overflow = "hidden";
-        document.body.style.overflow = "hidden";
+  React.useEffect(() => {
+    if (!isMindmap) return;
 
-        return () => {
-            document.documentElement.style.overflow = prevHtml;
-            document.body.style.overflow = prevBody;
-        };
-    }, [isMindmap]);
+    const prevHtml = document.documentElement.style.overflow;
+    const prevBody = document.body.style.overflow;
 
-    // ❌ Pas de header/footer pour studio
-    if (isStudio) {
-        return <>{children}</>;
-    }
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
 
-    // Mode plein écran pour la mindmap
-    if (isMindmap) {
-        return (
-            <div className="h-[100dvh] w-[100vw] overflow-hidden bg-slate-50">
-                {children}
-            </div>
-        );
-    }
+    return () => {
+      document.documentElement.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+    };
+  }, [isMindmap]);
 
+  if (isStudio) {
+    return <>{children}</>;
+  }
+
+  if (isMindmap) {
     return (
-        <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-        </div>
+      <div className="h-[100dvh] w-[100vw] overflow-hidden bg-slate-50">
+        {children}
+      </div>
     );
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header data={siteSettings?.header} />
+      <main className="flex-1">{children}</main>
+      <Footer data={siteSettings?.footer} />
+    </div>
+  );
 }

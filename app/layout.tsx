@@ -1,31 +1,37 @@
 // app/layout.tsx
+
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import LayoutChrome from "@/components/LayoutChrome";
+import { getSiteSettings } from "@/sanity/lib/siteSettings";
+
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.vexly.fr"), 
-  title: "Systèmes & Dashboards",
+  metadataBase: new URL("https://www.vexly.fr"),
+  title: "Vexly — Création de SaaS pour créateurs",
   description:
-    "Je connecte tes outils, j’automatise tes process et je crée des dashboards pour piloter ton entreprise simplement.",
+    "Vexly accompagne les créateurs dans la création de SaaS, outils IA et plateformes propriétaires pour générer des revenus récurrents.",
   icons: {
     icon: "/favicon.ico",
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const siteSettings = await getSiteSettings();
+
   return (
     <html lang="fr">
       <body
-        className={`${GeistSans.variable} font-sans min-h-screen bg-white text-slate-900`}
+        className={`${GeistSans.variable} min-h-screen bg-white font-sans text-slate-900`}
       >
-        {/* ✅ Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -36,7 +42,6 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* GTM noscript */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-KN4N4JCC"
@@ -46,8 +51,7 @@ export default function RootLayout({
           />
         </noscript>
 
-        {/* ✅ WRAPPER CONDITIONNEL (Header/Footer cachés sur /saas/seo-mindmap) */}
-        <LayoutChrome>
+        <LayoutChrome siteSettings={siteSettings}>
           {children}
         </LayoutChrome>
       </body>
