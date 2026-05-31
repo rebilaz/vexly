@@ -1,18 +1,25 @@
-// app/page.tsx
 import type { Metadata } from "next";
 import LandingLayout from "@/components/landing/LandingLayout";
-import { landingcontent } from "@/content/landing";
+import { getLandingPage } from "@/sanity/lib/landing";
 
-export const metadata: Metadata = {
-  title: landingcontent.seo.title,
-  description: landingcontent.seo.description,
-  alternates: { canonical: "/" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const landingcontent = await getLandingPage();
 
-export default function LandingPage() {
+  return {
+    title: landingcontent.seo.title,
+    description: landingcontent.seo.description,
+    alternates: {
+      canonical: "/",
+    },
+  };
+}
+
+export default async function LandingPage() {
+  const landingcontent = await getLandingPage();
+
   return (
     <main>
-      <LandingLayout />
+      <LandingLayout landingcontent={landingcontent} />
     </main>
   );
 }

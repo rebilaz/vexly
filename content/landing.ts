@@ -7,8 +7,8 @@ export const landingcontent = {
     hero: {
         eyebrow: "Vexly",
         titleline1: "L'agence de création de SaaS",
-        titlehighlight: "pour les créateurs.",
-        description: "Vexly accompagne les créateurs dans la création de leur SaaS pour générer des revenus récurrents et bâtir un actif digital durable."
+        titlehighlight: "pour les créateurs de contenus.",
+        description: "Vexly accompagne les créateurs de contenus dans la création de leur SaaS pour générer des revenus récurrents et bâtir un actif digital durable."
     },
     projection: {
         title: "Simulez votre potentiel de revenus",

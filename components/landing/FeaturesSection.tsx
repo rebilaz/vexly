@@ -26,7 +26,7 @@ type Item = {
 };
 
 type FeatureSectionProps = {
-  title: String;
+  title: string;
   description?: string;
   items: readonly Item[];
 }

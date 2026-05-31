@@ -1,21 +1,23 @@
-// components/landing/LandingLayout.tsx
-
 import HeroSection from "./HeroSection";
 import FeaturesSection from "./FeaturesSection";
 import FinalCTASection from "./FinalCTASection";
 import RevenueProjectionSection from "./RevenueProjectionSection";
 import ExecutionMethodSection from "./ExecutionMethodSection";
-import MiniLeadForm from "@/components/Form/Form"
-import { landingcontent } from "@/content/landing";
+import MiniLeadForm from "@/components/Form/Form";
 import ProblemsSection from "./ProblemsSection";
 import FAQSection from "./FAQSection";
+import type { LandingPageContent } from "@/sanity/lib/landing";
 
-export default function LandingLayout() {
+type LandingLayoutProps = {
+  landingcontent: LandingPageContent;
+};
 
+export default function LandingLayout({ landingcontent }: LandingLayoutProps) {
   const {
     eyebrow,
-    titleline1, titlehighlight,
-    description: desc1
+    titleline1,
+    titlehighlight,
+    description: desc1,
   } = landingcontent.hero;
 
   const {
@@ -23,21 +25,21 @@ export default function LandingLayout() {
     description: desc3,
     clients,
     price,
-  } = landingcontent.projection
+  } = landingcontent.projection;
 
   const mrr = clients * price;
 
   const {
     title: title4,
     description: desc4,
-    items: items2
-  } = landingcontent.problems
+    items: items2,
+  } = landingcontent.problems;
 
   const {
     title: title2,
     description: desc2,
-    items
-  } = landingcontent.features
+    items,
+  } = landingcontent.features;
 
   const {
     title: title5,
@@ -58,7 +60,6 @@ export default function LandingLayout() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50">
-
       <HeroSection
         eyebrow={eyebrow}
         titleline1={titleline1}
@@ -75,7 +76,6 @@ export default function LandingLayout() {
           mrr={mrr}
         />
 
-        <MiniLeadForm />
 
         <ProblemsSection
           title={title4}

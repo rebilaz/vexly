@@ -6,6 +6,7 @@ import { hubPageType } from "./hubPageType";
 import { pricingPageType } from "./pricingPageType";
 import { siteSettingsType } from "./siteSettingsType";
 import { contactPageType } from "./contactPageType";
+import { landingPageType } from "./landingPageType";
 
 export const schemaTypes = [
   articleType,
@@ -16,4 +17,5 @@ export const schemaTypes = [
   pricingPageType,
   siteSettingsType,
   contactPageType,
+  landingPageType,
 ];
