@@ -5,6 +5,7 @@ import { featuresSectionType } from "./featuresSectionType";
 import { hubPageType } from "./hubPageType";
 import { pricingPageType } from "./pricingPageType";
 import { siteSettingsType } from "./siteSettingsType";
+import { contactPageType } from "./contactPageType";
 
 export const schemaTypes = [
   articleType,
@@ -14,4 +15,5 @@ export const schemaTypes = [
   featuresSectionType,
   pricingPageType,
   siteSettingsType,
+  contactPageType,
 ];

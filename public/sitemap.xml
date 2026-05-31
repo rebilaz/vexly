@@ -3,29 +3,41 @@
 
   <url>
     <loc>https://www.vexly.fr/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/contact</loc>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/tarifs</loc>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/mentions-legales</loc>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/conditions-generales</loc>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/agence-plateforme-abonnement-createurs</loc>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/agence-mvp-saas-createurs</loc>
+  </url>
+  <url>
+    <loc>https://www.vexly.fr/agence-evolution-saas-createurs</loc>
+  </url>
+    <url>
+    <loc>https://www.vexly.fr/agence-seo-saas-createurs</loc>
+  </url>
+   <url>
+    <loc>https://www.vexly.fr/ressources</loc>
   </url>
   <url>
     <loc>https://www.vexly.fr/articles</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.vexly.fr/ressources</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.vexly.fr/articles/idee-saas</loc>
-    <lastmod>2026-05-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.vexly.fr/articles/creer-un-saas</loc>
-    <lastmod>2026-05-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>
