@@ -1,104 +1,57 @@
-//components\landing\FeaturesSection.tsx
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
-import {
-  Rocket,
-  Target,
-  CreditCard,
-  Settings,
-  MonitorSmartphone,
-  Server,
-  type LucideIcon,
-} from "lucide-react";
-import Reveal from "./Reveal.client";
+import { getHomeSolutions } from "@/sanity/lib/features";
 
-const ICONS = {
-  Rocket,
-  Target,
-  CreditCard,
-  Settings,
-  MonitorSmartphone,
-  Server,
-} satisfies Record<string, LucideIcon>;
+export default async function FeaturesSection() {
+  const expertises = await getHomeSolutions();
 
-type Item = {
-  icon: keyof typeof ICONS;
-  label: string;
-};
+  if (!expertises?.length) return null;
 
-type FeatureSectionProps = {
-  title: string;
-  description?: string;
-  items: readonly Item[];
-}
-
-export default function FeaturesSection({
-  title,
-  description,
-  items,
-}: FeatureSectionProps) {
   return (
     <section className="mx-auto max-w-6xl">
-      {/* TITRE CENTRÉ DÉGRADÉ */}
-      <h2
-        className="
-          text-center
-          font-geist
-          text-5xl
-          sm:text-6xl
-          lg:text-7xl
-          font-bold
-          tracking-tight
-          bg-gradient-to-r
-          from-indigo-600
-          via-violet-600
-          to-indigo-600
-          bg-clip-text
-          text-transparent
-        "
-      >
-        {title}
-      </h2>
-
-      {description ? (
-        <p className="mx-auto mt-4 max-w-2xl text-center text-base leading-relaxed text-slate-600">
-          {description}
+      <div className="text-center">
+        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">
+          Nos expertises
         </p>
-      ) : null}
 
-      {/* GRID */}
-      <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => {
-          const Icon = ICONS[item.icon];
-          return (
-            <Reveal key={item.label}>
-              <div
-                className="
-                  flex
-                  items-center
-                  gap-5
-                  rounded-3xl
-                  border-2
-                  border-slate-200
-                  bg-white
-                  px-7
-                  py-8
-                  shadow-sm
-                  transition
-                  hover:-translate-y-1
-                  hover:shadow-lg
-                "
-              >
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-900">
-                  <Icon className="size-6" />
-                </div>
+        <h2 className="font-geist text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+          Des expertises pensées pour lancer votre SaaS plus vite
+        </h2>
 
-                <p className="font-geist text-lg font-semibold text-slate-900">
-                  {item.label}
-                </p>
-              </div>
-            </Reveal>
-          );
-        })}
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600">
+          Découvrez les accompagnements Vexly pour transformer votre audience en
+          plateforme, produit SaaS ou actif digital rentable.
+        </p>
+      </div>
+
+      <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {expertises.map((expertise) => (
+          <Link
+            key={expertise._id}
+            href={expertise.href}
+            className="group flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl"
+          >
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:bg-indigo-600">
+              <ArrowRight className="size-5 transition group-hover:translate-x-0.5" />
+            </div>
+
+            <h3 className="text-xl font-bold leading-snug text-slate-900">
+              {expertise.navLabel || expertise.title}
+            </h3>
+
+            {expertise.description ? (
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-600">
+                {expertise.description}
+              </p>
+            ) : null}
+
+            <div className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600">
+              {expertise.ctaLabel || "Découvrir l’expertise"}
+              <span className="transition group-hover:translate-x-1">→</span>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );

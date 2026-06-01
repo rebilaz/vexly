@@ -28,8 +28,11 @@ export const siteSettingsType = defineType({
         defineField({
           name: "logo",
           title: "Logo du header",
-          type: "image",
-          options: { hotspot: true },
+          type: "file",
+          options: {
+            accept:
+              "image/svg+xml,image/webp,image/png,image/jpeg,image/gif,.svg,.webp,.png,.jpg,.jpeg,.gif",
+          },
           fields: [
             defineField({
               name: "alt",
@@ -243,8 +246,11 @@ export const siteSettingsType = defineType({
         defineField({
           name: "logo",
           title: "Logo du footer",
-          type: "image",
-          options: { hotspot: true },
+          type: "file",
+          options: {
+            accept:
+              "image/svg+xml,image/webp,image/png,image/jpeg,image/gif,.svg,.webp,.png,.jpg,.jpeg,.gif",
+          },
           fields: [
             defineField({
               name: "alt",

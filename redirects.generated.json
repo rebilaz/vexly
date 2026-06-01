@@ -1,25 +1,5 @@
 [
   {
-    "from": "/articles/7-erreurs-identifier-proble-me-2026-01-19",
-    "to": "/articles/comment-identifier-proble-me-rentable-2025-12-28",
-    "status": 301
-  },
-  {
-    "from": "/articles/7-erreurs-vous-font-croire-2026-01-23",
-    "to": "/articles/ide-e-business-rentable-argent-2025-12-25",
-    "status": 301
-  },
-  {
-    "from": "/articles/7-outils-gratuits-comprendre-besoins-2025-12-14",
-    "to": "/articles/comment-identifier-proble-me-rentable-2025-12-28",
-    "status": 301
-  },
-  {
-    "from": "/articles/checklist-signes-qu-proble-me-2026-01-11",
-    "to": "/articles/comment-identifier-proble-me-rentable-2025-12-28",
-    "status": 301
-  },
-  {
     "from": "/articles/choisir-prestataire-saas",
     "to": "/articles/idee-saas",
     "status": 301
@@ -27,11 +7,6 @@
   {
     "from": "/articles/comment-identifier-proble-me-rentable-2025-12-28",
     "to": "/articles/idee-saas",
-    "status": 301
-  },
-  {
-    "from": "/articles/comment-savoir-si-ton-ide-2026-01-15",
-    "to": "/articles/comment-valider-ide-e-business-2026-01-08",
     "status": 301
   },
   {
@@ -50,38 +25,8 @@
     "status": 301
   },
   {
-    "from": "/articles/exemple-complet-validation-d-ide-2025-12-27",
-    "to": "/articles/comment-valider-ide-e-business-2026-01-08",
-    "status": 301
-  },
-  {
-    "from": "/articles/exemple-validation-d-ide-e-2026-01-18",
-    "to": "/articles/comment-valider-ide-e-business-2026-01-08",
-    "status": 301
-  },
-  {
     "from": "/articles/landing-page-validation-saas-plan-2025-12-17",
     "to": "/articles/idee-saas",
-    "status": 301
-  },
-  {
-    "from": "/articles/test-marche-rapide-7-jours-2025-12-30",
-    "to": "/articles/comment-valider-ide-e-business-2026-01-08",
-    "status": 301
-  },
-  {
-    "from": "/articles/tester-prix-landing-page-3-2026-01-14",
-    "to": "/articles/comment-tester-prix-votre-futur-2026-01-13",
-    "status": 301
-  },
-  {
-    "from": "/articles/trouver-une-idee-rentable",
-    "to": "/articles/comment-valider-ide-e-business-2026-01-08",
-    "status": 301
-  },
-  {
-    "from": "/marketplace/stonly-com",
-    "to": "/marketplace/klaxoon-com",
     "status": 301
   },
   {

@@ -10,6 +10,7 @@ export type FeatureSolutionCard = {
   navLabel?: string;
   description?: string;
   ctaLabel?: string;
+  ctaHref?: string;
   order?: number;
 };
 
@@ -149,6 +150,18 @@ const featuresSectionFields = `
   }
 `;
 
+const featureSolutionCardFields = `
+  _id,
+  title,
+  "slug": slug.current,
+  "href": "/" + slug.current,
+  navLabel,
+  description,
+  ctaLabel,
+  ctaHref,
+  "order": coalesce(order, 0)
+`;
+
 export async function getFeaturesSection(
   slug?: string
 ): Promise<FeatureSectionContent | null> {
@@ -199,14 +212,7 @@ export async function getAllFeaturesSections(): Promise<FeatureSolutionCard[]> {
       defined(slug.current) &&
       coalesce(pageType, "solution") == "solution"
     ] | order(coalesce(order, 0) asc, _createdAt asc) {
-      _id,
-      title,
-      "slug": slug.current,
-      "href": "/" + slug.current,
-      navLabel,
-      description,
-      ctaLabel,
-      "order": coalesce(order, 0)
+      ${featureSolutionCardFields}
     }
   `);
 }
@@ -219,14 +225,7 @@ export async function getHeaderSolutions(): Promise<FeatureSolutionCard[]> {
       coalesce(pageType, "solution") == "solution" &&
       coalesce(showInHeader, false) == true
     ] | order(coalesce(order, 0) asc, _createdAt asc) {
-      _id,
-      title,
-      "slug": slug.current,
-      "href": "/" + slug.current,
-      navLabel,
-      description,
-      ctaLabel,
-      "order": coalesce(order, 0)
+      ${featureSolutionCardFields}
     }
   `);
 }
@@ -239,14 +238,7 @@ export async function getHomeSolutions(): Promise<FeatureSolutionCard[]> {
       coalesce(pageType, "solution") == "solution" &&
       coalesce(showOnHome, true) == true
     ] | order(coalesce(order, 0) asc, _createdAt asc) {
-      _id,
-      title,
-      "slug": slug.current,
-      "href": "/" + slug.current,
-      navLabel,
-      description,
-      ctaLabel,
-      "order": coalesce(order, 0)
+      ${featureSolutionCardFields}
     }
   `);
 }

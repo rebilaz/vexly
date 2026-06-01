@@ -3,7 +3,6 @@ import FeaturesSection from "./FeaturesSection";
 import FinalCTASection from "./FinalCTASection";
 import RevenueProjectionSection from "./RevenueProjectionSection";
 import ExecutionMethodSection from "./ExecutionMethodSection";
-import MiniLeadForm from "@/components/Form/Form";
 import ProblemsSection from "./ProblemsSection";
 import FAQSection from "./FAQSection";
 import type { LandingPageContent } from "@/sanity/lib/landing";
@@ -34,12 +33,6 @@ export default function LandingLayout({ landingcontent }: LandingLayoutProps) {
     description: desc4,
     items: items2,
   } = landingcontent.problems;
-
-  const {
-    title: title2,
-    description: desc2,
-    items,
-  } = landingcontent.features;
 
   const {
     title: title5,
@@ -76,18 +69,13 @@ export default function LandingLayout({ landingcontent }: LandingLayoutProps) {
           mrr={mrr}
         />
 
-
         <ProblemsSection
           title={title4}
           description={desc4}
           items={items2}
         />
 
-        <FeaturesSection
-          title={title2}
-          description={desc2}
-          items={items}
-        />
+        <FeaturesSection />
 
         <ExecutionMethodSection
           title={title5}
