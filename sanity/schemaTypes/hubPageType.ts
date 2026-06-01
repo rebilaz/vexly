@@ -15,18 +15,16 @@ export const hubPageType = defineType({
 
     defineField({
       name: "hubType",
-      title: "Type de hub",
+      title: "Slug du hub",
       type: "string",
-      options: {
-        list: [
-          { title: "Ressources", value: "resources" },
-          { title: "Solutions", value: "solutions" },
-          { title: "Expertises", value: "expertises" },
-        ],
-        layout: "radio",
-      },
-      validation: (Rule) => Rule.required(),
-      initialValue: "resources",
+      description:
+        "Doit correspondre au nom du dossier dans /app. Exemple : articles, comparaisons, guides.",
+      validation: (Rule) =>
+        Rule.required().regex(/^[a-z0-9-]+$/, {
+          name: "slug",
+          invert: false,
+        }),
+      initialValue: "articles",
     }),
 
     defineField({
@@ -93,7 +91,7 @@ export const hubPageType = defineType({
           name: "canonical",
           title: "Canonical URL",
           type: "string",
-          description: "Exemple : /expertises",
+          description: "Exemple : /articles",
         }),
 
         defineField({
@@ -124,7 +122,7 @@ export const hubPageType = defineType({
     prepare({ title, subtitle, media }) {
       return {
         title,
-        subtitle: subtitle ? `Type : ${subtitle}` : "Aucun type",
+        subtitle: subtitle ? `Hub : /${subtitle}` : "Aucun hub",
         media,
       };
     },

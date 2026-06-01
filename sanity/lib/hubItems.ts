@@ -4,31 +4,12 @@ import { client } from "@/sanity/lib/client";
 import type { Article } from "@/sanity/lib/articles";
 import type { ComparisonPageContent } from "@/sanity/lib/comparisonPage";
 
-export type HubItemType = "article" | "comparisonPage" | "featuresSection";
+export type HubItemType = "article" | "comparisonPage";
 
 export type HubItemCard = Article & {
   _id?: string;
   _type: HubItemType;
   _sortDate?: string | null;
-};
-
-export type FeatureSectionContent = {
-  _id: string;
-  _type: "featuresSection";
-  title: string;
-  slug: string;
-  description?: string;
-  hubs?: {
-    _id: string;
-    title?: string;
-    hubType?: string;
-  }[];
-  ctaLabel?: string;
-  ctaHref?: string;
-  heroMedia?: any;
-  advantages?: any[];
-  seoContent?: any;
-  faq?: any;
 };
 
 export type HubItemDetail =
@@ -39,25 +20,13 @@ export type HubItemDetail =
   | {
       type: "comparisonPage";
       data: ComparisonPageContent;
-    }
-  | {
-      type: "featuresSection";
-      data: FeatureSectionContent;
     };
 
-function getHubTypeFromPath(value: string) {
-  const clean = String(value || "")
+function normalizeHubSlug(value: string) {
+  return String(value || "")
     .trim()
     .replace(/^\/+/, "")
     .replace(/\/+$/, "");
-
-  if (clean === "articles") return "resources";
-  if (clean === "ressources") return "resources";
-  if (clean === "resources") return "resources";
-  if (clean === "expertises") return "expertises";
-  if (clean === "solutions") return "solutions";
-
-  return clean;
 }
 
 function normalizeChildSlug(slug: string) {
@@ -69,7 +38,7 @@ function normalizeChildSlug(slug: string) {
 
 const hubMatchFilter = `
   defined(hubs) &&
-  $hubType in hubs[]->hubType
+  $hubSlug in hubs[]->hubType
 `;
 
 const hubProjection = `
@@ -203,67 +172,6 @@ const comparisonDetailFields = `
   }
 `;
 
-const featureDetailFields = `
-  _id,
-  "_type": "featuresSection",
-  title,
-  "slug": slug.current,
-  "description": coalesce(description, ""),
-
-  ${hubProjection},
-
-  "ctaLabel": coalesce(ctaLabel, ""),
-  "ctaHref": coalesce(ctaHref, ""),
-
-  heroMedia {
-    type,
-    youtubeUrl,
-    videoFile {
-      asset-> {
-        url,
-        mimeType,
-        originalFilename
-      }
-    },
-    imageFile {
-      asset-> {
-        url
-      },
-      alt
-    }
-  },
-
-  advantages[] {
-    title,
-    description,
-    linkLabel,
-    linkHref,
-    image {
-      asset-> {
-        url
-      },
-      alt
-    }
-  },
-
-  seoContent {
-    title,
-    paragraphs,
-    items[] {
-      title
-    }
-  },
-
-  faq {
-    title,
-    description,
-    items[] {
-      question,
-      answer
-    }
-  }
-`;
-
 function sortHubItems(items: HubItemCard[]) {
   return [...items].sort((a, b) => {
     const da = a._sortDate ? new Date(a._sortDate).getTime() : 0;
@@ -276,12 +184,11 @@ function sortHubItems(items: HubItemCard[]) {
 export async function getHubItemsByHubSlug(
   hubSlug: string
 ): Promise<HubItemCard[]> {
-  const hubType = getHubTypeFromPath(hubSlug);
+  const normalizedHubSlug = normalizeHubSlug(hubSlug);
 
   const result = await client.withConfig({ useCdn: false }).fetch<{
     articles: HubItemCard[];
     comparisons: HubItemCard[];
-    features: HubItemCard[];
   }>(
     `
     {
@@ -347,50 +254,17 @@ export async function getHubItemsByHubSlug(
         },
         "sections": [],
         "content": []
-      },
-
-      "features": *[
-        _type == "featuresSection" &&
-        defined(slug.current) &&
-        ${hubMatchFilter}
-      ] | order(coalesce(_updatedAt, _createdAt) desc) {
-        _id,
-        "_type": "featuresSection",
-        "_sortDate": coalesce(_updatedAt, _createdAt),
-        "slug": slug.current,
-        "frontmatter": {
-          "title": coalesce(title, ""),
-          "subtitle": coalesce(ctaLabel, "Expertise"),
-          "description": coalesce(description, ""),
-          "date": _updatedAt,
-          "updatedAt": _updatedAt,
-          "searchIntent": "",
-          "category": {
-            "title": "Expertise",
-            "slug": "expertise"
-          },
-          "hubs": hubs[]->{
-            _id,
-            title,
-            hubType
-          },
-          "coverImageUrl": heroMedia.imageFile.asset->url,
-          "coverImageAlt": coalesce(heroMedia.imageFile.alt, title, "")
-        },
-        "sections": [],
-        "content": []
       }
     }
     `,
     {
-      hubType,
+      hubSlug: normalizedHubSlug,
     }
   );
 
   const items = [
     ...(result?.articles ?? []),
     ...(result?.comparisons ?? []),
-    ...(result?.features ?? []),
   ];
 
   return sortHubItems(items);
@@ -411,13 +285,12 @@ export async function getHubItemByHubAndSlug({
   hubSlug: string;
   slug: string;
 }): Promise<HubItemDetail | null> {
-  const hubType = getHubTypeFromPath(hubSlug);
+  const normalizedHubSlug = normalizeHubSlug(hubSlug);
   const childSlug = normalizeChildSlug(slug);
 
   const result = await client.withConfig({ useCdn: false }).fetch<{
     article: Article | null;
     comparison: ComparisonPageContent | null;
-    feature: FeatureSectionContent | null;
   }>(
     `
     {
@@ -437,20 +310,11 @@ export async function getHubItemByHubAndSlug({
         ${hubMatchFilter}
       ][0] {
         ${comparisonDetailFields}
-      },
-
-      "feature": *[
-        _type == "featuresSection" &&
-        defined(slug.current) &&
-        slug.current == $slug &&
-        ${hubMatchFilter}
-      ][0] {
-        ${featureDetailFields}
       }
     }
     `,
     {
-      hubType,
+      hubSlug: normalizedHubSlug,
       slug: childSlug,
     }
   );
@@ -458,12 +322,11 @@ export async function getHubItemByHubAndSlug({
   const matches = [
     result.article ? "article" : null,
     result.comparison ? "comparisonPage" : null,
-    result.feature ? "featuresSection" : null,
   ].filter(Boolean);
 
   if (matches.length > 1) {
     console.warn(
-      `[hubItems] Slug conflict on ${hubType}/${childSlug}: ${matches.join(
+      `[hubItems] Slug conflict on ${normalizedHubSlug}/${childSlug}: ${matches.join(
         ", "
       )}`
     );
@@ -497,17 +360,6 @@ export async function getHubItemByHubAndSlug({
               paragraphs: result.comparison.seoContent.paragraphs ?? [],
             }
           : null,
-      },
-    };
-  }
-
-  if (result.feature) {
-    return {
-      type: "featuresSection",
-      data: {
-        ...result.feature,
-        description: result.feature.description ?? "",
-        advantages: result.feature.advantages ?? [],
       },
     };
   }

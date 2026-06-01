@@ -22,31 +22,23 @@ export type HubPageContent = {
   };
 };
 
-function getHubTypeFromPath(value: string) {
-  const clean = String(value || "")
+function normalizeHubSlug(value: string) {
+  return String(value || "")
     .trim()
     .replace(/^\/+/, "")
     .replace(/\/+$/, "");
-
-  if (clean === "articles") return "resources";
-  if (clean === "ressources") return "resources";
-  if (clean === "resources") return "resources";
-  if (clean === "expertises") return "expertises";
-  if (clean === "solutions") return "solutions";
-
-  return clean;
 }
 
 export async function getHubPageBySlug(
   slug: string
 ): Promise<HubPageContent | null> {
-  const hubType = getHubTypeFromPath(slug);
+  const hubSlug = normalizeHubSlug(slug);
 
   return client.withConfig({ useCdn: false }).fetch<HubPageContent | null>(
     `
     *[
       _type == "hubPage" &&
-      hubType == $hubType
+      hubType == $hubSlug
     ][0] {
       _id,
       title,
@@ -68,7 +60,7 @@ export async function getHubPageBySlug(
     }
     `,
     {
-      hubType,
+      hubSlug,
     }
   );
 }

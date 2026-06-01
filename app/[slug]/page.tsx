@@ -71,7 +71,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function SolutionPage({ params }: PageProps) {
+export default async function FeaturePage({ params }: PageProps) {
   const { slug } = await params;
   const data = await getFeaturesSection(slug);
 

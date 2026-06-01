@@ -7,7 +7,8 @@ import {
 } from "@/sanity/lib/hubPage";
 import { getHubItemsByHubSlug } from "@/sanity/lib/hubItems";
 
-const ARTICLES_HUB_SLUG = "/articles";
+const ARTICLES_HUB_SLUG = "articles";
+const ARTICLES_BASE_PATH = "/articles";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -16,7 +17,7 @@ function getFallbackArticlesHub(): HubPageContent {
   return {
     _id: "fallback-articles-hub",
     title: "Articles",
-    hubType: "resources",
+    hubType: ARTICLES_HUB_SLUG,
     hero: {
       titleline1: "Articles, ressources et guides",
       titlehighlight: "pour développer votre business",
@@ -29,7 +30,7 @@ function getFallbackArticlesHub(): HubPageContent {
       title: "Articles",
       description:
         "Découvrez nos articles, guides et ressources pour créateurs, SaaS et business digitaux.",
-      canonical: ARTICLES_HUB_SLUG,
+      canonical: ARTICLES_BASE_PATH,
       ogImageUrl: null,
     },
   };
@@ -45,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const title = hub.seo?.title ?? "Articles";
   const description = hub.seo?.description ?? "";
-  const canonical = hub.seo?.canonical ?? ARTICLES_HUB_SLUG;
+  const canonical = hub.seo?.canonical ?? ARTICLES_BASE_PATH;
   const ogImage = hub.seo?.ogImageUrl ?? undefined;
 
   return {
@@ -78,5 +79,11 @@ export default async function ArticlesPage() {
     getHubItemsByHubSlug(ARTICLES_HUB_SLUG),
   ]);
 
-  return <HubLayout articles={items} content={hub} basePath="/articles" />;
+  return (
+    <HubLayout
+      articles={items}
+      content={hub}
+      basePath={ARTICLES_BASE_PATH}
+    />
+  );
 }

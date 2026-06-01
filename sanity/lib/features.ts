@@ -162,6 +162,12 @@ const featureSolutionCardFields = `
   "order": coalesce(order, 0)
 `;
 
+const featuresFilter = `
+  _type == "featuresSection" &&
+  defined(slug.current) &&
+  coalesce(pageType, "solution") == "solution"
+`;
+
 export async function getFeaturesSection(
   slug?: string
 ): Promise<FeatureSectionContent | null> {
@@ -169,10 +175,8 @@ export async function getFeaturesSection(
     return client.withConfig({ useCdn: false }).fetch(
       `
       *[
-        _type == "featuresSection" &&
-        defined(slug.current) &&
-        slug.current == $slug &&
-        coalesce(pageType, "solution") == "solution"
+        ${featuresFilter} &&
+        slug.current == $slug
       ][0] {
         ${featuresSectionFields}
       }
@@ -183,9 +187,7 @@ export async function getFeaturesSection(
 
   return client.withConfig({ useCdn: false }).fetch(`
     *[
-      _type == "featuresSection" &&
-      defined(slug.current) &&
-      coalesce(pageType, "solution") == "solution"
+      ${featuresFilter}
     ] | order(coalesce(order, 0) asc, _createdAt asc)[0] {
       ${featuresSectionFields}
     }
@@ -195,9 +197,7 @@ export async function getFeaturesSection(
 export async function getAllFeaturesSlugs(): Promise<{ slug: string }[]> {
   return client.withConfig({ useCdn: false }).fetch(`
     *[
-      _type == "featuresSection" &&
-      defined(slug.current) &&
-      coalesce(pageType, "solution") == "solution" &&
+      ${featuresFilter} &&
       !(seo.noIndex == true)
     ] | order(coalesce(order, 0) asc, _createdAt asc) {
       "slug": slug.current
@@ -208,9 +208,7 @@ export async function getAllFeaturesSlugs(): Promise<{ slug: string }[]> {
 export async function getAllFeaturesSections(): Promise<FeatureSolutionCard[]> {
   return client.withConfig({ useCdn: false }).fetch(`
     *[
-      _type == "featuresSection" &&
-      defined(slug.current) &&
-      coalesce(pageType, "solution") == "solution"
+      ${featuresFilter}
     ] | order(coalesce(order, 0) asc, _createdAt asc) {
       ${featureSolutionCardFields}
     }
@@ -220,9 +218,7 @@ export async function getAllFeaturesSections(): Promise<FeatureSolutionCard[]> {
 export async function getHeaderSolutions(): Promise<FeatureSolutionCard[]> {
   return client.withConfig({ useCdn: false }).fetch(`
     *[
-      _type == "featuresSection" &&
-      defined(slug.current) &&
-      coalesce(pageType, "solution") == "solution" &&
+      ${featuresFilter} &&
       coalesce(showInHeader, false) == true
     ] | order(coalesce(order, 0) asc, _createdAt asc) {
       ${featureSolutionCardFields}
@@ -233,9 +229,7 @@ export async function getHeaderSolutions(): Promise<FeatureSolutionCard[]> {
 export async function getHomeSolutions(): Promise<FeatureSolutionCard[]> {
   return client.withConfig({ useCdn: false }).fetch(`
     *[
-      _type == "featuresSection" &&
-      defined(slug.current) &&
-      coalesce(pageType, "solution") == "solution" &&
+      ${featuresFilter} &&
       coalesce(showOnHome, true) == true
     ] | order(coalesce(order, 0) asc, _createdAt asc) {
       ${featureSolutionCardFields}

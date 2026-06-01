@@ -35,14 +35,15 @@ export const featuresSectionType = defineType({
       name: "hubs",
       title: "Hubs associés",
       type: "array",
-      description: "Sélectionne les pages hub où ce contenu doit apparaître",
+      description:
+        "Ancien champ conservé pour compatibilité. Ne plus utiliser pour les pages expertises.",
+      hidden: true,
       of: [
         {
           type: "reference",
           to: [{ type: "hubPage" }],
         },
       ],
-      validation: (Rule) => Rule.required().min(1),
     }),
 
     defineField({
@@ -62,7 +63,7 @@ export const featuresSectionType = defineType({
       name: "ctaHref",
       title: "Lien du CTA",
       type: "string",
-      description: "Exemple : /expertises/creation-saas",
+      description: "Exemple : /agence-ia-saas-createurs",
     }),
 
     defineField({
@@ -178,7 +179,7 @@ export const featuresSectionType = defineType({
               title: "Lien",
               type: "string",
               description:
-                "Exemple : /fonctionnalites/suivi-vehicules ou https://www.noxal.fr",
+                "Exemple : /agence-ia-saas-createurs ou https://www.noxal.fr",
             }),
 
             defineField({
