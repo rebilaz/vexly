@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
-import { FeaturesLayout } from "@/components/features/FeaturesLayout";
 import ComparisonLayout from "@/components/comparison/ComparisonLayout";
 import {
   getHubItemByHubAndSlug,
@@ -131,20 +130,11 @@ export async function generateMetadata({
     };
   }
 
-  const feature = item.data;
-  const canonical = buildCanonical(feature.slug);
-
   return {
-    title: feature.title,
-    description: feature.description ?? undefined,
-    alternates: {
-      canonical,
-    },
-    openGraph: {
-      title: feature.title,
-      description: feature.description ?? undefined,
-      type: "website",
-      url: canonical,
+    title: "Page introuvable",
+    robots: {
+      index: false,
+      follow: false,
     },
   };
 }
@@ -184,5 +174,5 @@ export default async function ArticlesSlugPage({
     return <ComparisonLayout page={item.data} backHref={BACK_HREF} />;
   }
 
-  return <FeaturesLayout data={item.data as any} />;
+  notFound();
 }
