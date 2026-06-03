@@ -80,6 +80,82 @@ function HeaderLogo({
   );
 }
 
+function ChevronIcon({ isOpen = false }: { isOpen?: boolean }) {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className={[
+        "transition-transform duration-200",
+        isOpen ? "rotate-180" : "",
+      ].join(" ")}
+    >
+      <path
+        d="M6 9l6 6 6-6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="transition-transform duration-200 group-hover:translate-x-0.5"
+    >
+      <path
+        d="M5 12h14"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M13 6l6 6-6 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 6l12 12"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M18 6L6 18"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 export default function Header({ data }: HeaderProps) {
   if (!data) return null;
 
@@ -124,18 +200,22 @@ export default function Header({ data }: HeaderProps) {
 
     if (!item.label || !links.length) return null;
 
+    const isOpen = openMenu === index;
+
     return (
       <div key={`${item.label}-${index}`} className="relative inline-flex">
         <button
           type="button"
           onMouseEnter={() => open(index)}
           onMouseLeave={() => scheduleClose(index)}
-          aria-expanded={openMenu === index}
+          aria-expanded={isOpen}
           aria-haspopup="menu"
-          className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-slate-950"
+          className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition-colors duration-200 hover:text-slate-950"
         >
           {item.label}
-          <span className="text-[11px] text-slate-400">▾</span>
+          <span className="text-slate-400">
+            <ChevronIcon isOpen={isOpen} />
+          </span>
         </button>
 
         <div
@@ -145,26 +225,23 @@ export default function Header({ data }: HeaderProps) {
         >
           <div
             className={[
-              "relative w-[360px] rounded-2xl border border-slate-200/70 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.16)]",
-              "transition-all duration-200",
-              openMenu === index
-                ? "pointer-events-auto translate-y-0 opacity-100"
-                : "pointer-events-none translate-y-2 opacity-0",
+              "relative w-[390px] origin-top-left rounded-3xl border border-slate-200/80 bg-white/95 p-6 backdrop-blur-md",
+              "shadow-[0_24px_70px_rgba(15,23,42,0.14)]",
+              "transition-all duration-300 ease-out",
+              isOpen
+                ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+                : "pointer-events-none -translate-y-1 scale-[0.98] opacity-0",
             ].join(" ")}
           >
             <div className="absolute -top-4 left-0 h-4 w-full" />
 
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-sm text-yellow-400">
-                ⚡
-              </div>
-
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">
+            <div className="mb-5">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
                 {item.label}
               </p>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               {links.map((link: SiteNavLink, linkIndex: number) => {
                 if (!link.label || !link.href) return null;
 
@@ -174,14 +251,14 @@ export default function Header({ data }: HeaderProps) {
                     href={link.href}
                     isExternal={link.isExternal}
                     onClick={forceClose}
-                    className="group block rounded-xl px-3 py-3 transition-colors hover:bg-slate-50"
+                    className="group block rounded-2xl px-4 py-3.5 transition-all duration-200 hover:translate-x-1 hover:bg-slate-50"
                   >
-                    <div className="text-[15px] font-semibold leading-snug text-slate-700 group-hover:text-slate-950">
+                    <div className="text-[16px] font-semibold leading-snug text-slate-800 transition-colors duration-200 group-hover:text-slate-950">
                       {link.label}
                     </div>
 
                     {link.description ? (
-                      <div className="mt-1 text-[13px] leading-relaxed text-slate-400 group-hover:text-slate-500">
+                      <div className="mt-1.5 text-[13px] leading-relaxed text-slate-500 transition-colors duration-200 group-hover:text-slate-600">
                         {link.description}
                       </div>
                     ) : null}
@@ -204,7 +281,7 @@ export default function Header({ data }: HeaderProps) {
         href={item.href}
         isExternal={item.isExternal}
         onClick={forceClose}
-        className="rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-slate-950"
+        className="rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition-colors duration-200 hover:text-slate-950"
       >
         {item.label}
       </SmartLink>
@@ -236,7 +313,7 @@ export default function Header({ data }: HeaderProps) {
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Ouvrir le menu"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-50 md:hidden"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow-sm transition duration-200 hover:bg-slate-50 md:hidden"
             >
               <svg
                 width="19"
@@ -272,7 +349,7 @@ export default function Header({ data }: HeaderProps) {
               <SmartLink
                 href={loginLink.href}
                 onClick={forceClose}
-                className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-slate-950 md:inline-block"
+                className="hidden rounded-full px-3 py-2 text-sm font-semibold text-slate-700 transition-colors duration-200 hover:text-slate-950 md:inline-block"
               >
                 {loginLink.label}
               </SmartLink>
@@ -282,11 +359,11 @@ export default function Header({ data }: HeaderProps) {
               <SmartLink
                 href={cta.href}
                 onClick={forceClose}
-                className="hidden rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-6 py-3 text-sm font-bold text-white shadow-[0_18px_45px_rgba(88,80,236,0.4)] transition hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.5)] active:scale-[0.97] md:inline-flex"
+                className="group hidden rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-6 py-3 text-sm font-bold text-white shadow-[0_18px_45px_rgba(88,80,236,0.4)] transition duration-200 hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.5)] active:scale-[0.97] md:inline-flex"
               >
                 <span className="flex items-center gap-2">
                   {cta.label}
-                  <span className="text-base">→</span>
+                  <ArrowRightIcon />
                 </span>
               </SmartLink>
             ) : null}
@@ -311,17 +388,18 @@ export default function Header({ data }: HeaderProps) {
               />
 
               <button
+                type="button"
                 onClick={forceClose}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition duration-200 hover:bg-slate-50 hover:text-slate-950"
                 aria-label="Fermer"
               >
-                ✕
+                <CloseIcon />
               </button>
             </div>
 
             <div className="px-6 py-8">
               {navigation.length ? (
-                <div className="flex flex-col items-center gap-5">
+                <div className="flex flex-col gap-4">
                   {navigation.map((item, index) => {
                     if (!item.label) return null;
 
@@ -333,16 +411,16 @@ export default function Header({ data }: HeaderProps) {
                       return (
                         <details
                           key={`${item.label}-${index}`}
-                          className="group w-full"
+                          className="group rounded-2xl border border-slate-100 bg-slate-50/60 p-4"
                         >
-                          <summary className="mx-auto flex w-fit cursor-pointer list-none items-center gap-2 text-base font-semibold text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400">
+                          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-base font-semibold text-slate-950">
                             {item.label}
-                            <span className="text-slate-400 transition group-open:rotate-180">
-                              ▾
+                            <span className="text-slate-400 transition-transform duration-200 group-open:rotate-180">
+                              <ChevronIcon />
                             </span>
                           </summary>
 
-                          <div className="mt-5 flex flex-col items-center gap-4">
+                          <div className="mt-4 flex flex-col gap-2">
                             {links.map((link, linkIndex) => {
                               if (!link.label || !link.href) return null;
 
@@ -352,7 +430,7 @@ export default function Header({ data }: HeaderProps) {
                                   href={link.href}
                                   isExternal={link.isExternal}
                                   onClick={forceClose}
-                                  className="text-center text-sm font-medium text-slate-700 underline decoration-slate-200 underline-offset-8 hover:text-slate-900"
+                                  className="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-white hover:text-slate-950 hover:shadow-sm"
                                 >
                                   {link.label}
                                 </SmartLink>
@@ -371,7 +449,7 @@ export default function Header({ data }: HeaderProps) {
                         href={item.href}
                         isExternal={item.isExternal}
                         onClick={forceClose}
-                        className="text-base font-semibold text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
+                        className="rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-4 text-base font-semibold text-slate-950 transition-all duration-200 hover:bg-white hover:shadow-sm"
                       >
                         {item.label}
                       </SmartLink>
@@ -384,7 +462,7 @@ export default function Header({ data }: HeaderProps) {
                     <SmartLink
                       href={loginLink.href}
                       onClick={forceClose}
-                      className="text-base font-semibold text-slate-900 underline decoration-slate-200 underline-offset-8 hover:decoration-slate-400"
+                      className="rounded-2xl border border-slate-100 bg-slate-50/60 px-4 py-4 text-base font-semibold text-slate-950 transition-all duration-200 hover:bg-white hover:shadow-sm"
                     >
                       {loginLink.label}
                     </SmartLink>
@@ -397,11 +475,11 @@ export default function Header({ data }: HeaderProps) {
                   <SmartLink
                     href={cta.href}
                     onClick={forceClose}
-                    className="block w-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-3.5 text-center text-sm font-bold text-white shadow-[0_18px_45px_rgba(88,80,236,0.45)] transition hover:brightness-110 active:scale-[0.98]"
+                    className="group block w-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-3.5 text-center text-sm font-bold text-white shadow-[0_18px_45px_rgba(88,80,236,0.45)] transition duration-200 hover:brightness-110 active:scale-[0.98]"
                   >
                     <span className="flex items-center justify-center gap-2">
                       {cta.label}
-                      <span className="text-base">→</span>
+                      <ArrowRightIcon />
                     </span>
                   </SmartLink>
                 </div>
