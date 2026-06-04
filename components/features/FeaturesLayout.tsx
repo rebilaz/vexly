@@ -1,79 +1,78 @@
 import { FeatureHero } from "./FeatureHero";
 import { FeatureAdvantages } from "./FeatureAdvantages";
-import FinalCTASection from "@/components/landing/FinalCTASection";
-import { FeatureSeoContent } from "./FeatureSeoContent";
+import FinalCTASection from "@/components/FinalCTASection";
 import { FeatureFAQ } from "./FeatureFAQ";
-
-type Advantage = {
-    title: string;
-    description?: string;
-    linkLabel?: string;
-    linkHref?: string;
-    image?: {
-        asset?: {
-            url?: string;
-        };
-        alt?: string;
-    };
-};
-
-type SeoContent = {
-    title?: string;
-    paragraphs?: string[];
-    items?: {
-        title?: string;
-    }[];
-};
-
-type FaqContent = {
-    title?: string;
-    description?: string;
-    items?: {
-        question?: string;
-        answer?: string;
-    }[];
-};
-
-type FeaturesSectionData = {
-    title: string;
-    slug?: string;
-    description?: string;
-    youtubeUrl?: string;
-    ctaLabel?: string;
-    ctaHref?: string;
-    advantages?: Advantage[];
-    seoContent?: SeoContent;
-    faq?: FaqContent;
-};
+import { FeatureMethod } from "./FeatureMethod";
+import { FeatureTechnologies } from "./FeatureTechnologies";
+import { FeatureWhyUs } from "./FeatureWhyUs";
+import { FeatureService } from "./FeatureService";
+import { FeatureRealisations } from "./FeatureRealisations";
+import TestimonialsMarquee from "../TestimonialsMarquee";
+import type { PricingPageTestimonials } from "@/sanity/lib/pricingPage";
+import type { FeatureSectionContent } from "@/sanity/lib/features";
 
 type FeaturesLayoutProps = {
-    data: FeaturesSectionData | null;
+  data: FeatureSectionContent | null;
+  testimonials?: PricingPageTestimonials;
 };
 
-export function FeaturesLayout({ data }: FeaturesLayoutProps) {
-    if (!data) return null;
+export function FeaturesLayout({ data, testimonials }: FeaturesLayoutProps) {
+  if (!data) return null;
 
-    const advantages = data.advantages || [];
+  return (
+    <div className="relative min-h-screen overflow-x-hidden bg-[#F8FAFC] text-slate-900">
+      <main className="overflow-hidden">
+        <FeatureHero data={data} />
 
-    return (
-        <div className="relative min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50 text-slate-900">
-            <main className="space-y-16 py-10 sm:space-y-24 sm:py-16 lg:space-y-32">
-                <FeatureHero data={data} />
-                
-                <FeatureAdvantages advantages={advantages} />
-                
-                <FeatureSeoContent data={data.seoContent} />
-                
-                <FeatureFAQ data={data.faq} />
-                
-                <div className="mx-auto w-full max-w-7xl px-6 pb-16 sm:px-8 lg:px-10">
-                    <FinalCTASection 
-                        title={data.title ? `Lancez votre projet : ${data.title}` : "Prêt à générer des revenus récurrents ?"}
-                        subtitle={data.description || "Transformez votre idée de SaaS en un actif digital durable et rentable en 21 jours."}
-                        primaryCtaLabel={data.ctaLabel || "Créer mon SaaS →"}
-                    />
-                </div>
-            </main>
-        </div>
-    );
-}
+        <FeatureAdvantages
+          title={data.advantagesIntro?.title}
+          description={data.advantagesIntro?.description}
+          advantages={data.advantages}
+        />
+
+        <FeatureService
+          title={data.service?.title}
+          items={data.service?.items}
+        />
+
+        <FeatureWhyUs title={data.whyUs?.title} items={data.whyUs?.items} />
+
+        <FeatureMethod
+          eyebrow={data.method?.eyebrow}
+          title={data.method?.title}
+          description={data.method?.description}
+          steps={data.method?.steps}
+        />
+
+        <FeatureTechnologies
+          eyebrow={data.technologies?.eyebrow}
+          title={data.technologies?.title}
+          technologies={data.technologies?.items}
+        />
+
+        <FeatureFAQ data={data.faq} />
+
+        <TestimonialsMarquee content={testimonials} />
+
+        <FinalCTASection
+          eyebrow={data.finalCta?.eyebrow}
+          title={
+            data.finalCta?.title ||
+            (data.title
+              ? `Lancez votre projet : ${data.title}`
+              : "Prêt à générer des revenus récurrents ?")
+          }
+          subtitle={
+            data.finalCta?.subtitle ||
+            data.description ||
+            "Transformez votre idée de SaaS en un actif digital durable et rentable en 21 jours."
+          }
+          primaryCtaLabel={
+            data.finalCta?.ctaLabel || data.ctaLabel || "Créer mon SaaS →"
+          }
+          href={data.finalCta?.ctaHref || data.ctaHref || "/#formulaire"}
+        />
+      </main>
+    </div>
+  );
+}

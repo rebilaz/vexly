@@ -1,6 +1,6 @@
 import HeroSection from "./HeroSection";
 import FeaturesSection from "./FeaturesSection";
-import FinalCTASection from "./FinalCTASection";
+import FinalCTASection from "../FinalCTASection";
 import RevenueProjectionSection from "./RevenueProjectionSection";
 import ExecutionMethodSection from "./ExecutionMethodSection";
 import ProblemsSection from "./ProblemsSection";

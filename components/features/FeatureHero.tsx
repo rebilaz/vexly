@@ -1,233 +1,263 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { ArrowRight, ImageIcon, PlayCircle, Video } from "lucide-react";
-
+import { ArrowRight } from "lucide-react";
 
 type HeroMedia = {
-    type?: "youtube" | "video" | "image";
-    youtubeUrl?: string;
-    videoFile?: {
-        asset?: {
-            url?: string;
-            mimeType?: string;
-            originalFilename?: string;
-        };
+  type?: "youtube" | "video" | "image";
+  youtubeUrl?: string;
+  videoFile?: {
+    asset?: {
+      url?: string;
+      mimeType?: string;
+      originalFilename?: string;
     };
-    imageFile?: {
-        asset?: {
-            url?: string;
-        };
-        alt?: string;
+  };
+  imageFile?: {
+    asset?: {
+      url?: string;
     };
-};
-
-type Advantage = {
-    title: string;
-    description?: string;
-    image?: {
-        asset?: {
-            url?: string;
-        };
-        alt?: string;
-    };
+    alt?: string;
+  };
 };
 
 type FeaturesSectionData = {
-    title: string;
-    slug?: string;
-    description?: string;
-
-    heroMedia?: HeroMedia;
-
-    /**
-     * Ancien champ gardé en fallback.
-     * Tu pourras le supprimer plus tard si tu n'en as plus besoin.
-     */
-    youtubeUrl?: string;
-
-    ctaLabel?: string;
-    ctaHref?: string;
-    advantages?: Advantage[];
+  title: string;
+  slug?: string;
+  description?: string;
+  heroMedia?: HeroMedia;
+  youtubeUrl?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  landingLabel?: string;
+  landingHref?: string;
 };
 
 type FeatureHeroProps = {
-    data: FeaturesSectionData;
+  data: FeaturesSectionData;
 };
 
 function getYoutubeEmbedUrl(url?: string) {
-    if (!url) return null;
+  if (!url) return null;
 
-    try {
-        const parsedUrl = new URL(url);
+  try {
+    const parsedUrl = new URL(url);
 
-        if (parsedUrl.hostname.includes("youtu.be")) {
-            const videoId = parsedUrl.pathname.replace("/", "").split("?")[0];
-            return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
-        }
-
-        if (parsedUrl.hostname.includes("youtube.com")) {
-            if (parsedUrl.pathname.includes("/embed/")) {
-                return url;
-            }
-
-            if (parsedUrl.pathname.includes("/shorts/")) {
-                const shortsId = parsedUrl.pathname
-                    .split("/shorts/")[1]
-                    ?.split("/")[0];
-
-                return shortsId
-                    ? `https://www.youtube.com/embed/${shortsId}`
-                    : null;
-            }
-
-            const videoId = parsedUrl.searchParams.get("v");
-
-            if (videoId) {
-                return `https://www.youtube.com/embed/${videoId}`;
-            }
-        }
-
-        return null;
-    } catch {
-        return null;
+    if (parsedUrl.hostname.includes("youtu.be")) {
+      const videoId = parsedUrl.pathname.replace("/", "").split("?")[0];
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
     }
+
+    if (parsedUrl.hostname.includes("youtube.com")) {
+      if (parsedUrl.pathname.includes("/embed/")) {
+        return url;
+      }
+
+      if (parsedUrl.pathname.includes("/shorts/")) {
+        const shortsId = parsedUrl.pathname.split("/shorts/")[1]?.split("/")[0];
+
+        return shortsId ? `https://www.youtube.com/embed/${shortsId}` : null;
+      }
+
+      const videoId = parsedUrl.searchParams.get("v");
+
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function hasHeroMedia(data: FeaturesSectionData) {
+  const media = data.heroMedia;
+
+  if (media?.type === "image" && media.imageFile?.asset?.url) return true;
+  if (media?.type === "video" && media.videoFile?.asset?.url) return true;
+  if (media?.type === "youtube" && getYoutubeEmbedUrl(media.youtubeUrl)) {
+    return true;
+  }
+
+  if (getYoutubeEmbedUrl(data.youtubeUrl)) return true;
+
+  return false;
 }
 
 function isExternalLink(href?: string) {
-    return href?.startsWith("http");
+  return href?.startsWith("http");
 }
 
-const ctaClassName =
-    "relative z-30 inline-flex min-w-[230px] items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-8 py-4 text-sm font-semibold text-white shadow-[0_18px_45px_rgba(88,80,236,0.35)] transition duration-300 hover:scale-[1.02] hover:shadow-[0_22px_55px_rgba(88,80,236,0.45)] hover:brightness-110 active:scale-[0.98]";
+const primaryButtonClassName =
+  "group inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-7 py-4 text-sm font-black text-white shadow-[0_18px_45px_rgba(88,80,236,0.40)] transition duration-300 hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.50)] active:scale-[0.97]";
+
+const textLinkClassName =
+  "group inline-flex items-center gap-2 text-sm font-black text-slate-900 transition duration-300 hover:text-indigo-600";
+
+function SmartButton({
+  href,
+  children,
+  className,
+}: {
+  href: string;
+  children: ReactNode;
+  className: string;
+}) {
+  if (isExternalLink(href)) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
+  );
+}
 
 function HeroMediaRenderer({
-    media,
-    title,
-    legacyYoutubeUrl,
+  media,
+  title,
+  legacyYoutubeUrl,
 }: {
-    media?: HeroMedia;
-    title: string;
-    legacyYoutubeUrl?: string;
+  media?: HeroMedia;
+  title: string;
+  legacyYoutubeUrl?: string;
 }) {
-    const youtubeUrl =
-        media?.type === "youtube" ? media.youtubeUrl : legacyYoutubeUrl;
+  const youtubeUrl =
+    media?.type === "youtube" ? media.youtubeUrl : legacyYoutubeUrl;
 
-    const embedUrl = getYoutubeEmbedUrl(youtubeUrl);
+  const embedUrl = getYoutubeEmbedUrl(youtubeUrl);
 
-    if (media?.type === "image" && media.imageFile?.asset?.url) {
-        return (
-            <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-2 shadow-xl">
-                <img
-                    src={media.imageFile.asset.url}
-                    alt={media.imageFile.alt || title}
-                    className="aspect-video w-full rounded-[1.6rem] object-cover"
-                />
-            </div>
-        );
-    }
-
-    if (media?.type === "video" && media.videoFile?.asset?.url) {
-        return (
-            <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-2 shadow-xl">
-                <video
-                    src={media.videoFile.asset.url}
-                    controls
-                    playsInline
-                    className="aspect-video w-full rounded-[1.6rem] object-cover"
-                />
-            </div>
-        );
-    }
-
-    if (embedUrl) {
-        return (
-            <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-2 shadow-xl">
-                <iframe
-                    src={embedUrl}
-                    title={title}
-                    className="aspect-video w-full rounded-[1.6rem]"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                />
-            </div>
-        );
-    }
-
+  if (media?.type === "image" && media.imageFile?.asset?.url) {
     return (
-        <div className="flex aspect-video items-center justify-center rounded-[2rem] border border-slate-200 bg-slate-50 px-6 text-center shadow-sm">
-            <div>
-                {media?.type === "video" ? (
-                    <Video className="mx-auto mb-4 size-11 text-indigo-500 filter drop-shadow-[0_4px_10px_rgba(99,102,241,0.2)]" />
-                ) : media?.type === "image" ? (
-                    <ImageIcon className="mx-auto mb-4 size-11 text-indigo-500 filter drop-shadow-[0_4px_10px_rgba(99,102,241,0.2)]" />
-                ) : (
-                    <PlayCircle className="mx-auto mb-4 size-11 text-indigo-500 filter drop-shadow-[0_4px_10px_rgba(99,102,241,0.2)]" />
-                )}
-
-                <p className="text-sm font-semibold text-slate-800">
-                    Média de l'expertise
-                </p>
-                <p className="mt-2 text-xs text-slate-500">
-                    Ajoutez une vidéo YouTube, un fichier MP4 ou une image dans Sanity.
-                </p>
-            </div>
+      <div className="relative">
+        <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-indigo-200/70 via-white to-cyan-200/70 blur-3xl" />
+        <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white p-2 shadow-[0_30px_80px_rgba(15,23,42,0.10)]">
+          <img
+            src={media.imageFile.asset.url}
+            alt={media.imageFile.alt || title}
+            className="aspect-video w-full rounded-[1.6rem] object-cover"
+          />
         </div>
+      </div>
     );
+  }
+
+  if (media?.type === "video" && media.videoFile?.asset?.url) {
+    return (
+      <div className="relative">
+        <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-indigo-200/70 via-white to-cyan-200/70 blur-3xl" />
+        <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white p-2 shadow-[0_30px_80px_rgba(15,23,42,0.10)]">
+          <video
+            src={media.videoFile.asset.url}
+            controls
+            playsInline
+            className="aspect-video w-full rounded-[1.6rem] object-cover"
+          />
+        </div>
+      </div>
+    );
+  }
+
+  if (embedUrl) {
+    return (
+      <div className="relative">
+        <div className="absolute -inset-6 rounded-[2.5rem] bg-gradient-to-br from-indigo-200/70 via-white to-cyan-200/70 blur-3xl" />
+        <div className="relative overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white p-2 shadow-[0_30px_80px_rgba(15,23,42,0.10)]">
+          <iframe
+            src={embedUrl}
+            title={title}
+            className="aspect-video w-full rounded-[1.6rem]"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 export function FeatureHero({ data }: FeatureHeroProps) {
-    const ctaLabel = data.ctaLabel || "Parler de mon projet";
-    const ctaHref = data.ctaHref || "/#formulaire";
+  const shouldRenderMedia = hasHeroMedia(data);
 
-    return (
-        <section
-            id={data.slug}
-            className="relative z-20 mx-auto w-full max-w-7xl px-6 py-10 sm:px-8 lg:px-10 lg:py-16"
+  const ctaLabel = data.ctaLabel || "Créer ma plateforme";
+  const ctaHref = data.ctaHref || "/contact";
+
+  const landingLabel = data.landingLabel || "Découvrir Vexly";
+  const landingHref = data.landingHref || "/";
+
+  return (
+    <section
+      id={data.slug}
+      className="relative isolate overflow-hidden bg-[#F8FAFC] px-6 py-20 text-slate-950 sm:py-24 lg:px-8 lg:py-28"
+    >
+      <div className="pointer-events-none absolute -left-40 bottom-[-22rem] h-[38rem] w-[38rem] rounded-full border border-indigo-100" />
+      <div className="pointer-events-none absolute -left-28 bottom-[-18rem] h-[32rem] w-[32rem] rounded-full border border-indigo-100" />
+      <div className="pointer-events-none absolute -left-16 bottom-[-14rem] h-[26rem] w-[26rem] rounded-full border border-indigo-100" />
+      <div className="pointer-events-none absolute right-0 top-0 h-72 w-72 rounded-bl-[7rem] bg-indigo-100/50 blur-3xl" />
+      <div className="pointer-events-none absolute right-16 top-20 hidden h-32 w-32 bg-[radial-gradient(circle,_#6366f1_1px,_transparent_1px)] [background-size:18px_18px] opacity-20 lg:block" />
+
+      <div className="relative mx-auto max-w-7xl">
+        <div
+          className={
+            shouldRenderMedia
+              ? "grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16"
+              : "grid items-center gap-14 lg:gap-16"
+          }
         >
-            <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-                <div className="relative z-20">
-                    <h1 className="max-w-2xl text-4xl font-extrabold leading-[1.05] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-                        <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 bg-clip-text text-transparent">
-                            {data.title}
-                        </span>
-                    </h1>
-
-                    {data.description ? (
-                        <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-600">
-                            {data.description}
-                        </p>
-                    ) : null}
-
-                    <div className="relative z-30 mt-9 flex items-center">
-                        {isExternalLink(ctaHref) ? (
-                            <a
-                                href={ctaHref}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={ctaClassName}
-                            >
-                                {ctaLabel}
-                                <ArrowRight className="size-4" />
-                            </a>
-                        ) : (
-                            <Link
-                                href={ctaHref}
-                                className={ctaClassName}
-                            >
-                                {ctaLabel}
-                                <ArrowRight className="size-4" />
-                            </Link>
-                        )}
-                    </div>
-                </div>
-
-                <div className="relative z-10">
-                    <HeroMediaRenderer
-                        media={data.heroMedia}
-                        title={data.title}
-                        legacyYoutubeUrl={data.youtubeUrl}
-                    />
-                </div>
+          <div className="relative z-10">
+            <div className="inline-flex items-center rounded-full border border-indigo-100 bg-white/80 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-indigo-600 shadow-sm backdrop-blur">
+              Expertise Vexly
             </div>
-        </section>
-    );
+
+            <h1 className="mt-7 max-w-3xl text-4xl font-black leading-[0.98] tracking-[-0.055em] text-slate-950 sm:text-6xl lg:text-7xl">
+              {data.title}
+            </h1>
+
+            <div className="mt-8 h-1 w-20 rounded-full bg-indigo-600" />
+
+            {data.description ? (
+              <p className="mt-8 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+                {data.description}
+              </p>
+            ) : null}
+
+            <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center">
+              <SmartButton href={ctaHref} className={primaryButtonClassName}>
+                {ctaLabel}
+                <ArrowRight className="size-4 transition duration-300 group-hover:translate-x-1" />
+              </SmartButton>
+
+              <SmartButton href={landingHref} className={textLinkClassName}>
+                {landingLabel}
+                <ArrowRight className="size-4 transition duration-300 group-hover:translate-x-1" />
+              </SmartButton>
+            </div>
+          </div>
+
+          {shouldRenderMedia ? (
+            <div className="relative z-10">
+              <HeroMediaRenderer
+                media={data.heroMedia}
+                title={data.title}
+                legacyYoutubeUrl={data.youtubeUrl}
+              />
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  );
 }

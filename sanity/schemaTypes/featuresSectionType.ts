@@ -1,4 +1,36 @@
-import { defineType, defineField } from "sanity";
+import { defineField, defineType } from "sanity";
+
+const textItemsField = defineField({
+  name: "items",
+  title: "Éléments",
+  type: "array",
+  of: [
+    {
+      type: "object",
+      title: "Élément",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
+          validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+          name: "description",
+          title: "Description",
+          type: "text",
+          rows: 3,
+        }),
+      ],
+      preview: {
+        select: {
+          title: "title",
+          subtitle: "description",
+        },
+      },
+    },
+  ],
+});
 
 export const featuresSectionType = defineType({
   name: "featuresSection",
@@ -32,38 +64,83 @@ export const featuresSectionType = defineType({
     }),
 
     defineField({
-      name: "hubs",
-      title: "Hubs associés",
-      type: "array",
-      description:
-        "Ancien champ conservé pour compatibilité. Ne plus utiliser pour les pages expertises.",
-      hidden: true,
-      of: [
-        {
-          type: "reference",
-          to: [{ type: "hubPage" }],
-        },
-      ],
+      name: "pageType",
+      title: "Type de page",
+      type: "string",
+      initialValue: "solution",
+      options: {
+        layout: "radio",
+        list: [
+          { title: "Solution", value: "solution" },
+          { title: "Ressource", value: "resource" },
+          { title: "Autre", value: "other" },
+        ],
+      },
+    }),
+
+    defineField({
+      name: "navLabel",
+      title: "Label navigation",
+      type: "string",
+    }),
+
+    defineField({
+      name: "showInHeader",
+      title: "Afficher dans le header",
+      type: "boolean",
+      initialValue: false,
+    }),
+
+    defineField({
+      name: "showOnHome",
+      title: "Afficher sur la home",
+      type: "boolean",
+      initialValue: true,
+    }),
+
+    defineField({
+      name: "order",
+      title: "Ordre",
+      type: "number",
+      initialValue: 0,
     }),
 
     defineField({
       name: "description",
-      title: "Description",
+      title: "Description Hero",
       type: "text",
+      rows: 4,
+    }),
+
+    defineField({
+      name: "eyebrow",
+      title: "Petit titre Hero",
+      type: "string",
+      initialValue: "Expertise Vexly",
     }),
 
     defineField({
       name: "ctaLabel",
-      title: "Texte du CTA",
+      title: "Texte du CTA principal",
       type: "string",
-      description: "Exemple : En savoir plus",
     }),
 
     defineField({
       name: "ctaHref",
-      title: "Lien du CTA",
+      title: "Lien du CTA principal",
       type: "string",
-      description: "Exemple : /agence-ia-saas-createurs",
+    }),
+
+    defineField({
+      name: "landingLabel",
+      title: "Texte du lien secondaire Hero",
+      type: "string",
+    }),
+
+    defineField({
+      name: "landingHref",
+      title: "Lien secondaire Hero",
+      type: "string",
     }),
 
     defineField({
@@ -83,7 +160,6 @@ export const featuresSectionType = defineType({
               { title: "Image fichier", value: "image" },
             ],
           },
-          validation: (Rule) => Rule.required(),
         }),
 
         defineField({
@@ -124,31 +200,31 @@ export const featuresSectionType = defineType({
           ],
         }),
       ],
-      validation: (Rule) =>
-        Rule.custom((media) => {
-          if (!media?.type) return "Choisis un type de média";
+    }),
 
-          if (media.type === "youtube" && !media.youtubeUrl) {
-            return "Ajoute un lien YouTube";
-          }
-
-          if (media.type === "video" && !media.videoFile) {
-            return "Ajoute un fichier vidéo";
-          }
-
-          if (media.type === "image" && !media.imageFile) {
-            return "Ajoute une image";
-          }
-
-          return true;
+    defineField({
+      name: "advantagesIntro",
+      title: "Intro avantages",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
         }),
+        defineField({
+          name: "description",
+          title: "Description",
+          type: "text",
+          rows: 3,
+        }),
+      ],
     }),
 
     defineField({
       name: "advantages",
       title: "Avantages",
       type: "array",
-      description: "Ajoute autant d’avantages que tu veux",
       of: [
         {
           type: "object",
@@ -160,28 +236,22 @@ export const featuresSectionType = defineType({
               type: "string",
               validation: (Rule) => Rule.required(),
             }),
-
             defineField({
               name: "description",
               title: "Description",
               type: "text",
+              rows: 4,
             }),
-
             defineField({
               name: "linkLabel",
               title: "Texte du lien",
               type: "string",
-              description: "Exemple : En savoir plus",
             }),
-
             defineField({
               name: "linkHref",
               title: "Lien",
               type: "string",
-              description:
-                "Exemple : /agence-ia-saas-createurs ou https://www.noxal.fr",
             }),
-
             defineField({
               name: "image",
               title: "Image",
@@ -210,6 +280,250 @@ export const featuresSectionType = defineType({
     }),
 
     defineField({
+      name: "service",
+      title: "Service",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
+        }),
+        textItemsField,
+      ],
+    }),
+
+    defineField({
+      name: "whyUs",
+      title: "Pourquoi nous",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
+        }),
+        textItemsField,
+      ],
+    }),
+
+    defineField({
+      name: "realisations",
+      title: "Réalisations",
+      type: "object",
+      fields: [
+        defineField({
+          name: "eyebrow",
+          title: "Petit titre",
+          type: "string",
+        }),
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
+        }),
+        defineField({
+          name: "ctaLabel",
+          title: "Texte du lien",
+          type: "string",
+        }),
+        defineField({
+          name: "ctaHref",
+          title: "Lien",
+          type: "string",
+        }),
+        defineField({
+          name: "items",
+          title: "Réalisations",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              title: "Réalisation",
+              fields: [
+                defineField({
+                  name: "title",
+                  title: "Titre",
+                  type: "string",
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: "category",
+                  title: "Catégorie",
+                  type: "string",
+                }),
+                defineField({
+                  name: "description",
+                  title: "Description",
+                  type: "text",
+                  rows: 3,
+                }),
+                defineField({
+                  name: "tags",
+                  title: "Tags",
+                  type: "array",
+                  of: [{ type: "string" }],
+                }),
+                defineField({
+                  name: "image",
+                  title: "Image",
+                  type: "image",
+                  options: {
+                    hotspot: true,
+                  },
+                  fields: [
+                    defineField({
+                      name: "alt",
+                      title: "Texte alternatif",
+                      type: "string",
+                    }),
+                  ],
+                }),
+                defineField({
+                  name: "linkLabel",
+                  title: "Texte du lien",
+                  type: "string",
+                }),
+                defineField({
+                  name: "linkHref",
+                  title: "Lien",
+                  type: "string",
+                }),
+              ],
+              preview: {
+                select: {
+                  title: "title",
+                  subtitle: "category",
+                  media: "image",
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+
+    defineField({
+      name: "method",
+      title: "Méthode",
+      type: "object",
+      fields: [
+        defineField({
+          name: "eyebrow",
+          title: "Petit titre",
+          type: "string",
+        }),
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
+        }),
+        defineField({
+          name: "description",
+          title: "Description",
+          type: "text",
+          rows: 3,
+        }),
+        defineField({
+          name: "steps",
+          title: "Étapes",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              title: "Étape",
+              fields: [
+                defineField({
+                  name: "title",
+                  title: "Titre",
+                  type: "string",
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: "description",
+                  title: "Description",
+                  type: "text",
+                  rows: 3,
+                }),
+              ],
+              preview: {
+                select: {
+                  title: "title",
+                  subtitle: "description",
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+
+    defineField({
+      name: "technologies",
+      title: "Technologies",
+      type: "object",
+      fields: [
+        defineField({
+          name: "eyebrow",
+          title: "Petit titre",
+          type: "string",
+        }),
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
+        }),
+        defineField({
+          name: "items",
+          title: "Technologies / partenaires",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              title: "Technologie",
+              fields: [
+                defineField({
+                  name: "title",
+                  title: "Titre",
+                  type: "string",
+                  validation: (Rule) => Rule.required(),
+                }),
+                defineField({
+                  name: "logoLabel",
+                  title: "Logo texte court",
+                  type: "string",
+                  description: "Exemple : Next, TS, Stripe, DB",
+                }),
+                defineField({
+                  name: "logo",
+                  title: "Logo image",
+                  type: "image",
+                  options: {
+                    hotspot: true,
+                  },
+                  fields: [
+                    defineField({
+                      name: "alt",
+                      title: "Texte alternatif",
+                      type: "string",
+                    }),
+                  ],
+                }),
+              ],
+              preview: {
+                select: {
+                  title: "title",
+                  subtitle: "logoLabel",
+                  media: "logo",
+                },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
+
+    defineField({
       name: "seoContent",
       title: "Contenu SEO",
       type: "object",
@@ -219,14 +533,12 @@ export const featuresSectionType = defineType({
           title: "Titre SEO",
           type: "string",
         }),
-
         defineField({
           name: "paragraphs",
           title: "Paragraphes SEO",
           type: "array",
           of: [{ type: "text" }],
         }),
-
         defineField({
           name: "items",
           title: "Cartes SEO",
@@ -243,11 +555,6 @@ export const featuresSectionType = defineType({
                   validation: (Rule) => Rule.required(),
                 }),
               ],
-              preview: {
-                select: {
-                  title: "title",
-                },
-              },
             },
           ],
         }),
@@ -264,13 +571,12 @@ export const featuresSectionType = defineType({
           title: "Titre de la FAQ",
           type: "string",
         }),
-
         defineField({
           name: "description",
           title: "Description de la FAQ",
           type: "text",
+          rows: 3,
         }),
-
         defineField({
           name: "items",
           title: "Questions / Réponses",
@@ -286,7 +592,6 @@ export const featuresSectionType = defineType({
                   type: "string",
                   validation: (Rule) => Rule.required(),
                 }),
-
                 defineField({
                   name: "answer",
                   title: "Réponse",
@@ -302,6 +607,75 @@ export const featuresSectionType = defineType({
               },
             },
           ],
+        }),
+      ],
+    }),
+
+    defineField({
+      name: "finalCta",
+      title: "CTA final",
+      type: "object",
+      fields: [
+        defineField({
+          name: "eyebrow",
+          title: "Petit titre",
+          type: "string",
+        }),
+        defineField({
+          name: "title",
+          title: "Titre",
+          type: "string",
+        }),
+        defineField({
+          name: "subtitle",
+          title: "Sous-titre",
+          type: "text",
+          rows: 3,
+        }),
+        defineField({
+          name: "ctaLabel",
+          title: "Texte du bouton",
+          type: "string",
+        }),
+        defineField({
+          name: "ctaHref",
+          title: "Lien du bouton",
+          type: "string",
+        }),
+      ],
+    }),
+
+    defineField({
+      name: "seo",
+      title: "SEO",
+      type: "object",
+      fields: [
+        defineField({
+          name: "title",
+          title: "Meta title",
+          type: "string",
+        }),
+        defineField({
+          name: "description",
+          title: "Meta description",
+          type: "text",
+          rows: 3,
+        }),
+        defineField({
+          name: "canonical",
+          title: "URL canonique",
+          type: "url",
+        }),
+        defineField({
+          name: "ogImage",
+          title: "Image Open Graph",
+          type: "image",
+        }),
+        defineField({
+          name: "noIndex",
+          title: "No index",
+          type: "boolean",
+          initialValue: false,
         }),
       ],
     }),

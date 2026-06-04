@@ -157,16 +157,16 @@ function CloseIcon() {
 }
 
 export default function Header({ data }: HeaderProps) {
+  const [openMenu, setOpenMenu] = useState<number | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const closeTimer = useRef<number | null>(null);
+
   if (!data) return null;
 
   const navigation = data.navigation ?? [];
   const loginLink = data.loginLink;
   const cta = data.cta;
-
-  const [openMenu, setOpenMenu] = useState<number | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const closeTimer = useRef<number | null>(null);
 
   const clearCloseTimer = () => {
     if (closeTimer.current) {
@@ -359,7 +359,7 @@ export default function Header({ data }: HeaderProps) {
               <SmartLink
                 href={cta.href}
                 onClick={forceClose}
-                className="group hidden rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-6 py-3 text-sm font-bold text-white shadow-[0_18px_45px_rgba(88,80,236,0.4)] transition duration-200 hover:brightness-110 hover:shadow-[0_22px_55px_rgba(88,80,236,0.5)] active:scale-[0.97] md:inline-flex"
+                className="group hidden rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-6 py-3 text-sm font-bold text-white shadow-[0_8px_22px_rgba(88,80,236,0.22)] transition duration-200 hover:brightness-110 hover:shadow-[0_10px_28px_rgba(88,80,236,0.28)] active:scale-[0.97] md:inline-flex"
               >
                 <span className="flex items-center gap-2">
                   {cta.label}
@@ -475,7 +475,7 @@ export default function Header({ data }: HeaderProps) {
                   <SmartLink
                     href={cta.href}
                     onClick={forceClose}
-                    className="group block w-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-3.5 text-center text-sm font-bold text-white shadow-[0_18px_45px_rgba(88,80,236,0.45)] transition duration-200 hover:brightness-110 active:scale-[0.98]"
+                    className="group block w-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-5 py-3.5 text-center text-sm font-bold text-white shadow-[0_8px_22px_rgba(88,80,236,0.24)] transition duration-200 hover:brightness-110 active:scale-[0.98]"
                   >
                     <span className="flex items-center justify-center gap-2">
                       {cta.label}

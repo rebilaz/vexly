@@ -6,6 +6,7 @@ import {
   getAllFeaturesSlugs,
   getFeaturesSection,
 } from "@/sanity/lib/features";
+import { getPricingPage } from "@/sanity/lib/pricingPage";
 
 export const revalidate = 0;
 export const dynamic = "force-dynamic";
@@ -73,11 +74,20 @@ export async function generateMetadata({
 
 export default async function FeaturePage({ params }: PageProps) {
   const { slug } = await params;
-  const data = await getFeaturesSection(slug);
+
+  const [data, pricingPage] = await Promise.all([
+    getFeaturesSection(slug),
+    getPricingPage(),
+  ]);
 
   if (!data) {
     notFound();
   }
 
-  return <FeaturesLayout data={data} />;
+  return (
+    <FeaturesLayout
+      data={data}
+      testimonials={pricingPage?.testimonials}
+    />
+  );
 }

@@ -2,6 +2,37 @@ import "server-only";
 
 import { client } from "./client";
 
+export type TextItem = {
+  title?: string;
+  description?: string;
+};
+
+export type TechnologyItem = {
+  title?: string;
+  logoLabel?: string;
+  logo?: {
+    asset?: {
+      url?: string;
+    };
+    alt?: string;
+  };
+};
+
+export type RealisationItem = {
+  title?: string;
+  category?: string;
+  description?: string;
+  tags?: string[];
+  image?: {
+    asset?: {
+      url?: string;
+    };
+    alt?: string;
+  };
+  linkLabel?: string;
+  linkHref?: string;
+};
+
 export type FeatureSolutionCard = {
   _id: string;
   title: string;
@@ -24,8 +55,12 @@ export type FeatureSectionContent = {
   showOnHome?: boolean;
   order?: number;
   description?: string;
+  eyebrow?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  landingLabel?: string;
+  landingHref?: string;
+
   heroMedia?: {
     type?: "youtube" | "video" | "image";
     youtubeUrl?: string;
@@ -43,6 +78,12 @@ export type FeatureSectionContent = {
       alt?: string;
     };
   };
+
+  advantagesIntro?: {
+    title?: string;
+    description?: string;
+  };
+
   advantages?: {
     title: string;
     description?: string;
@@ -55,6 +96,38 @@ export type FeatureSectionContent = {
       alt?: string;
     };
   }[];
+
+  service?: {
+    title?: string;
+    items?: TextItem[];
+  };
+
+  whyUs?: {
+    title?: string;
+    items?: TextItem[];
+  };
+
+  realisations?: {
+    eyebrow?: string;
+    title?: string;
+    ctaLabel?: string;
+    ctaHref?: string;
+    items?: RealisationItem[];
+  };
+
+  method?: {
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+    steps?: TextItem[];
+  };
+
+  technologies?: {
+    eyebrow?: string;
+    title?: string;
+    items?: TechnologyItem[];
+  };
+
   seoContent?: {
     title?: string;
     paragraphs?: string[];
@@ -62,6 +135,7 @@ export type FeatureSectionContent = {
       title?: string;
     }[];
   };
+
   faq?: {
     title?: string;
     description?: string;
@@ -70,6 +144,15 @@ export type FeatureSectionContent = {
       answer?: string;
     }[];
   };
+
+  finalCta?: {
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+    ctaLabel?: string;
+    ctaHref?: string;
+  };
+
   seo?: {
     title?: string;
     description?: string;
@@ -89,9 +172,11 @@ const featuresSectionFields = `
   "showOnHome": coalesce(showOnHome, true),
   "order": coalesce(order, 0),
   description,
-
+  eyebrow,
   ctaLabel,
   ctaHref,
+  landingLabel,
+  landingHref,
 
   heroMedia {
     type,
@@ -111,6 +196,11 @@ const featuresSectionFields = `
     }
   },
 
+  advantagesIntro {
+    title,
+    description
+  },
+
   advantages[] {
     title,
     description,
@@ -121,6 +211,68 @@ const featuresSectionFields = `
         url
       },
       alt
+    }
+  },
+
+  service {
+    title,
+    items[] {
+      title,
+      description
+    }
+  },
+
+  whyUs {
+    title,
+    items[] {
+      title,
+      description
+    }
+  },
+
+  realisations {
+    eyebrow,
+    title,
+    ctaLabel,
+    ctaHref,
+    items[] {
+      title,
+      category,
+      description,
+      tags,
+      image {
+        asset-> {
+          url
+        },
+        alt
+      },
+      linkLabel,
+      linkHref
+    }
+  },
+
+  method {
+    eyebrow,
+    title,
+    description,
+    steps[] {
+      title,
+      description
+    }
+  },
+
+  technologies {
+    eyebrow,
+    title,
+    items[] {
+      title,
+      logoLabel,
+      logo {
+        asset-> {
+          url
+        },
+        alt
+      }
     }
   },
 
@@ -139,6 +291,14 @@ const featuresSectionFields = `
       question,
       answer
     }
+  },
+
+  finalCta {
+    eyebrow,
+    title,
+    subtitle,
+    ctaLabel,
+    ctaHref
   },
 
   seo {
