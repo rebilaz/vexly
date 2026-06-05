@@ -5,7 +5,7 @@ import { getPricingPage } from "@/sanity/lib/pricingPage";
 
 export const revalidate = 60;
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://vexly.fr";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.vexly.fr";
 
 const seo = {
   title: "Prix création SaaS pour créateurs | Vexly",
