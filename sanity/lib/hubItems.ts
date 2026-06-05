@@ -2,7 +2,7 @@ import "server-only";
 
 import { client } from "@/sanity/lib/client";
 import type { Article } from "@/sanity/lib/articles";
-import type { ComparisonPageContent } from "@/sanity/lib/comparisonPage";
+import type { ComparisonPageContent } from "@/noindex/comparisonPage";
 
 export type HubItemType = "article" | "comparisonPage";
 

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ArticleLayout } from "@/components/ressources/articles/articles/ArticleLayout";
-import ComparisonLayout from "@/components/comparison/ComparisonLayout";
 import {
   getHubItemByHubAndSlug,
   getHubItemSlugsByHubSlug,
@@ -49,7 +48,7 @@ export async function generateMetadata({
     slug,
   });
 
-  if (!item) {
+  if (!item || item.type !== "article") {
     return {
       title: "Page introuvable",
       robots: {
@@ -59,82 +58,29 @@ export async function generateMetadata({
     };
   }
 
-  if (item.type === "article") {
-    const fm = item.data.frontmatter;
-    const canonical = buildCanonical(item.data.slug);
-    const ogImage = toAbsoluteUrl(fm.coverImageUrl);
-
-    return {
-      title: fm.title,
-      description: fm.description,
-      alternates: {
-        canonical,
-      },
-      openGraph: {
-        title: fm.title,
-        description: fm.description,
-        type: "article",
-        url: canonical,
-        images: ogImage
-          ? [
-              {
-                url: ogImage,
-                alt: fm.coverImageAlt || fm.title,
-              },
-            ]
-          : [],
-      },
-    };
-  }
-
-  if (item.type === "comparisonPage") {
-    const page = item.data;
-
-    const title =
-      page.seo?.title ?? page.hero?.title ?? page.title ?? "Comparaison";
-
-    const description =
-      page.seo?.description ?? page.hero?.description ?? undefined;
-
-    const canonical =
-      toAbsoluteUrl(page.seo?.canonical) ?? buildCanonical(page.slug);
-
-    const ogImage = toAbsoluteUrl(page.seo?.ogImageUrl);
-
-    return {
-      title,
-      description,
-      alternates: {
-        canonical,
-      },
-      robots: page.seo?.noIndex
-        ? {
-            index: false,
-            follow: false,
-          }
-        : undefined,
-      openGraph: {
-        title: page.seo?.ogTitle ?? title,
-        description: page.seo?.ogDescription ?? description,
-        type: "website",
-        url: canonical,
-        images: ogImage
-          ? [
-              {
-                url: ogImage,
-                alt: page.seo?.ogTitle ?? title,
-              },
-            ]
-          : [],
-      },
-    };
-  }
+  const fm = item.data.frontmatter;
+  const canonical = buildCanonical(item.data.slug);
+  const ogImage = toAbsoluteUrl(fm.coverImageUrl);
 
   return {
-    title: "Page introuvable",
-    robots: {
-      index: false,
-      follow: false,
+    title: fm.title,
+    description: fm.description,
+    alternates: {
+      canonical,
+    },
+    openGraph: {
+      title: fm.title,
+      description: fm.description,
+      type: "article",
+      url: canonical,
+      images: ogImage
+        ? [
+            {
+              url: ogImage,
+              alt: fm.coverImageAlt || fm.title,
+            },
+          ]
+        : [],
     },
   };
 }
@@ -151,28 +97,20 @@ export default async function ArticlesSlugPage({
     slug,
   });
 
-  if (!item) {
+  if (!item || item.type !== "article") {
     notFound();
   }
 
-  if (item.type === "article") {
-    const fm = item.data.frontmatter;
+  const fm = item.data.frontmatter;
 
-    return (
-      <ArticleLayout
-        title={fm.title}
-        subtitle={fm.subtitle}
-        date={fm.date ?? fm.updatedAt}
-        coverImageUrl={fm.coverImageUrl}
-        backHref={BACK_HREF}
-        content={item.data.content || []}
-      />
-    );
-  }
-
-  if (item.type === "comparisonPage") {
-    return <ComparisonLayout page={item.data} backHref={BACK_HREF} />;
-  }
-
-  notFound();
+  return (
+    <ArticleLayout
+      title={fm.title}
+      subtitle={fm.subtitle}
+      date={fm.date ?? fm.updatedAt}
+      coverImageUrl={fm.coverImageUrl}
+      backHref={BACK_HREF}
+      content={item.data.content || []}
+    />
+  );
 }

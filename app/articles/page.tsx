@@ -22,7 +22,7 @@ function getFallbackArticlesHub(): HubPageContent {
       titleline1: "Articles, ressources et guides",
       titlehighlight: "pour développer votre business",
       description:
-        "Découvrez nos articles, comparaisons et ressources pour avancer plus vite.",
+        "Découvrez nos articles et ressources pour avancer plus vite.",
       backgroundImageUrl: "/Gemini_Generated_Image_vdi976vdi976vdi9.webp",
       backgroundImageAlt: "",
     },

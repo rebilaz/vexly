@@ -52,15 +52,15 @@ export default function LandingLayout({ landingcontent }: LandingLayoutProps) {
   } = landingcontent.finalCta;
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50">
-      <HeroSection
-        eyebrow={eyebrow}
-        titleline1={titleline1}
-        titlehighlight={titlehighlight}
-        description={desc1}
-      />
+    <div className="min-h-screen overflow-x-hidden bg-[#F8FAFC] text-slate-950">
+      <main className="overflow-hidden">
+        <HeroSection
+          eyebrow={eyebrow}
+          titleline1={titleline1}
+          titlehighlight={titlehighlight}
+          description={desc1}
+        />
 
-      <div className="mx-auto max-w-7xl px-6 py-16 space-y-16 sm:py-24 sm:space-y-24 lg:px-8 lg:space-y-32">
         <RevenueProjectionSection
           title={title3}
           description={desc3}
@@ -77,23 +77,25 @@ export default function LandingLayout({ landingcontent }: LandingLayoutProps) {
 
         <FeaturesSection />
 
-        <ExecutionMethodSection
-          title={title5}
-          description={desc5}
-          steps={steps}
-        />
+        <div className="mx-auto max-w-7xl px-6 py-16 space-y-16 sm:py-24 sm:space-y-24 lg:px-8 lg:space-y-32">
+          <ExecutionMethodSection
+            title={title5}
+            description={desc5}
+            steps={steps}
+          />
 
-        <FAQSection
-          title={faqTitle}
-          items={faqItems}
-        />
+          <FAQSection
+            title={faqTitle}
+            items={faqItems}
+          />
+        </div>
 
         <FinalCTASection
           title={title6}
           subtitle={subtitle6}
           primaryCtaLabel={primaryCtaLabel}
         />
-      </div>
+      </main>
     </div>
   );
 }

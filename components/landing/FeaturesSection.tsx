@@ -9,49 +9,52 @@ export default async function FeaturesSection() {
   if (!expertises?.length) return null;
 
   return (
-    <section className="mx-auto max-w-6xl">
-      <div className="text-center">
-        <p className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-indigo-600">
-          Nos expertises
-        </p>
+    <section className="relative isolate overflow-hidden bg-[#F8FAFC] px-6 py-20 text-slate-950 sm:py-24 lg:px-8 lg:py-28">
+      <div className="pointer-events-none absolute -right-40 top-[-18rem] h-[38rem] w-[38rem] rounded-full bg-indigo-200/35 blur-3xl" />
+      <div className="pointer-events-none absolute -left-40 bottom-[-22rem] h-[38rem] w-[38rem] rounded-full border border-indigo-100" />
+      <div className="pointer-events-none absolute -left-28 bottom-[-18rem] h-[32rem] w-[32rem] rounded-full border border-indigo-100" />
+      <div className="pointer-events-none absolute right-16 top-28 hidden h-32 w-32 bg-[radial-gradient(circle,_#6366f1_1px,_transparent_1px)] [background-size:18px_18px] opacity-15 lg:block" />
 
-        <h2 className="font-geist text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-          Des expertises pensées pour lancer votre SaaS plus vite
-        </h2>
+      <div className="relative mx-auto max-w-7xl">
+        <div className="border-b border-slate-200 pb-12">
+          <h2 className="max-w-4xl text-5xl font-black leading-[0.98] tracking-[-0.06em] text-slate-950 sm:text-6xl lg:text-7xl">
+            Des expertises pensées pour lancer votre SaaS plus vite
+          </h2>
+        </div>
 
-        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600">
-          Découvrez les accompagnements Vexly pour transformer votre audience en
-          plateforme, produit SaaS ou actif digital rentable.
-        </p>
-      </div>
+        <div className="divide-y divide-slate-200">
+          {expertises.map((expertise, index) => (
+            <Link
+              key={expertise._id}
+              href={expertise.href}
+              className="group grid gap-6 py-12 transition duration-300 hover:bg-white/60 sm:grid-cols-[120px_1fr_auto] sm:px-4 lg:grid-cols-[140px_1fr_auto]"
+            >
+              <div className="flex items-start">
+                <span className="text-6xl font-black leading-none tracking-[-0.08em] text-slate-200 transition duration-300 group-hover:text-indigo-200 sm:text-7xl">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+              </div>
 
-      <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {expertises.map((expertise) => (
-          <Link
-            key={expertise._id}
-            href={expertise.href}
-            className="group flex h-full flex-col rounded-3xl border border-slate-200 bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:border-indigo-200 hover:shadow-xl"
-          >
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white transition group-hover:bg-indigo-600">
-              <ArrowRight className="size-5 transition group-hover:translate-x-0.5" />
-            </div>
+              <div className="max-w-4xl">
+                <h3 className="text-3xl font-black leading-tight tracking-[-0.045em] text-slate-950 sm:text-4xl lg:text-5xl">
+                  {expertise.navLabel || expertise.title}
+                </h3>
 
-            <h3 className="text-xl font-bold leading-snug text-slate-900">
-              {expertise.navLabel || expertise.title}
-            </h3>
+                {expertise.description ? (
+                  <p className="mt-5 max-w-2xl text-base leading-8 text-slate-600">
+                    {expertise.description}
+                  </p>
+                ) : null}
+              </div>
 
-            {expertise.description ? (
-              <p className="mt-4 flex-1 text-sm leading-relaxed text-slate-600">
-                {expertise.description}
-              </p>
-            ) : null}
-
-            <div className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-indigo-600">
-              {expertise.ctaLabel || "Découvrir l’expertise"}
-              <span className="transition group-hover:translate-x-1">→</span>
-            </div>
-          </Link>
-        ))}
+              <div className="flex items-center sm:justify-end">
+                <span className="flex size-14 items-center justify-center rounded-full bg-[#061A33] text-white shadow-[0_14px_35px_rgba(15,23,42,0.16)] transition duration-300 group-hover:-translate-y-1 group-hover:bg-indigo-600 group-hover:shadow-[0_18px_45px_rgba(79,70,229,0.24)]">
+                  <ArrowRight className="size-5 -rotate-45 transition duration-300 group-hover:rotate-0" />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   );
