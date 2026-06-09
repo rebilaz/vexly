@@ -39,7 +39,7 @@ export default function HeroSection({
               {eyebrow}
             </div>
 
-            <h1 className="mt-6 max-w-full break-words text-[clamp(2.45rem,11vw,3.8rem)] font-black leading-[1.02] tracking-[-0.05em] text-slate-950 sm:mt-7 sm:max-w-4xl sm:text-6xl lg:text-7xl lg:leading-[0.98] lg:tracking-[-0.06em]">
+            <h1 className="mt-6 max-w-[calc(100vw-2rem)] whitespace-normal break-words [overflow-wrap:anywhere] text-[clamp(1.9rem,8.5vw,2.8rem)] font-black leading-[1.08] tracking-[-0.04em] text-slate-950 sm:mt-7 sm:max-w-4xl sm:text-6xl sm:leading-[1.02] sm:tracking-[-0.05em] lg:text-7xl lg:leading-[0.98] lg:tracking-[-0.06em]">
               <span className="block">{titleline1}</span>
               <span className="block">{titlehighlight}</span>
             </h1>
