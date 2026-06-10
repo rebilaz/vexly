@@ -20,6 +20,7 @@ export default function LayoutChrome({
 
   const isMindmap = pathname?.startsWith("/saas/seo-mindmap");
   const isStudio = pathname?.startsWith("/studio");
+  const isEmbed = pathname?.startsWith("/embed");
 
   React.useEffect(() => {
     if (!isMindmap) return;
@@ -36,7 +37,7 @@ export default function LayoutChrome({
     };
   }, [isMindmap]);
 
-  if (isStudio) {
+  if (isStudio || isEmbed) {
     return <>{children}</>;
   }
 

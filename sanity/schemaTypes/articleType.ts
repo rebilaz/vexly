@@ -125,6 +125,7 @@ export const articleType = defineType({
             ],
           },
         },
+
         {
           type: "image",
           options: { hotspot: true },
@@ -141,7 +142,52 @@ export const articleType = defineType({
             }),
           ],
         },
+
         { type: "table" },
+
+        {
+          name: "toolEmbed",
+          title: "Outil intégré",
+          type: "object",
+          fields: [
+            defineField({
+              name: "tool",
+              title: "Outil",
+              type: "reference",
+              to: [{ type: "tool" }],
+              validation: (Rule) => Rule.required(),
+            }),
+
+            defineField({
+              name: "titleOverride",
+              title: "Titre personnalisé dans cet article",
+              type: "string",
+              description:
+                "Optionnel. Si vide, le nom de l’outil sera utilisé.",
+            }),
+
+            defineField({
+              name: "heightOverride",
+              title: "Hauteur personnalisée",
+              type: "number",
+              description:
+                "Optionnel. Si vide, la hauteur définie dans l’outil sera utilisée.",
+              validation: (Rule) => Rule.min(300).max(2000),
+            }),
+          ],
+          preview: {
+            select: {
+              title: "tool.title",
+              titleOverride: "titleOverride",
+            },
+            prepare({ title, titleOverride }) {
+              return {
+                title: titleOverride || title || "Outil intégré",
+                subtitle: "Bloc outil",
+              };
+            },
+          },
+        },
       ],
     }),
   ],

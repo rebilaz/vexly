@@ -58,7 +58,20 @@ const articleDetailFields = `
     "coverImageAlt": coalesce(coverImage.alt, "")
   },
   "sections": [],
-  content
+  content[]{
+    ...,
+    _type == "toolEmbed" => {
+      ...,
+      tool->{
+        _id,
+        title,
+        "slug": slug.current,
+        height,
+        intro,
+        outro
+      }
+    }
+  }
 `;
 
 function sortHubItems(items: HubItemCard[]) {
