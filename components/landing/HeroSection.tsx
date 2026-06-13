@@ -20,7 +20,7 @@ export default function HeroSection({
   titlehighlight,
   description,
   primaryCtaLabel = "Créer ma plateforme",
-  primaryCtaHref = "/#formulaire",
+  primaryCtaHref = "/contact",
   secondaryCtaLabel = "Découvrir Vexly",
   secondaryCtaHref = "/#services",
 }: HeroSectionProps) {

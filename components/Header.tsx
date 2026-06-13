@@ -219,7 +219,10 @@ export default function Header({ data }: HeaderProps) {
         </button>
 
         <div
-          className="absolute left-0 top-full z-50 pt-4"
+          className={[
+            "absolute left-0 top-full z-50 pt-4",
+            isOpen ? "pointer-events-auto" : "pointer-events-none",
+          ].join(" ")}
           onMouseEnter={clearCloseTimer}
           onMouseLeave={() => scheduleClose(index)}
         >
@@ -229,8 +232,8 @@ export default function Header({ data }: HeaderProps) {
               "shadow-[0_24px_70px_rgba(15,23,42,0.14)]",
               "transition-all duration-300 ease-out",
               isOpen
-                ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
-                : "pointer-events-none -translate-y-1 scale-[0.98] opacity-0",
+                ? "translate-y-0 scale-100 opacity-100"
+                : "-translate-y-1 scale-[0.98] opacity-0",
             ].join(" ")}
           >
             <div className="absolute -top-4 left-0 h-4 w-full" />
