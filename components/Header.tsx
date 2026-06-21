@@ -7,6 +7,7 @@ import type {
   SiteSettings,
   SiteNavItem,
   SiteNavLink,
+  SiteNavColumn,
 } from "@/sanity/lib/siteSettings";
 
 type HeaderProps = {
@@ -17,6 +18,20 @@ const CLOSE_DELAY_MS = 220;
 
 function isExternalLink(href: string, isExternal?: boolean) {
   return Boolean(isExternal || href.startsWith("http"));
+}
+
+function getDropdownPanelWidth(columnCount: number) {
+  if (columnCount >= 4) return "w-[1120px]";
+  if (columnCount === 3) return "w-[900px]";
+  if (columnCount === 2) return "w-[700px]";
+  return "w-[390px]";
+}
+
+function getDropdownGridClass(columnCount: number) {
+  if (columnCount >= 4) return "grid-cols-4";
+  if (columnCount === 3) return "grid-cols-3";
+  if (columnCount === 2) return "grid-cols-2";
+  return "grid-cols-1";
 }
 
 function SmartLink({
@@ -195,12 +210,45 @@ export default function Header({ data }: HeaderProps) {
     setMobileOpen(false);
   };
 
+  const renderDropdownLink = (
+    link: SiteNavLink,
+    linkIndex: number,
+    keyPrefix: string,
+  ) => {
+    if (!link.label || !link.href) return null;
+
+    return (
+      <SmartLink
+        key={`${keyPrefix}-${link.label}-${link.href}-${linkIndex}`}
+        href={link.href}
+        isExternal={link.isExternal}
+        onClick={forceClose}
+        className="group block rounded-2xl px-4 py-3.5 transition-all duration-200 hover:translate-x-1 hover:bg-slate-50"
+      >
+        <div className="text-[16px] font-semibold leading-snug text-slate-800 transition-colors duration-200 group-hover:text-slate-950">
+          {link.label}
+        </div>
+
+        {link.description ? (
+          <div className="mt-1.5 text-[13px] leading-relaxed text-slate-500 transition-colors duration-200 group-hover:text-slate-600">
+            {link.description}
+          </div>
+        ) : null}
+      </SmartLink>
+    );
+  };
+
   const renderDesktopDropdown = (item: SiteNavItem, index: number) => {
     const links = item.items ?? [];
+    const columns = item.columns ?? [];
+    const usesColumns =
+      item.dropdownLayout === "columns" && columns.length > 0;
 
-    if (!item.label || !links.length) return null;
+    if (!item.label) return null;
+    if (!usesColumns && !links.length) return null;
 
     const isOpen = openMenu === index;
+    const columnCount = Math.min(Math.max(columns.length, 1), 4);
 
     return (
       <div key={`${item.label}-${index}`} className="relative inline-flex">
@@ -220,7 +268,8 @@ export default function Header({ data }: HeaderProps) {
 
         <div
           className={[
-            "absolute left-0 top-full z-50 pt-4",
+            "absolute top-full z-50 pt-4",
+            usesColumns ? "left-1/2 -translate-x-1/2" : "left-0",
             isOpen ? "pointer-events-auto" : "pointer-events-none",
           ].join(" ")}
           onMouseEnter={clearCloseTimer}
@@ -228,7 +277,10 @@ export default function Header({ data }: HeaderProps) {
         >
           <div
             className={[
-              "relative w-[390px] origin-top-left rounded-3xl border border-slate-200/80 bg-white/95 p-6 backdrop-blur-md",
+              "relative max-w-[calc(100vw-2rem)] origin-top rounded-3xl border border-slate-200/80 bg-white/95 p-6 backdrop-blur-md",
+              usesColumns
+                ? getDropdownPanelWidth(columnCount)
+                : "w-[390px] origin-top-left",
               "shadow-[0_24px_70px_rgba(15,23,42,0.14)]",
               "transition-all duration-300 ease-out",
               isOpen
@@ -238,37 +290,53 @@ export default function Header({ data }: HeaderProps) {
           >
             <div className="absolute -top-4 left-0 h-4 w-full" />
 
-            <div className="mb-5">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                {item.label}
-              </p>
-            </div>
+            {usesColumns ? (
+              <div
+                className={[
+                  "grid gap-7 divide-x divide-slate-100",
+                  getDropdownGridClass(columnCount),
+                ].join(" ")}
+              >
+                {columns.map((column: SiteNavColumn, columnIndex: number) => {
+                  const columnLinks = column.items ?? [];
 
-            <div className="space-y-2">
-              {links.map((link: SiteNavLink, linkIndex: number) => {
-                if (!link.label || !link.href) return null;
+                  return (
+                    <div
+                      key={`${column.title ?? "column"}-${columnIndex}`}
+                      className={columnIndex === 0 ? "pr-3" : "pl-7 pr-3"}
+                    >
+                      {column.title ? (
+                        <p className="px-4 text-xs font-black uppercase tracking-[0.16em] text-indigo-600">
+                          {column.title}
+                        </p>
+                      ) : null}
 
-                return (
-                  <SmartLink
-                    key={`${link.label}-${link.href}-${linkIndex}`}
-                    href={link.href}
-                    isExternal={link.isExternal}
-                    onClick={forceClose}
-                    className="group block rounded-2xl px-4 py-3.5 transition-all duration-200 hover:translate-x-1 hover:bg-slate-50"
-                  >
-                    <div className="text-[16px] font-semibold leading-snug text-slate-800 transition-colors duration-200 group-hover:text-slate-950">
-                      {link.label}
-                    </div>
+                      {column.description ? (
+                        <p className="mt-2 px-4 text-xs leading-5 text-slate-500">
+                          {column.description}
+                        </p>
+                      ) : null}
 
-                    {link.description ? (
-                      <div className="mt-1.5 text-[13px] leading-relaxed text-slate-500 transition-colors duration-200 group-hover:text-slate-600">
-                        {link.description}
+                      <div className="mt-3 space-y-2">
+                        {columnLinks.map((link, linkIndex) =>
+                          renderDropdownLink(
+                            link,
+                            linkIndex,
+                            `${item.label}-${columnIndex}`,
+                          ),
+                        )}
                       </div>
-                    ) : null}
-                  </SmartLink>
-                );
-              })}
-            </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {links.map((link, linkIndex) =>
+                  renderDropdownLink(link, linkIndex, item.label ?? "menu"),
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -306,7 +374,7 @@ export default function Header({ data }: HeaderProps) {
               {navigation.map((item, index) =>
                 item.type === "dropdown"
                   ? renderDesktopDropdown(item, index)
-                  : renderDesktopLink(item, index)
+                  : renderDesktopLink(item, index),
               )}
             </nav>
           ) : null}
@@ -382,7 +450,7 @@ export default function Header({ data }: HeaderProps) {
             className="absolute inset-0 bg-slate-950/25 backdrop-blur-sm"
           />
 
-          <div className="absolute right-0 top-0 h-full w-[86%] max-w-[360px] bg-white shadow-2xl">
+          <div className="absolute right-0 top-0 h-full w-[86%] max-w-[360px] overflow-y-auto bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4">
               <HeaderLogo
                 logoUrl={data.logoUrl}
@@ -408,8 +476,12 @@ export default function Header({ data }: HeaderProps) {
 
                     if (item.type === "dropdown") {
                       const links = item.items ?? [];
+                      const columns = item.columns ?? [];
+                      const usesColumns =
+                        item.dropdownLayout === "columns" &&
+                        columns.length > 0;
 
-                      if (!links.length) return null;
+                      if (!usesColumns && !links.length) return null;
 
                       return (
                         <details
@@ -423,23 +495,75 @@ export default function Header({ data }: HeaderProps) {
                             </span>
                           </summary>
 
-                          <div className="mt-4 flex flex-col gap-2">
-                            {links.map((link, linkIndex) => {
-                              if (!link.label || !link.href) return null;
-
-                              return (
-                                <SmartLink
-                                  key={`${link.label}-${link.href}-${linkIndex}`}
-                                  href={link.href}
-                                  isExternal={link.isExternal}
-                                  onClick={forceClose}
-                                  className="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-white hover:text-slate-950 hover:shadow-sm"
+                          {usesColumns ? (
+                            <div className="mt-5 space-y-6">
+                              {columns.map((column, columnIndex) => (
+                                <div
+                                  key={`${column.title ?? "column"}-${columnIndex}`}
                                 >
-                                  {link.label}
-                                </SmartLink>
-                              );
-                            })}
-                          </div>
+                                  {column.title ? (
+                                    <p className="px-2 text-[11px] font-black uppercase tracking-[0.16em] text-indigo-600">
+                                      {column.title}
+                                    </p>
+                                  ) : null}
+
+                                  {column.description ? (
+                                    <p className="mt-1.5 px-2 text-xs leading-5 text-slate-500">
+                                      {column.description}
+                                    </p>
+                                  ) : null}
+
+                                  <div className="mt-2 flex flex-col gap-2">
+                                    {(column.items ?? []).map(
+                                      (link, linkIndex) => {
+                                        if (!link.label || !link.href) {
+                                          return null;
+                                        }
+
+                                        return (
+                                          <SmartLink
+                                            key={`${link.label}-${link.href}-${linkIndex}`}
+                                            href={link.href}
+                                            isExternal={link.isExternal}
+                                            onClick={forceClose}
+                                            className="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-white hover:text-slate-950 hover:shadow-sm"
+                                          >
+                                            <span className="block">
+                                              {link.label}
+                                            </span>
+
+                                            {link.description ? (
+                                              <span className="mt-1 block text-xs font-normal leading-5 text-slate-500">
+                                                {link.description}
+                                              </span>
+                                            ) : null}
+                                          </SmartLink>
+                                        );
+                                      },
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="mt-4 flex flex-col gap-2">
+                              {links.map((link, linkIndex) => {
+                                if (!link.label || !link.href) return null;
+
+                                return (
+                                  <SmartLink
+                                    key={`${link.label}-${link.href}-${linkIndex}`}
+                                    href={link.href}
+                                    isExternal={link.isExternal}
+                                    onClick={forceClose}
+                                    className="rounded-xl px-4 py-3 text-sm font-medium text-slate-700 transition-all duration-200 hover:bg-white hover:text-slate-950 hover:shadow-sm"
+                                  >
+                                    {link.label}
+                                  </SmartLink>
+                                );
+                              })}
+                            </div>
+                          )}
                         </details>
                       );
                     }

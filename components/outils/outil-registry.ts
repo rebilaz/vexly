@@ -1,22 +1,20 @@
 import type { ComponentType } from "react";
 
-import type {
-  ToolCalculatorConfig,
-  ToolType,
-} from "@/sanity/lib/outils";
+import type { ToolCalculatorConfig } from "@/sanity/lib/outils";
 
+import { CreatorMonetizationComparator } from "./CreatorMonetizationComparator";
 import { MrrYoutubeTool } from "./MrrYoutubeTool";
 
 export type OutilComponentProps = {
-  config: ToolCalculatorConfig;
+config: ToolCalculatorConfig;
 };
 
-/**
- * Associe chaque valeur calculator.toolType de Sanity
- * à un composant React.
- */
-export const outilRegistry: Partial<
-  Record<ToolType, ComponentType<OutilComponentProps>>
+export const outilRegistry: Record<
+string,
+ComponentType<OutilComponentProps>
+
 > = {
-  "mrr-youtube": MrrYoutubeTool,
-};
+ "mrr-youtube": MrrYoutubeTool,
+ "creator-monetization-comparator":
+ CreatorMonetizationComparator,
+ };

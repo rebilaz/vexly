@@ -11,14 +11,24 @@ export type SiteNavLink = {
   order?: number;
 };
 
+export type SiteNavColumn = {
+  title?: string;
+  description?: string;
+  isVisible?: boolean;
+  order?: number;
+  items?: SiteNavLink[];
+};
+
 export type SiteNavItem = {
   label?: string;
   type?: "link" | "dropdown";
+  dropdownLayout?: "list" | "columns";
   href?: string;
   isExternal?: boolean;
   isVisible?: boolean;
   order?: number;
   items?: SiteNavLink[];
+  columns?: SiteNavColumn[];
 };
 
 export type SiteSettings = {
@@ -57,28 +67,43 @@ export type SiteSettings = {
 };
 
 function sortByOrder<T extends { order?: number }>(items?: T[] | null) {
-  return [...(items ?? [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  return [...(items ?? [])].sort(
+    (a, b) => (a.order ?? 0) - (b.order ?? 0),
+  );
 }
 
 function cleanSettings(settings?: SiteSettings | null): SiteSettings {
   if (!settings) return {};
 
   const headerNavigation = sortByOrder(
-    settings.header?.navigation?.filter((item) => item.isVisible !== false)
+    settings.header?.navigation?.filter((item) => item.isVisible !== false),
   ).map((item) => ({
     ...item,
-    items: sortByOrder(item.items?.filter((link) => link.isVisible !== false)),
+    dropdownLayout: item.dropdownLayout ?? "list",
+    items: sortByOrder(
+      item.items?.filter((link) => link.isVisible !== false),
+    ),
+    columns: sortByOrder(
+      item.columns?.filter((column) => column.isVisible !== false),
+    ).map((column) => ({
+      ...column,
+      items: sortByOrder(
+        column.items?.filter((link) => link.isVisible !== false),
+      ),
+    })),
   }));
 
   const footerColumns = sortByOrder(
-    settings.footer?.columns?.filter((column) => column.isVisible !== false)
+    settings.footer?.columns?.filter((column) => column.isVisible !== false),
   ).map((column) => ({
     ...column,
-    links: sortByOrder(column.links?.filter((link) => link.isVisible !== false)),
+    links: sortByOrder(
+      column.links?.filter((link) => link.isVisible !== false),
+    ),
   }));
 
   const legalLinks = sortByOrder(
-    settings.footer?.legalLinks?.filter((link) => link.isVisible !== false)
+    settings.footer?.legalLinks?.filter((link) => link.isVisible !== false),
   );
 
   return {
@@ -115,6 +140,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
           navigation[] | order(coalesce(order, 0) asc) {
             label,
             type,
+            dropdownLayout,
             href,
             isExternal,
             isVisible,
@@ -127,6 +153,22 @@ export async function getSiteSettings(): Promise<SiteSettings> {
               isExternal,
               isVisible,
               "order": coalesce(order, 0)
+            },
+
+            columns[] | order(coalesce(order, 0) asc) {
+              title,
+              description,
+              isVisible,
+              "order": coalesce(order, 0),
+
+              items[] | order(coalesce(order, 0) asc) {
+                label,
+                href,
+                description,
+                isExternal,
+                isVisible,
+                "order": coalesce(order, 0)
+              }
             }
           },
 
@@ -178,7 +220,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       {},
       {
         cache: "no-store",
-      }
+      },
     );
 
   return cleanSettings(settings);
