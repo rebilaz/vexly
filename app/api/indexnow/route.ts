@@ -1,27 +1,112 @@
 import { NextResponse } from "next/server";
 
-import { submitToIndexNow } from "@/lib/indexnow";
-import { getToolSlugs } from "@/sanity/lib/outils";
-
 export const runtime = "nodejs";
 
-type IndexNowPayload = {
-  all?: boolean;
-  urls?: string[];
-  url?: string;
-  slug?: string;
-  _type?: string;
-};
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.vexly.fr"
+).replace(/\/$/, "");
+
+const INDEXNOW_ENDPOINT =
+  "https://api.indexnow.org/indexnow";
+
+const INDEXNOW_MAX_URLS = 10_000;
+
+function decodeXml(value: string): string {
+  return value
+    .replaceAll("&amp;", "&")
+    .replaceAll("&quot;", '"')
+    .replaceAll("&apos;", "'")
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">");
+}
+
+function extractLocations(xml: string): string[] {
+  return Array.from(
+    xml.matchAll(/<loc>\s*([^<]+?)\s*<\/loc>/gi),
+    (match) => decodeXml(match[1].trim()),
+  );
+}
+
+async function readSitemap(
+  sitemapUrl: string,
+  visited = new Set<string>(),
+  depth = 0,
+): Promise<string[]> {
+  if (depth > 10) {
+    throw new Error(
+      "Profondeur maximale des sitemaps dépassée.",
+    );
+  }
+
+  if (visited.has(sitemapUrl)) {
+    return [];
+  }
+
+  visited.add(sitemapUrl);
+
+  const response = await fetch(sitemapUrl, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Impossible de lire ${sitemapUrl} : HTTP ${response.status}`,
+    );
+  }
+
+  const xml = await response.text();
+  const locations = extractLocations(xml);
+
+  // Le sitemap principal référence plusieurs autres sitemaps.
+  if (/<sitemapindex[\s>]/i.test(xml)) {
+    const nestedSitemaps = await Promise.all(
+      locations.map((location) =>
+        readSitemap(
+          new URL(location, sitemapUrl).toString(),
+          visited,
+          depth + 1,
+        ),
+      ),
+    );
+
+    return nestedSitemaps.flat();
+  }
+
+  return locations.map((location) =>
+    new URL(location, sitemapUrl).toString(),
+  );
+}
+
+function createChunks<T>(
+  values: T[],
+  chunkSize: number,
+): T[][] {
+  const chunks: T[][] = [];
+
+  for (
+    let index = 0;
+    index < values.length;
+    index += chunkSize
+  ) {
+    chunks.push(values.slice(index, index + chunkSize));
+  }
+
+  return chunks;
+}
 
 export async function POST(request: Request) {
   const expectedSecret =
     process.env.INDEXNOW_WEBHOOK_SECRET;
 
-  if (!expectedSecret) {
+  const indexNowKey =
+    process.env.INDEXNOW_KEY;
+
+  if (!expectedSecret || !indexNowKey) {
     return NextResponse.json(
       {
+        success: false,
         error:
-          "La variable INDEXNOW_WEBHOOK_SECRET est manquante.",
+          "INDEXNOW_WEBHOOK_SECRET ou INDEXNOW_KEY est manquante.",
       },
       { status: 500 },
     );
@@ -32,72 +117,114 @@ export async function POST(request: Request) {
 
   if (authorization !== `Bearer ${expectedSecret}`) {
     return NextResponse.json(
-      { error: "Non autorisé." },
+      {
+        success: false,
+        error: "Non autorisé.",
+      },
       { status: 401 },
     );
   }
 
-  let payload: IndexNowPayload;
-
   try {
-    payload = (await request.json()) as IndexNowPayload;
-  } catch {
-    return NextResponse.json(
-      { error: "Corps JSON invalide." },
-      { status: 400 },
-    );
-  }
+    const site = new URL(SITE_URL);
+    const sitemapUrl = `${SITE_URL}/sitemap.xml`;
 
-  const urls: string[] = [];
+    const sitemapUrls =
+      await readSitemap(sitemapUrl);
 
-  // Envoi initial de toutes les pages outils.
-  if (payload.all === true) {
-    const tools = await getToolSlugs();
-
-    urls.push(
-      ...tools.map(
-        ({ slug }) =>
-          `/outils/${encodeURIComponent(slug)}`,
+    const urls = [
+      ...new Set(
+        sitemapUrls.filter((url) => {
+          try {
+            return new URL(url).host === site.host;
+          } catch {
+            return false;
+          }
+        }),
       ),
+    ];
+
+    if (urls.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Aucune URL valide trouvée dans le sitemap.",
+        },
+        { status: 422 },
+      );
+    }
+
+    const batches = createChunks(
+      urls,
+      INDEXNOW_MAX_URLS,
     );
-  }
 
-  if (Array.isArray(payload.urls)) {
-    urls.push(...payload.urls);
-  }
+    const results: Array<{
+      batch: number;
+      count: number;
+      status: number;
+    }> = [];
 
-  if (payload.url) {
-    urls.push(payload.url);
-  }
+    for (
+      let index = 0;
+      index < batches.length;
+      index += 1
+    ) {
+      const batch = batches[index];
 
-  // Utilisé automatiquement par le webhook Sanity.
-  if (
-    payload._type === "toolPage" &&
-    payload.slug
-  ) {
-    urls.push(
-      `/outils/${encodeURIComponent(payload.slug)}`,
-    );
-  }
+      const response = await fetch(
+        INDEXNOW_ENDPOINT,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json; charset=utf-8",
+          },
+          body: JSON.stringify({
+            host: site.host,
+            key: indexNowKey,
+            keyLocation:
+              `${SITE_URL}/${indexNowKey}.txt`,
+            urlList: batch,
+          }),
+          cache: "no-store",
+        },
+      );
 
-  if (urls.length === 0) {
-    return NextResponse.json(
-      { error: "Aucune URL à envoyer." },
-      { status: 400 },
-    );
-  }
+      const responseText =
+        await response.text();
 
-  try {
-    const result = await submitToIndexNow(urls);
+      if (
+        response.status !== 200 &&
+        response.status !== 202
+      ) {
+        throw new Error(
+          `IndexNow a répondu HTTP ${response.status}: ${
+            responseText || "réponse vide"
+          }`,
+        );
+      }
+
+      results.push({
+        batch: index + 1,
+        count: batch.length,
+        status: response.status,
+      });
+    }
 
     return NextResponse.json({
       success: true,
-      count: result.urls.length,
-      indexNowStatus: result.status,
-      submittedUrls: result.urls,
+      sitemap: sitemapUrl,
+      count: urls.length,
+      batches: results,
+      submittedUrls: urls,
     });
   } catch (error) {
-    console.error("[IndexNow]", error);
+    console.error(
+      "[IndexNow submit sitemap]",
+      error,
+    );
 
     return NextResponse.json(
       {
