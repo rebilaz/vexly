@@ -683,7 +683,6 @@ defineField({
       name: "metaTitle",
       title: "Meta title",
       type: "string",
-      validation: (Rule) => Rule.max(65),
     }),
 
     defineField({
@@ -691,7 +690,6 @@ defineField({
       title: "Meta description",
       type: "text",
       rows: 3,
-      validation: (Rule) => Rule.max(170),
     }),
 
     defineField({
