@@ -8,6 +8,8 @@ import { siteSettingsType } from "./siteSettingsType";
 import { contactPageType } from "./contactPageType";
 import { landingPageType } from "./landingPageType";
 import { toolType } from "./toolType";
+import { toolPage } from "./toolPage";
+
 
 export const schemaTypes = [
   articleType,
@@ -20,4 +22,5 @@ export const schemaTypes = [
   contactPageType,
   landingPageType,
   toolType,
+  toolPage,
 ];
