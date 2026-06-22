@@ -1,0 +1,227 @@
+
+{
+  "_type": "toolPage",
+  "title": "Générateur d’idée SaaS pour créateurs de contenu",
+  "slug": {
+    "_type": "slug",
+    "current": "generateur-idee-saas-createur"
+  },
+  "label": "Outil IA gratuit",
+  "description": "Décrivez votre audience, votre niche et les problèmes rencontrés par votre communauté. Notre IA vous propose une idée de SaaS adaptée et monétisable.",
+  "helperText": "Plus vos réponses sont précises, plus la recommandation sera adaptée à votre audience et à votre expertise.",
+  "stats": [
+    {
+      "_key": "stat-analyse",
+      "label": "Analyse",
+      "value": "Personnalisée",
+      "description": "Selon votre niche et votre audience"
+    },
+    {
+      "_key": "stat-resultat",
+      "label": "Résultat",
+      "value": "En quelques minutes",
+      "description": "Une idée de SaaS structurée par l’IA"
+    },
+    {
+      "_key": "stat-objectif",
+      "label": "Objectif",
+      "value": "Revenus récurrents",
+      "description": "Un produit adapté à votre communauté"
+    }
+  ],
+  "calculator": {
+    "toolType": "idee-saas-createur",
+    "eyebrow": "Analyse IA",
+    "title": "Trouvez une idée de SaaS adaptée à votre audience",
+    "inputLabel": "Décrivez votre audience et ses besoins",
+    "inputResultLabel": "Profil analysé",
+    "clientsResultLabel": "Idée recommandée",
+    "revenueResultLabel": "Potentiel du SaaS"
+  },
+  "formulaSection": {
+    "eyebrow": "Fonctionnement",
+    "title": "Comment l’IA trouve une idée de SaaS pour votre audience",
+    "intro": "L’outil analyse votre niche, les caractéristiques de votre audience, les problèmes qu’elle rencontre et les solutions qu’elle utilise déjà.",
+    "formula": "Audience + problèmes récurrents + expertise + potentiel de monétisation = idée de SaaS adaptée",
+    "steps": [
+      {
+        "_key": "step-audience",
+        "label": "01",
+        "title": "Décrivez votre audience",
+        "text": "Indiquez votre niche, votre plateforme principale, la taille de votre communauté et le profil de vos abonnés."
+      },
+      {
+        "_key": "step-problemes",
+        "label": "02",
+        "title": "Listez les problèmes rencontrés",
+        "text": "Expliquez les questions, difficultés et tâches répétitives régulièrement évoquées par votre audience."
+      },
+      {
+        "_key": "step-expertise",
+        "label": "03",
+        "title": "Précisez votre expertise",
+        "text": "Présentez les sujets que vous maîtrisez et la valeur que vous pourriez apporter à travers un logiciel."
+      },
+      {
+        "_key": "step-analyse",
+        "label": "04",
+        "title": "Recevez l’analyse de l’IA",
+        "text": "L’IA identifie une opportunité de SaaS cohérente avec votre audience, votre positionnement et votre capacité à vendre."
+      },
+      {
+        "_key": "step-resultat",
+        "label": "05",
+        "title": "Découvrez votre concept de SaaS",
+        "text": "Obtenez une idée précise avec sa cible, sa promesse, ses fonctionnalités, son modèle économique et son MVP."
+      }
+    ]
+  },
+  "scenariosSection": {
+    "eyebrow": "Résultat de l’analyse",
+    "title": "Ce que vous recevrez après avoir rempli le formulaire",
+    "description": "L’outil ne génère pas seulement un nom de produit. Il structure une véritable opportunité de SaaS adaptée à votre communauté.",
+    "cards": [
+      {
+        "_key": "result-idee",
+        "label": "Concept",
+        "value": "Une idée de SaaS précise",
+        "description": "Un produit directement lié aux besoins et aux habitudes de votre audience."
+      },
+      {
+        "_key": "result-cible",
+        "label": "Positionnement",
+        "value": "Une cible clairement définie",
+        "description": "Le profil des utilisateurs qui auraient le plus intérêt à payer pour la solution."
+      },
+      {
+        "_key": "result-promesse",
+        "label": "Proposition de valeur",
+        "value": "Une promesse claire",
+        "description": "Le problème résolu, le bénéfice principal et la raison de choisir ce SaaS."
+      },
+      {
+        "_key": "result-features",
+        "label": "Fonctionnalités",
+        "value": "Un MVP priorisé",
+        "description": "Les fonctionnalités indispensables pour tester rapidement l’idée auprès de votre audience."
+      },
+      {
+        "_key": "result-pricing",
+        "label": "Monétisation",
+        "value": "Un modèle d’abonnement",
+        "description": "Une proposition de prix mensuel et plusieurs pistes d’offres tarifaires."
+      },
+      {
+        "_key": "result-launch",
+        "label": "Lancement",
+        "value": "Un plan de validation",
+        "description": "Les prochaines étapes pour présenter l’idée, obtenir des retours et trouver les premiers clients."
+      }
+    ]
+  },
+  "useCasesSection": {
+    "eyebrow": "À qui s’adresse cet outil ?",
+    "title": "Transformez votre audience en une opportunité de SaaS",
+    "items": [
+      {
+        "_key": "use-youtube",
+        "text": "Vous êtes créateur YouTube et souhaitez créer un revenu plus stable que les publicités, les sponsors ou l’affiliation."
+      },
+      {
+        "_key": "use-instagram",
+        "text": "Vous développez une communauté sur Instagram ou TikTok et cherchez un produit récurrent à proposer à vos abonnés."
+      },
+      {
+        "_key": "use-newsletter",
+        "text": "Vous possédez une newsletter et souhaitez transformer les besoins de vos lecteurs en logiciel ou en plateforme payante."
+      },
+      {
+        "_key": "use-formation",
+        "text": "Vous vendez déjà des formations ou du coaching et souhaitez créer un outil complémentaire utilisable chaque mois."
+      },
+      {
+        "_key": "use-communaute",
+        "text": "Votre communauté pose régulièrement les mêmes questions et vous souhaitez automatiser une partie de votre accompagnement."
+      }
+    ]
+  },
+  "relatedSection": {
+    "eyebrow": "Outils complémentaires",
+    "title": "Continuez à construire votre projet SaaS",
+    "items": [
+      {
+        "_key": "related-mrr",
+        "label": "Calculateur",
+        "title": "Calculateur MRR SaaS pour YouTube",
+        "href": "/outils/calculateur-mrr-youtube",
+        "description": "Estimez le revenu mensuel récurrent que votre audience YouTube pourrait générer avec une offre SaaS."
+      },
+      {
+        "_key": "related-monetisation",
+        "label": "Comparateur",
+        "title": "Comparateur de monétisation pour créateurs",
+        "href": "/outils/comparateur-monetisation-createur",
+        "description": "Comparez le SaaS, la formation, le coaching, la communauté payante et les autres modèles de revenus."
+      },
+      {
+        "_key": "related-contact",
+        "label": "Accompagnement",
+        "title": "Créer votre MVP SaaS avec Vexly",
+        "href": "/agence-mvp-saas-createurs",
+        "description": "Transformez l’idée recommandée par l’IA en un produit simple, vendable et rapide à lancer."
+      }
+    ]
+  },
+  "faqSection": {
+    "eyebrow": "Questions fréquentes",
+    "title": "Tout savoir sur le générateur d’idées SaaS",
+    "items": [
+      {
+        "_key": "faq-idee",
+        "question": "Comment l’IA choisit-elle l’idée de SaaS ?",
+        "answer": "L’IA analyse les informations fournies sur votre niche, votre audience, les problèmes récurrents de votre communauté, votre expertise et vos objectifs. Elle recherche ensuite une idée qui pourrait apporter une valeur régulière et justifier un abonnement mensuel."
+      },
+      {
+        "_key": "faq-garantie",
+        "question": "L’idée proposée est-elle forcément rentable ?",
+        "answer": "Non. Le résultat constitue une recommandation stratégique, pas une garantie de réussite. L’idée doit ensuite être présentée à votre audience, testée avec de vrais utilisateurs et validée avant d’investir dans un développement complet."
+      },
+      {
+        "_key": "faq-audience",
+        "question": "Faut-il avoir une grande audience ?",
+        "answer": "Non. Une petite audience très engagée et confrontée à un problème précis peut être plus intéressante qu’une grande audience généraliste. La qualité du besoin et la capacité à vendre comptent davantage que le nombre total d’abonnés."
+      },
+      {
+        "_key": "faq-informations",
+        "question": "Quelles informations dois-je fournir ?",
+        "answer": "Vous devrez décrire votre activité, votre niche, votre plateforme principale, le profil de votre audience, ses problèmes fréquents, les outils qu’elle utilise déjà, votre expertise et le type de produit que vous aimeriez créer."
+      },
+      {
+        "_key": "faq-plusieurs",
+        "question": "Puis-je générer plusieurs idées ?",
+        "answer": "Oui. Vous pouvez modifier vos réponses ou préciser un autre problème rencontré par votre audience afin d’obtenir une nouvelle recommandation et de comparer plusieurs concepts de SaaS."
+      },
+      {
+        "_key": "faq-suite",
+        "question": "Que faire après avoir obtenu une idée ?",
+        "answer": "Commencez par interroger quelques membres de votre audience, présentez-leur la promesse du produit et mesurez leur intérêt. Vous pouvez ensuite créer une landing page, une liste d’attente ou un MVP pour vérifier qu’ils sont prêts à payer."
+      }
+    ]
+  },
+  "cta": {
+    "eyebrow": "Passez de l’idée au produit",
+    "title": "Transformez votre recommandation IA en un véritable SaaS",
+    "description": "Vexly vous accompagne pour définir les fonctionnalités essentielles, concevoir votre MVP et lancer une plateforme adaptée à votre audience.",
+    "primaryLabel": "Parler de mon projet SaaS",
+    "primaryHref": "/contact",
+    "secondaryLabel": "Découvrir notre offre MVP",
+    "secondaryHref": "/agence-mvp-saas-createurs"
+  },
+  "seo": {
+    "metaTitle": "Générateur d’idée SaaS pour créateurs de contenu avec IA",
+    "metaDescription": "Décrivez votre audience et ses besoins. Notre IA vous propose une idée de SaaS personnalisée avec sa cible, ses fonctionnalités, son prix et son MVP.",
+    "canonicalUrl": "https://www.vexly.fr/outils/generateur-idee-saas-createur",
+    "noIndex": false
+  }
+}
+
