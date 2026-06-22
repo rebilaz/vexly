@@ -28,22 +28,25 @@
   <url>
     <loc>https://www.vexly.fr/agence-seo-saas-createurs</loc>
   </url>
-    <url>
+  <url>
     <loc>https://www.vexly.fr/agence-ia-saas-createurs</loc>
   </url>
-   <url>
+  <url>
     <loc>https://www.vexly.fr/ressources</loc>
   </url>
-    <url>
+  <url>
+    <loc>https://www.vexly.fr/realisations</loc>
+  </url>
+  <url>
     <loc>https://www.vexly.fr/technique/stripe</loc>
   </url>
-    <url>
+  <url>
     <loc>https://www.vexly.fr/technique/supabase</loc>
   </url>
-    <url>
+  <url>
     <loc>https://www.vexly.fr/technique/sanity</loc>
   </url>
-    <url>
+  <url>
     <loc>https://www.vexly.fr/technique/nextjs</loc>
   </url>
   <url>
@@ -51,7 +54,7 @@
   </url>
   <url>
     <loc>https://www.vexly.fr/articles/idee-saas</loc>
- </url> 
+  </url> 
   <url>
     <loc>https://www.vexly.fr/articles/offre-saas-audience</loc>
   </url>
@@ -67,7 +70,7 @@
   <url>
     <loc>https://www.vexly.fr/outils/calculateur-mrr-youtube</loc>
   </url>
-    <url>
+  <url>
     <loc>https://www.vexly.fr/outils/generateur-idee-saas-createur</loc>
   </url>
   <url>
