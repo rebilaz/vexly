@@ -399,20 +399,6 @@ export default async function ContactPage() {
                   className="w-full resize-y rounded-xl border border-violet-300/50 bg-slate-950/40 px-4 py-3.5 text-sm font-medium text-white outline-none transition placeholder:text-slate-500 focus:border-violet-300 focus:ring-2 focus:ring-violet-400/20"
                 />
 
-                {form?.privacyText ? (
-                  <p className="mt-3 text-xs leading-5 text-slate-500">
-                    {form.privacyText}{" "}
-                    {form.privacyLinkHref ? (
-                      <Link
-                        href={form.privacyLinkHref}
-                        className="text-slate-400 underline underline-offset-4 transition hover:text-violet-200"
-                      >
-                        {form.privacyLinkLabel || "Politique de confidentialité"}
-                      </Link>
-                    ) : null}
-                    .
-                  </p>
-                ) : null}
               </div>
 
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
