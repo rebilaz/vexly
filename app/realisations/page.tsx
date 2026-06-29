@@ -3,6 +3,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import {
+  getAllRealisations,
+  type RealisationListItem,
+  type RealisationVisual as VisualVariant,
+} from "@/sanity/lib/realisations";
+import {
   ArrowRight,
   ArrowUpRight,
   Bot,
@@ -36,15 +41,13 @@ export const metadata: Metadata = {
   },
 };
 
-type VisualVariant =
-  | "membership"
-  | "analytics"
-  | "ai"
-  | "community"
-  | "checkout"
-  | "automation";
+type Value = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+};
 
-type Project = {
+type Project = Partial<RealisationListItem> & {
   eyebrow: string;
   title: string;
   description: string;
@@ -54,12 +57,6 @@ type Project = {
   visual: VisualVariant;
   surfaceClass: string;
   glowClass: string;
-};
-
-type Value = {
-  icon: LucideIcon;
-  title: string;
-  description: string;
 };
 
 const technologies = [
@@ -742,7 +739,30 @@ function ProjectCard({
   );
 }
 
-export default function RealisationsPage() {
+function toDisplayProject(project: RealisationListItem): Project {
+  return {
+    ...project,
+    eyebrow: project.eyebrow || project.category || "Realisation Vexly",
+    description:
+      project.description ||
+      project.summary ||
+      "Un produit digital concu pour clarifier l'offre, fluidifier l'experience utilisateur et soutenir la croissance.",
+    services:
+      project.services?.length
+        ? project.services
+        : project.tags?.length
+          ? project.tags
+          : project.technologies?.slice(0, 4) || [],
+    cta: project.cta || "Decouvrir le projet",
+  };
+}
+
+export default async function RealisationsPage() {
+  const cmsProjects = await getAllRealisations();
+  const displayedProjects = cmsProjects.length
+    ? cmsProjects.map(toDisplayProject)
+    : projects;
+
   return (
     <main className="overflow-hidden bg-[#F8FAFC] text-slate-950">
       <style
@@ -863,9 +883,9 @@ export default function RealisationsPage() {
           </div>
 
           <div className="flex flex-col gap-12 sm:gap-16 lg:gap-20">
-            {projects.map((project, index) => (
+            {displayedProjects.map((project, index) => (
               <ProjectCard
-                key={`${project.eyebrow}-${project.title}`}
+                key={project._id || `${project.eyebrow}-${project.title}`}
                 project={project}
                 index={index}
               />
