@@ -114,6 +114,60 @@ function DetailBlock({
   );
 }
 
+function ProjectOverviewGrid({ project }: { project: RealisationDetail }) {
+  const groups = [
+    {
+      eyebrow: "Livrables",
+      title: "Ce que nous avons construit",
+      items: project.services || [],
+    },
+    {
+      eyebrow: "Stack",
+      title: "Technologies & plateformes",
+      items: project.technologies || [],
+    },
+    {
+      eyebrow: "Périmètre",
+      title: "Domaines couverts",
+      items: project.tags || [],
+    },
+  ].filter((group) => group.items.length);
+
+  if (!groups.length) return null;
+
+  return (
+    <section className="px-6 pb-16 sm:px-8 lg:px-10 lg:pb-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-5 lg:grid-cols-3">
+          {groups.map((group) => (
+            <article
+              key={group.title}
+              className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-[0_22px_70px_rgba(15,23,42,0.06)] sm:p-8"
+            >
+              <p className="text-[11px] font-black uppercase tracking-[0.18em] text-indigo-600">
+                {group.eyebrow}
+              </p>
+              <h2 className="mt-3 text-2xl font-black tracking-[-0.035em] text-slate-950">
+                {group.title}
+              </h2>
+              <div className="mt-6 flex flex-wrap gap-2.5">
+                {group.items.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-slate-200 bg-slate-50 px-3.5 py-2 text-xs font-bold text-slate-700"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function RealisationDetailPage({
   project,
 }: {
@@ -175,7 +229,7 @@ export function RealisationDetailPage({
                 href="/contact"
                 className="group inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 to-violet-500 px-7 py-4 text-sm font-black text-white shadow-[0_18px_45px_rgba(88,80,236,0.40)] transition duration-300 hover:-translate-y-0.5 hover:brightness-110"
               >
-                Creer un projet similaire
+                {project.cta || "Créer un projet similaire"}
                 <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
 
@@ -245,9 +299,23 @@ export function RealisationDetailPage({
         </div>
       </section>
 
+      <ProjectOverviewGrid project={project} />
+
       {hasContent ? (
         <section className="px-6 pb-16 sm:px-8 lg:px-10 lg:pb-20">
-          <div className="mx-auto max-w-4xl rounded-[2rem] border border-slate-200 bg-white p-7 shadow-[0_24px_80px_rgba(15,23,42,0.07)] sm:p-10">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-8 max-w-3xl">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-indigo-600">
+                Étude de cas
+              </p>
+              <h2 className="mt-4 text-4xl font-black tracking-[-0.05em] text-slate-950 sm:text-5xl">
+                Dans le détail : ce que nous avons réellement construit.
+              </h2>
+              <p className="mt-5 text-base leading-8 text-slate-600">
+                Fonctionnalités, choix produit, architecture et décisions prises pendant la réalisation.
+              </p>
+            </div>
+            <div className="rounded-[2rem] border border-slate-200 bg-white p-7 shadow-[0_24px_80px_rgba(15,23,42,0.07)] sm:p-10">
             <PortableText
               value={project.content || []}
               components={{
@@ -308,6 +376,7 @@ export function RealisationDetailPage({
                 },
               }}
             />
+            </div>
           </div>
         </section>
       ) : null}
